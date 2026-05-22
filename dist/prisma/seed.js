@@ -39,7 +39,12 @@ const pg_1 = require("pg");
 const client_1 = require("../src/generated/prisma/client");
 const enums_1 = require("../src/generated/prisma/enums");
 const bcrypt = __importStar(require("bcryptjs"));
-const pool = new pg_1.Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new pg_1.Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production'
+        ? { rejectUnauthorized: false }
+        : undefined,
+});
 const adapter = new adapter_pg_1.PrismaPg(pool);
 const prisma = new client_1.PrismaClient({ adapter });
 async function main() {
