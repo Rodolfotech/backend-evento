@@ -1,5 +1,5 @@
 import type * as runtime from "@prisma/client/runtime/client";
-import type * as Prisma from "../internal/prismaNamespace.js";
+import type * as Prisma from "../internal/prismaNamespace";
 export type AttendeeModel = runtime.Types.Result.DefaultSelection<Prisma.$AttendeePayload>;
 export type AggregateAttendee = {
     _count: AttendeeCountAggregateOutputType | null;

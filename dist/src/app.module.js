@@ -15,6 +15,7 @@ const users_module_1 = require("./users/users.module");
 const events_module_1 = require("./events/events.module");
 const categories_module_1 = require("./categories/categories.module");
 const attendees_module_1 = require("./attendees/attendees.module");
+const seed_module_1 = require("./seed/seed.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,6 +29,7 @@ exports.AppModule = AppModule = __decorate([
             events_module_1.EventsModule,
             categories_module_1.CategoriesModule,
             attendees_module_1.AttendeesModule,
+            seed_module_1.SeedModule,
         ],
     })
 ], AppModule);
