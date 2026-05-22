@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  password        String?
+  name            String
+  avatar          String?
+  role            Role      @default(USER)
+  isActive        Boolean   @default(true)
+
+  facebookId      String?   @unique
+  instagramId     String?   @unique
+  socialToken     String?   @db.Text
+  tokenExpiresAt  DateTime?
+
+  ownedEvents     Event[]   @relation("EventOwner")
+  registrations   Attendee[]
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("users")
+}
+
+model Event {
+  id              String    @id @default(uuid())
+  title           String
+  slug            String    @unique
+  description     String    @db.Text
+  content         String?   @db.Text
+
+  date            DateTime
+  locationName    String?
+  address         String?
+  city            String?
+  isOnline        Boolean   @default(false)
+
+  socialFeed      Json?     @db.JsonB
+  lastSync        DateTime?
+
+  ownerId         String
+  owner           User      @relation("EventOwner", fields: [ownerId], references: [id])
+  categoryId      String?
+  category        Category? @relation(fields: [categoryId], references: [id])
+  attendees       Attendee[]
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("events")
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  events      Event[]
+
+  @@map("categories")
+}
+
+model Attendee {
+  id        String   @id @default(uuid())
+  userId    String
+  eventId   String
+  status    String   @default("REGISTERED")
+
+  user      User     @relation(fields: [userId], references: [id])
+  event     Event    @relation(fields: [eventId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, eventId])
+  @@map("attendees")
+}
+
+enum Role {
+  USER
+  ADMIN
+  ORGANIZER
+}
