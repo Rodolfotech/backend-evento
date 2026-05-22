@@ -1,5 +1,5 @@
 import type * as runtime from "@prisma/client/runtime/client";
-import type * as Prisma from "../internal/prismaNamespace.js";
+import type * as Prisma from "../internal/prismaNamespace";
 export type EventModel = runtime.Types.Result.DefaultSelection<Prisma.$EventPayload>;
 export type AggregateEvent = {
     _count: EventCountAggregateOutputType | null;
