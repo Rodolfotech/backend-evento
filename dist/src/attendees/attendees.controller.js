@@ -18,19 +18,26 @@ const passport_1 = require("@nestjs/passport");
 const swagger_1 = require("@nestjs/swagger");
 const attendees_service_1 = require("./attendees.service");
 const dto_1 = require("../common/dto");
+const current_user_decorator_1 = require("../common/decorators/current-user.decorator");
 let AttendeesController = class AttendeesController {
     attendeesService;
     constructor(attendeesService) {
         this.attendeesService = attendeesService;
     }
-    register(body) {
-        return this.attendeesService.register(body.userId, body.eventId);
+    register(body, userId) {
+        return this.attendeesService.register(body.userId || userId, body.eventId);
+    }
+    findMy(userId) {
+        return this.attendeesService.findByUser(userId);
     }
     findByEvent(eventId) {
         return this.attendeesService.findByEvent(eventId);
     }
     findByUser(userId) {
         return this.attendeesService.findByUser(userId);
+    }
+    unregister(eventId, userId) {
+        return this.attendeesService.unregister(userId, eventId);
     }
 };
 exports.AttendeesController = AttendeesController;
@@ -40,10 +47,21 @@ __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Registrarse a un evento' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, current_user_decorator_1.CurrentUser)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [dto_1.RegisterAttendeeDto]),
+    __metadata("design:paramtypes", [dto_1.RegisterAttendeeDto, String]),
     __metadata("design:returntype", void 0)
 ], AttendeesController.prototype, "register", null);
+__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Get)('my'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Listar registros del usuario autenticado' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AttendeesController.prototype, "findMy", null);
 __decorate([
     (0, common_1.Get)('event/:eventId'),
     (0, swagger_1.ApiOperation)({ summary: 'Listar asistentes de un evento' }),
@@ -62,6 +80,17 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], AttendeesController.prototype, "findByUser", null);
+__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Delete)(':eventId'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Cancelar registro a un evento' }),
+    __param(0, (0, common_1.Param)('eventId')),
+    __param(1, (0, current_user_decorator_1.CurrentUser)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], AttendeesController.prototype, "unregister", null);
 exports.AttendeesController = AttendeesController = __decorate([
     (0, swagger_1.ApiTags)('Attendees'),
     (0, common_1.Controller)('attendees'),

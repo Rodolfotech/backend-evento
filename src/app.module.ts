@@ -7,6 +7,8 @@ import { EventsModule } from './events/events.module';
 import { CategoriesModule } from './categories/categories.module';
 import { AttendeesModule } from './attendees/attendees.module';
 import { SeedModule } from './seed/seed.module';
+import { SocialModule } from './social/social.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { SeedModule } from './seed/seed.module';
     CategoriesModule,
     AttendeesModule,
     SeedModule,
+    SocialModule,
+    MailModule,
   ],
 })
 export class AppModule {}

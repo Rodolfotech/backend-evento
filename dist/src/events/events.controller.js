@@ -18,6 +18,7 @@ const passport_1 = require("@nestjs/passport");
 const swagger_1 = require("@nestjs/swagger");
 const events_service_1 = require("./events.service");
 const dto_1 = require("../common/dto");
+const current_user_decorator_1 = require("../common/decorators/current-user.decorator");
 let EventsController = class EventsController {
     eventsService;
     constructor(eventsService) {
@@ -25,6 +26,9 @@ let EventsController = class EventsController {
     }
     findAll() {
         return this.eventsService.findAll();
+    }
+    findByOwner(userId) {
+        return this.eventsService.findByOwner(userId);
     }
     findBySlug(slug) {
         return this.eventsService.findBySlug(slug);
@@ -47,6 +51,16 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], EventsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Get)('my'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener eventos del usuario autenticado' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], EventsController.prototype, "findByOwner", null);
 __decorate([
     (0, common_1.Get)(':slug'),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener evento por slug' }),

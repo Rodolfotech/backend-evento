@@ -83,9 +83,17 @@ export class CreateCategoryDto {
 }
 
 export class RegisterAttendeeDto {
-  @ApiProperty()
-  userId: string;
+  @ApiProperty({ required: false })
+  userId?: string;
 
   @ApiProperty()
   eventId: string;
+}
+
+export class ConnectSocialDto {
+  @ApiProperty({ example: 'instagram' })
+  platform: string;
+
+  @ApiProperty({ example: 'EAA...' })
+  accessToken: string;
 }

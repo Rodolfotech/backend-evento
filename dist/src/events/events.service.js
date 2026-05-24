@@ -28,6 +28,12 @@ let EventsService = class EventsService {
             include: { owner: { omit: { password: true } }, category: true, attendees: true },
         });
     }
+    findByOwner(ownerId) {
+        return this.prisma.event.findMany({
+            where: { ownerId },
+            include: { owner: { omit: { password: true } }, category: true },
+        });
+    }
     findById(id) {
         return this.prisma.event.findUnique({ where: { id } });
     }

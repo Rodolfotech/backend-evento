@@ -23,7 +23,7 @@ let UsersService = class UsersService {
     findById(id) {
         return this.prisma.user.findUnique({
             where: { id },
-            omit: { password: true },
+            select: { id: true, email: true, name: true, avatar: true, role: true, facebookId: true, instagramId: true, createdAt: true, updatedAt: true },
         });
     }
     findByEmail(email) {

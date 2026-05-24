@@ -18,6 +18,13 @@ export class EventsService {
     });
   }
 
+  findByOwner(ownerId: string) {
+    return this.prisma.event.findMany({
+      where: { ownerId },
+      include: { owner: { omit: { password: true } }, category: true },
+    });
+  }
+
   findById(id: string) {
     return this.prisma.event.findUnique({ where: { id } });
   }

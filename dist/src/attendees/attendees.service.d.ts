@@ -6,12 +6,12 @@ export declare class AttendeesService {
         user: {
             id: string;
             email: string;
+            facebookId: string | null;
+            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
-            facebookId: string | null;
-            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
             createdAt: Date;
@@ -21,19 +21,19 @@ export declare class AttendeesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            description: string;
             title: string;
             slug: string;
-            description: string;
-            content: string | null;
-            date: Date;
+            ownerId: string;
+            categoryId: string | null;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
+            content: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
-            ownerId: string;
-            categoryId: string | null;
         };
     } & {
         id: string;
@@ -48,12 +48,12 @@ export declare class AttendeesService {
         user: {
             id: string;
             email: string;
+            facebookId: string | null;
+            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
-            facebookId: string | null;
-            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
             createdAt: Date;
@@ -77,19 +77,19 @@ export declare class AttendeesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            description: string;
             title: string;
             slug: string;
-            description: string;
-            content: string | null;
-            date: Date;
+            ownerId: string;
+            categoryId: string | null;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
+            content: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
-            ownerId: string;
-            categoryId: string | null;
         };
     } & {
         id: string;
@@ -98,6 +98,13 @@ export declare class AttendeesService {
         eventId: string;
         status: string;
     })[]>;
+    unregister(userId: string, eventId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        userId: string;
+        eventId: string;
+        status: string;
+    }>;
     updateStatus(id: string, status: string): import("../generated/prisma/models").Prisma__AttendeeClient<{
         id: string;
         createdAt: Date;

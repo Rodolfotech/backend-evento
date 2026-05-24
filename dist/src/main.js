@@ -4,7 +4,12 @@ const core_1 = require("@nestjs/core");
 const swagger_1 = require("@nestjs/swagger");
 const app_module_1 = require("./app.module");
 function normalizeOrigin(url) {
-    return url.endsWith('/') ? url.slice(0, -1) : url;
+    let normalized = url.endsWith('/') ? url.slice(0, -1) : url;
+    normalized = normalized.replace(/^http:\/\//i, 'https://');
+    return normalized;
+}
+function originsMatch(origin1, origin2) {
+    return normalizeOrigin(origin1) === normalizeOrigin(origin2);
 }
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
@@ -16,23 +21,30 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('api/docs', app, document);
-    const frontendUrl = process.env.FRONTEND_URL
-        ? normalizeOrigin(process.env.FRONTEND_URL)
-        : undefined;
-    const allowedOrigins = [
-        'http://localhost:5173',
-        'http://localhost:3000',
-    ];
-    if (frontendUrl) {
-        allowedOrigins.push(frontendUrl);
-        const withoutHttps = frontendUrl.replace(/^https?:\/\//, '');
-        allowedOrigins.push(new RegExp(`^https?://${withoutHttps.replace(/\./g, '\\.')}/?$`));
-    }
+    const frontendUrl = process.env.FRONTEND_URL;
+    const devOrigins = ['http://localhost:5173', 'http://localhost:3000'];
     app.enableCors({
-        origin: allowedOrigins,
+        origin: (requestOrigin, callback) => {
+            if (!requestOrigin) {
+                callback(null, true);
+                return;
+            }
+            const isDevOrigin = devOrigins.some(dev => originsMatch(requestOrigin, dev));
+            if (isDevOrigin) {
+                callback(null, normalizeOrigin(requestOrigin));
+                return;
+            }
+            if (frontendUrl && originsMatch(requestOrigin, frontendUrl)) {
+                callback(null, normalizeOrigin(requestOrigin));
+                return;
+            }
+            callback(null, false);
+        },
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
     });
     await app.listen(process.env.PORT ?? 3000);
 }

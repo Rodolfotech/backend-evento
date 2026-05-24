@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RegisterAttendeeDto = exports.CreateCategoryDto = exports.UpdateEventDto = exports.CreateEventDto = exports.RegisterDto = exports.LoginDto = void 0;
+exports.ConnectSocialDto = exports.RegisterAttendeeDto = exports.CreateCategoryDto = exports.UpdateEventDto = exports.CreateEventDto = exports.RegisterDto = exports.LoginDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class LoginDto {
     email;
@@ -152,11 +152,24 @@ class RegisterAttendeeDto {
 }
 exports.RegisterAttendeeDto = RegisterAttendeeDto;
 __decorate([
-    (0, swagger_1.ApiProperty)(),
+    (0, swagger_1.ApiProperty)({ required: false }),
     __metadata("design:type", String)
 ], RegisterAttendeeDto.prototype, "userId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], RegisterAttendeeDto.prototype, "eventId", void 0);
+class ConnectSocialDto {
+    platform;
+    accessToken;
+}
+exports.ConnectSocialDto = ConnectSocialDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'instagram' }),
+    __metadata("design:type", String)
+], ConnectSocialDto.prototype, "platform", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'EAA...' }),
+    __metadata("design:type", String)
+], ConnectSocialDto.prototype, "accessToken", void 0);
 //# sourceMappingURL=dto.js.map

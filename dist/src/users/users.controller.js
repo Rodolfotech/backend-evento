@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const swagger_1 = require("@nestjs/swagger");
 const users_service_1 = require("./users.service");
+const current_user_decorator_1 = require("../common/decorators/current-user.decorator");
 let UsersController = class UsersController {
     usersService;
     constructor(usersService) {
@@ -24,6 +25,12 @@ let UsersController = class UsersController {
     }
     findAll() {
         return this.usersService.findAll();
+    }
+    getProfile(userId) {
+        return this.usersService.findById(userId);
+    }
+    updateProfile(userId, body) {
+        return this.usersService.update(userId, body);
     }
     findOne(id) {
         return this.usersService.findById(id);
@@ -39,6 +46,27 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Get)('profile'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener perfil del usuario autenticado' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "getProfile", null);
+__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Put)('profile'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar perfil del usuario autenticado' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "updateProfile", null);
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Get)(':id'),

@@ -33,6 +33,10 @@ export declare class CreateCategoryDto {
     description?: string;
 }
 export declare class RegisterAttendeeDto {
-    userId: string;
+    userId?: string;
     eventId: string;
+}
+export declare class ConnectSocialDto {
+    platform: string;
+    accessToken: string;
 }

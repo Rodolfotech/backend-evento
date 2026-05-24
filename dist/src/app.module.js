@@ -16,6 +16,8 @@ const events_module_1 = require("./events/events.module");
 const categories_module_1 = require("./categories/categories.module");
 const attendees_module_1 = require("./attendees/attendees.module");
 const seed_module_1 = require("./seed/seed.module");
+const social_module_1 = require("./social/social.module");
+const mail_module_1 = require("./mail/mail.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -30,6 +32,8 @@ exports.AppModule = AppModule = __decorate([
             categories_module_1.CategoriesModule,
             attendees_module_1.AttendeesModule,
             seed_module_1.SeedModule,
+            social_module_1.SocialModule,
+            mail_module_1.MailModule,
         ],
     })
 ], AppModule);

@@ -8,13 +8,13 @@ export declare class AuthController {
         user: {
             id: string;
             email: string;
+            facebookId: string | null;
+            instagramId: string | null;
             password: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
-            facebookId: string | null;
-            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
             createdAt: Date;
@@ -22,17 +22,57 @@ export declare class AuthController {
         };
     }>;
     register(body: RegisterDto): Promise<{
-        id: string;
-        email: string;
-        name: string;
-        avatar: string | null;
-        role: import("../generated/prisma/enums").Role;
-        isActive: boolean;
-        facebookId: string | null;
-        instagramId: string | null;
-        socialToken: string | null;
-        tokenExpiresAt: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
+        access_token: string;
+        user: {
+            id: string;
+            email: string;
+            facebookId: string | null;
+            instagramId: string | null;
+            name: string;
+            avatar: string | null;
+            role: import("../generated/prisma/enums").Role;
+            isActive: boolean;
+            socialToken: string | null;
+            tokenExpiresAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+    }>;
+    forgotPassword(email: string): Promise<{
+        message: string;
+    }>;
+    resetPasswordWithToken(token: string, password: string): Promise<{
+        access_token: string;
+        user: {
+            id: string;
+            email: string;
+            facebookId: string | null;
+            instagramId: string | null;
+            name: string;
+            avatar: string | null;
+            role: import("../generated/prisma/enums").Role;
+            isActive: boolean;
+            socialToken: string | null;
+            tokenExpiresAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+    }>;
+    checkEmail(email: string): Promise<{
+        exists: boolean;
+    }>;
+    resetPasswordDirect(body: LoginDto): Promise<{
+        access_token: string;
+        user: {
+            id: string;
+            email: string;
+            facebookId: string | null;
+            instagramId: string | null;
+            name: string;
+            avatar: string | null;
+            role: import("../generated/prisma/enums").Role;
+            createdAt: Date;
+            updatedAt: Date;
+        } | null;
     }>;
 }

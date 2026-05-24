@@ -1,7 +1,8 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Param, Body, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 @ApiTags('Users')
 @Controller('users')
@@ -14,6 +15,22 @@ export class UsersController {
   @ApiOperation({ summary: 'Listar todos los usuarios' })
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('profile')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener perfil del usuario autenticado' })
+  getProfile(@CurrentUser('id') userId: string) {
+    return this.usersService.findById(userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('profile')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Actualizar perfil del usuario autenticado' })
+  updateProfile(@CurrentUser('id') userId: string, @Body() body: { name?: string; avatar?: string }) {
+    return this.usersService.update(userId, body);
   }
 
   @UseGuards(AuthGuard('jwt'))

@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { EventsService } from './events.service';
 import { CreateEventDto, UpdateEventDto } from '../common/dto';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 @ApiTags('Events')
 @Controller('events')
@@ -13,6 +14,14 @@ export class EventsController {
   @ApiOperation({ summary: 'Listar todos los eventos' })
   findAll() {
     return this.eventsService.findAll();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('my')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener eventos del usuario autenticado' })
+  findByOwner(@CurrentUser('id') userId: string) {
+    return this.eventsService.findByOwner(userId);
   }
 
   @Get(':slug')
