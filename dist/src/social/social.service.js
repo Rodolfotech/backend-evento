@@ -232,6 +232,29 @@ let SocialService = class SocialService {
             },
         });
     }
+    async getUserMedia(userId) {
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: { instagramId: true, socialToken: true },
+        });
+        if (!user?.instagramId || !user?.socialToken) {
+            throw new common_1.BadRequestException('Instagram no está conectado');
+        }
+        const response = await fetch(`https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp,media_type,thumbnail_url&access_token=${user.socialToken}&limit=50`);
+        if (!response.ok) {
+            throw new common_1.BadRequestException('Error al obtener publicaciones de Instagram');
+        }
+        const data = await response.json();
+        return (data.data || []).map((post) => ({
+            id: post.id,
+            platform: 'instagram',
+            media_url: post.media_url || post.thumbnail_url || null,
+            caption: post.caption || null,
+            permalink: post.permalink || null,
+            timestamp: post.timestamp,
+            media_type: post.media_type || null,
+        }));
+    }
     async syncFeed(userId, eventId) {
         const event = await this.prisma.event.findUnique({
             where: { id: eventId },

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode } from '@nestjs/common';
+import { Controller, Post, Get, Body, Query, HttpCode } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from '../common/dto';
@@ -48,5 +48,18 @@ export class AuthController {
   @ApiOperation({ summary: 'Restablecer contraseña directamente (solo desarrollo)' })
   resetPasswordDirect(@Body() body: LoginDto) {
     return this.authService.resetPassword(body.email, body.password);
+  }
+
+  @Get('instagram/url')
+  @ApiOperation({ summary: 'Obtener URL de autorización de Instagram para login' })
+  getInstagramAuthUrl(@Query('state') state?: string) {
+    return this.authService.getInstagramAuthUrl(state);
+  }
+
+  @Post('instagram')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Iniciar sesión o registrarse con Instagram' })
+  instagramLogin(@Body('code') code: string) {
+    return this.authService.instagramLogin(code);
   }
 }

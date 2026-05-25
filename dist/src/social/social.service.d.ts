@@ -88,5 +88,6 @@ export declare class SocialService {
     }>;
     private syncAllUserEvents;
     private fetchAndSaveFeed;
+    getUserMedia(userId: string): Promise<any>;
     syncFeed(userId: string, eventId: string): Promise<void>;
 }

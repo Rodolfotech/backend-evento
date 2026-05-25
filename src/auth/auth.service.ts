@@ -6,6 +6,20 @@ import { PrismaService } from '../prisma/prisma.service';
 import { MailService } from '../mail/mail.service';
 import { ConfigService } from '@nestjs/config';
 
+interface InstagramTokenData {
+  access_token: string;
+  user_id: number;
+  expires_in?: number;
+}
+
+interface InstagramProfile {
+  id: string;
+  username: string;
+  account_type: string;
+  name?: string;
+  profile_picture_url?: string;
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -114,6 +128,104 @@ export class AuthService {
     });
     return {
       access_token: this.jwtService.sign({ sub: user.id, email: user.email }),
+      user: await this.usersService.findById(user.id),
+    };
+  }
+
+  getInstagramAuthUrl(state?: string) {
+    const clientId = this.config.get<string>('INSTAGRAM_CLIENT_ID')!;
+    const redirectUri = this.config.get<string>('INSTAGRAM_REDIRECT_URI')!;
+    const params = new URLSearchParams({
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      response_type: 'code',
+      scope: 'instagram_business_basic',
+    });
+    if (state) params.set('state', state);
+    return { url: `https://api.instagram.com/oauth/authorize?${params.toString()}` };
+  }
+
+  async instagramLogin(code: string) {
+    if (!code) throw new BadRequestException('Código de autorización requerido');
+
+    const clientId = this.config.get<string>('INSTAGRAM_CLIENT_ID')!;
+    const clientSecret = this.config.get<string>('INSTAGRAM_CLIENT_SECRET')!;
+    const redirectUri = this.config.get<string>('INSTAGRAM_REDIRECT_URI')!;
+
+    const tokenResponse = await fetch('https://api.instagram.com/oauth/access_token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        grant_type: 'authorization_code',
+        redirect_uri: redirectUri,
+        code,
+      }),
+    });
+
+    if (!tokenResponse.ok) {
+      const err = await tokenResponse.text();
+      throw new BadRequestException(`Error al autenticar con Instagram: ${err}`);
+    }
+
+    const tokenData: InstagramTokenData = await tokenResponse.json();
+    const shortLivedToken = tokenData.access_token;
+    const igUserId = String(tokenData.user_id);
+
+    const longLivedResponse = await fetch(
+      `https://graph.instagram.com/access_token?grant_type=ig_exchange_token` +
+        `&client_secret=${clientSecret}&access_token=${shortLivedToken}`,
+    );
+
+    let finalToken = shortLivedToken;
+    let expiresIn = 5184000;
+
+    if (longLivedResponse.ok) {
+      const longLivedData: any = await longLivedResponse.json();
+      finalToken = longLivedData.access_token;
+      expiresIn = longLivedData.expires_in || 5184000;
+    }
+
+    let igProfile: InstagramProfile = { id: igUserId, username: '', account_type: '' };
+
+    try {
+      const profileResponse = await fetch(
+        `https://graph.instagram.com/${igUserId}?fields=id,username,account_type&access_token=${finalToken}`,
+      );
+      if (profileResponse.ok) {
+        igProfile = await profileResponse.json();
+      }
+    } catch {}
+
+    let user = await this.prisma.user.findUnique({
+      where: { instagramId: igUserId },
+    });
+
+    if (user) {
+      user = await this.prisma.user.update({
+        where: { id: user.id },
+        data: {
+          socialToken: finalToken,
+          tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
+        },
+      });
+    } else {
+      const placeholderEmail = `ig-${igUserId}@instagram.auth`;
+      user = await this.prisma.user.create({
+        data: {
+          email: placeholderEmail,
+          name: igProfile.username || `Instagram ${igUserId.slice(0, 6)}`,
+          instagramId: igUserId,
+          socialToken: finalToken,
+          tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
+        },
+      });
+    }
+
+    const jwt = this.jwtService.sign({ sub: user.id, email: user.email });
+    return {
+      access_token: jwt,
       user: await this.usersService.findById(user.id),
     };
   }

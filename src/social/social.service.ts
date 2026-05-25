@@ -266,6 +266,36 @@ export class SocialService {
     });
   }
 
+  async getUserMedia(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { instagramId: true, socialToken: true },
+    });
+
+    if (!user?.instagramId || !user?.socialToken) {
+      throw new BadRequestException('Instagram no está conectado');
+    }
+
+    const response = await fetch(
+      `https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp,media_type,thumbnail_url&access_token=${user.socialToken}&limit=50`,
+    );
+
+    if (!response.ok) {
+      throw new BadRequestException('Error al obtener publicaciones de Instagram');
+    }
+
+    const data: any = await response.json();
+    return (data.data || []).map((post: any) => ({
+      id: post.id,
+      platform: 'instagram' as const,
+      media_url: post.media_url || post.thumbnail_url || null,
+      caption: post.caption || null,
+      permalink: post.permalink || null,
+      timestamp: post.timestamp,
+      media_type: post.media_type || null,
+    }));
+  }
+
   async syncFeed(userId: string, eventId: string) {
     const event = await this.prisma.event.findUnique({
       where: { id: eventId },

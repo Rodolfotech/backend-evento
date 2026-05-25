@@ -101,4 +101,21 @@ export declare class AuthService {
             updatedAt: Date;
         } | null;
     }>;
+    getInstagramAuthUrl(state?: string): {
+        url: string;
+    };
+    instagramLogin(code: string): Promise<{
+        access_token: string;
+        user: {
+            id: string;
+            email: string;
+            facebookId: string | null;
+            instagramId: string | null;
+            name: string;
+            avatar: string | null;
+            role: import("../generated/prisma/enums").Role;
+            createdAt: Date;
+            updatedAt: Date;
+        } | null;
+    }>;
 }

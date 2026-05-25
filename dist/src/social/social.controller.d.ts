@@ -80,6 +80,7 @@ export declare class SocialController {
         createdAt: Date;
         updatedAt: Date;
     }>;
+    getUserMedia(userId: string): Promise<any>;
     syncFeed(userId: string, eventId: string): Promise<void>;
     verifyWebhook(mode: string, challenge: string, verifyToken: string): Promise<string>;
     handleWebhook(req: any): Promise<void>;
