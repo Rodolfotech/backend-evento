@@ -153,6 +153,90 @@ let AuthService = class AuthService {
             user: await this.usersService.findById(user.id),
         };
     }
+    getInstagramAuthUrl(state) {
+        const clientId = this.config.get('INSTAGRAM_CLIENT_ID');
+        const redirectUri = this.config.get('INSTAGRAM_REDIRECT_URI');
+        const params = new URLSearchParams({
+            client_id: clientId,
+            redirect_uri: redirectUri,
+            response_type: 'code',
+            scope: 'instagram_business_basic',
+        });
+        if (state)
+            params.set('state', state);
+        return { url: `https://api.instagram.com/oauth/authorize?${params.toString()}` };
+    }
+    async instagramLogin(code) {
+        if (!code)
+            throw new common_1.BadRequestException('Código de autorización requerido');
+        const clientId = this.config.get('INSTAGRAM_CLIENT_ID');
+        const clientSecret = this.config.get('INSTAGRAM_CLIENT_SECRET');
+        const redirectUri = this.config.get('INSTAGRAM_REDIRECT_URI');
+        const tokenResponse = await fetch('https://api.instagram.com/oauth/access_token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                client_id: clientId,
+                client_secret: clientSecret,
+                grant_type: 'authorization_code',
+                redirect_uri: redirectUri,
+                code,
+            }),
+        });
+        if (!tokenResponse.ok) {
+            const err = await tokenResponse.text();
+            throw new common_1.BadRequestException(`Error al autenticar con Instagram: ${err}`);
+        }
+        const tokenData = await tokenResponse.json();
+        const shortLivedToken = tokenData.access_token;
+        const igUserId = String(tokenData.user_id);
+        const longLivedResponse = await fetch(`https://graph.instagram.com/access_token?grant_type=ig_exchange_token` +
+            `&client_secret=${clientSecret}&access_token=${shortLivedToken}`);
+        let finalToken = shortLivedToken;
+        let expiresIn = 5184000;
+        if (longLivedResponse.ok) {
+            const longLivedData = await longLivedResponse.json();
+            finalToken = longLivedData.access_token;
+            expiresIn = longLivedData.expires_in || 5184000;
+        }
+        let igProfile = { id: igUserId, username: '', account_type: '' };
+        try {
+            const profileResponse = await fetch(`https://graph.instagram.com/${igUserId}?fields=id,username,account_type&access_token=${finalToken}`);
+            if (profileResponse.ok) {
+                igProfile = await profileResponse.json();
+            }
+        }
+        catch { }
+        let user = await this.prisma.user.findUnique({
+            where: { instagramId: igUserId },
+        });
+        if (user) {
+            user = await this.prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    socialToken: finalToken,
+                    tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
+                },
+            });
+        }
+        else {
+            const placeholderEmail = `ig-${igUserId}@instagram.auth`;
+            user = await this.prisma.user.create({
+                data: {
+                    email: placeholderEmail,
+                    name: igProfile.username || `Instagram ${igUserId.slice(0, 6)}`,
+                    instagramId: igUserId,
+                    socialToken: finalToken,
+                    tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
+                },
+            });
+        }
+        const jwt = this.jwtService.sign({ sub: user.id, email: user.email });
+        return {
+            access_token: jwt,
+            user: await this.usersService.findById(user.id),
+        };
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([

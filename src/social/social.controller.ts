@@ -66,6 +66,14 @@ export class SocialController {
     return this.socialService.refreshToken(userId);
   }
 
+  @Get('instagram/media')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener publicaciones de Instagram del usuario autenticado' })
+  getUserMedia(@CurrentUser('id') userId: string) {
+    return this.socialService.getUserMedia(userId);
+  }
+
   @Post('sync/:eventId')
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()

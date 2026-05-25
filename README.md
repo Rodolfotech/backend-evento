@@ -120,21 +120,50 @@ Incluye autenticación Bearer JWT, ejemplos de requests y respuestas para todos 
 | GET    | `/attendees/event/:id`| Asistentes de un evento              |
 | GET    | `/attendees/user/:id` | Eventos de un usuario (requiere JWT) |
 
-## Integración Meta (Facebook/Instagram)
+## Integración Instagram API
 
-Para conectar con la Graph API:
+La plataforma usa **Instagram API con Instagram Login** (NO la Basic Display API, descontinuada en Dic 2024).
 
-1. Crear una app en [Meta for Developers](https://developers.facebook.com/)
-2. Solicitar permisos: `instagram_basic`, `pages_read_engagement`
-3. Guardar el `socialToken` del usuario en la tabla `users`
-4. Usar el campo `socialFeed` (JSONB) en `events` para almacenar el feed sincronizado
+### Requisitos
 
-Ejemplo de consulta a la Graph API:
+1. **Cuenta Business o Creator** — la cuenta de Instagram que se conecta debe ser Profesional (Business o Creator), no personal
+2. **App en Meta Developers** — crear app con producto Instagram Login
+3. **Redirect URI** — debe coincidir exactamente con la configurada en Meta Developers:
+   - Desarrollo: `http://localhost:5173/social/callback`
+   - Producción: `https://www.hoysesale.cl/social/callback`
+4. **Modo Development** — mientras la app no tenga App Review, solo funciona con usuarios agregados como **tester** en Meta Developers → Roles → Tester
+5. **App Review (Live)** — para que cualquier usuario pueda conectar su Instagram, la app debe pasar la revisión y obtener **Advanced Access** para `instagram_business_basic`
 
-```
-GET https://graph.facebook.com/v22.0/{instagram-id}/media?access_token={token}
-```
+### Configuración en Meta Developers
 
-pnpm prisma db push
-pnpm run start:dev
+1. Ir a [Meta for Developers](https://developers.facebook.com/)
+2. Seleccionar la app → Productos → Instagram Login → Configurar
+3. Agregar Redirect URI: `https://www.hoysesale.cl/social/callback`
+4. Agregar tester en Roles → Tester
+5. En Configuración → Básico, registrar el dominio `www.hoysesale.cl`
+
+### Variables de entorno
+
+| Variable | Desarrollo | Producción |
+|---|---|---|
+| `INSTAGRAM_CLIENT_ID` | App ID de Meta | mismo |
+| `INSTAGRAM_CLIENT_SECRET` | App Secret de Meta | mismo |
+| `INSTAGRAM_REDIRECT_URI` | `http://localhost:5173/social/callback` | `https://www.hoysesale.cl/social/callback` |
+| `FRONTEND_URL` | `http://localhost:5173` | `https://www.hoysesale.cl` |
+| `INSTAGRAM_WEBHOOK_TOKEN` | token que tú inventes | mismo |
+
+### Flujo de conexión
+
+1. Usuario autenticado hace clic en "Conectar Instagram" en su perfil
+2. Se abre un popup con la pantalla de autorización de Instagram
+3. Usuario autoriza la app
+4. Instagram redirige al callback, el backend intercambia el código por un token long-lived
+5. El token se guarda en el usuario y se sincronizan automáticamente todos sus eventos
+6. Las publicaciones aparecen en las tarjetas de evento y en la vista de detalle
+
+### Sincronización automática
+
+- **Al conectar**: se sincronizan todos los eventos del usuario automáticamente
+- **Manual**: botón "Sincronizar Instagram" en la vista de detalle del evento
+- **Webhook** (producción): cuando la app esté en Live, el endpoint `POST /social/instagram/webhook` recibe notificaciones de nuevo contenido
 

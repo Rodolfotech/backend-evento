@@ -40,6 +40,12 @@ let AuthController = class AuthController {
     resetPasswordDirect(body) {
         return this.authService.resetPassword(body.email, body.password);
     }
+    getInstagramAuthUrl(state) {
+        return this.authService.getInstagramAuthUrl(state);
+    }
+    instagramLogin(code) {
+        return this.authService.instagramLogin(code);
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -97,6 +103,23 @@ __decorate([
     __metadata("design:paramtypes", [dto_1.LoginDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "resetPasswordDirect", null);
+__decorate([
+    (0, common_1.Get)('instagram/url'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener URL de autorización de Instagram para login' }),
+    __param(0, (0, common_1.Query)('state')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "getInstagramAuthUrl", null);
+__decorate([
+    (0, common_1.Post)('instagram'),
+    (0, common_1.HttpCode)(200),
+    (0, swagger_1.ApiOperation)({ summary: 'Iniciar sesión o registrarse con Instagram' }),
+    __param(0, (0, common_1.Body)('code')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "instagramLogin", null);
 exports.AuthController = AuthController = __decorate([
     (0, swagger_1.ApiTags)('Auth'),
     (0, common_1.Controller)('auth'),
