@@ -255,6 +255,65 @@ let SocialService = class SocialService {
             media_type: post.media_type || null,
         }));
     }
+    async getValidation(userId) {
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: { instagramId: true, socialToken: true, createdAt: true },
+        });
+        if (!user?.instagramId || !user?.socialToken) {
+            throw new common_1.BadRequestException('Instagram no está conectado');
+        }
+        const profileResponse = await fetch(`https://graph.instagram.com/${user.instagramId}?fields=id,username,account_type,media_count&access_token=${user.socialToken}`);
+        if (!profileResponse.ok) {
+            throw new common_1.BadRequestException('Error al obtener perfil de Instagram');
+        }
+        const profile = await profileResponse.json();
+        const accountType = profile.account_type || 'PERSONAL';
+        const mediaCount = profile.media_count || 0;
+        const oldestResponse = await fetch(`https://graph.instagram.com/${user.instagramId}/media?fields=id,timestamp&access_token=${user.socialToken}&limit=1`);
+        let oldestPostDate = null;
+        if (oldestResponse.ok) {
+            const oldestData = await oldestResponse.json();
+            if (oldestData.data?.length > 0) {
+                oldestPostDate = oldestData.data[oldestData.data.length - 1].timestamp;
+            }
+        }
+        const connectedAt = user.createdAt.toISOString();
+        const accountAgeMs = oldestPostDate
+            ? Date.now() - new Date(oldestPostDate).getTime()
+            : Date.now() - new Date(connectedAt).getTime();
+        const accountAgeDays = Math.floor(accountAgeMs / (1000 * 60 * 60 * 24));
+        return {
+            accountType,
+            mediaCount,
+            connectedAt,
+            oldestPostDate,
+            accountAgeDays,
+            isProfessional: accountType === 'BUSINESS' || accountType === 'CREATOR',
+            hasActivity: mediaCount > 0,
+            hasMinAge: accountAgeDays >= 180,
+            hasMinPosts: mediaCount >= 5,
+            level: this.calculateLevel(accountType, accountAgeDays, mediaCount),
+        };
+    }
+    calculateLevel(accountType, ageDays, mediaCount) {
+        let score = 0;
+        if (accountType === 'BUSINESS' || accountType === 'CREATOR')
+            score += 3;
+        if (ageDays >= 180)
+            score += 2;
+        else if (ageDays >= 30)
+            score += 1;
+        if (mediaCount >= 20)
+            score += 3;
+        else if (mediaCount >= 5)
+            score += 1;
+        if (score >= 6)
+            return 3;
+        if (score >= 3)
+            return 2;
+        return 1;
+    }
     async syncFeed(userId, eventId) {
         const event = await this.prisma.event.findUnique({
             where: { id: eventId },

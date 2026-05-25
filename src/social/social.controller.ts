@@ -74,6 +74,14 @@ export class SocialController {
     return this.socialService.getUserMedia(userId);
   }
 
+  @Get('instagram/validation')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener validación de la cuenta de Instagram' })
+  getValidation(@CurrentUser('id') userId: string) {
+    return this.socialService.getValidation(userId);
+  }
+
   @Post('sync/:eventId')
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()

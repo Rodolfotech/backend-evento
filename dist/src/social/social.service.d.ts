@@ -89,5 +89,18 @@ export declare class SocialService {
     private syncAllUserEvents;
     private fetchAndSaveFeed;
     getUserMedia(userId: string): Promise<any>;
+    getValidation(userId: string): Promise<{
+        accountType: any;
+        mediaCount: any;
+        connectedAt: string;
+        oldestPostDate: string | null;
+        accountAgeDays: number;
+        isProfessional: boolean;
+        hasActivity: boolean;
+        hasMinAge: boolean;
+        hasMinPosts: boolean;
+        level: number;
+    }>;
+    private calculateLevel;
     syncFeed(userId: string, eventId: string): Promise<void>;
 }
