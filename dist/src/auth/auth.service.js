@@ -138,6 +138,74 @@ let AuthService = class AuthService {
         }
         return { exists: true };
     }
+    getGoogleAuthUrl(state) {
+        const clientId = this.config.get('GOOGLE_CLIENT_ID');
+        const redirectUri = this.config.get('GOOGLE_REDIRECT_URI');
+        const params = new URLSearchParams({
+            client_id: clientId,
+            redirect_uri: redirectUri,
+            response_type: 'code',
+            scope: 'openid email profile',
+            access_type: 'offline',
+        });
+        if (state)
+            params.set('state', state);
+        return { url: `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}` };
+    }
+    async googleLogin(code) {
+        if (!code)
+            throw new common_1.BadRequestException('Código de autorización requerido');
+        const clientId = this.config.get('GOOGLE_CLIENT_ID');
+        const clientSecret = this.config.get('GOOGLE_CLIENT_SECRET');
+        const redirectUri = this.config.get('GOOGLE_REDIRECT_URI');
+        const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                client_id: clientId,
+                client_secret: clientSecret,
+                code,
+                grant_type: 'authorization_code',
+                redirect_uri: redirectUri,
+            }),
+        });
+        if (!tokenResponse.ok) {
+            const err = await tokenResponse.text();
+            throw new common_1.BadRequestException(`Error al autenticar con Google: ${err}`);
+        }
+        const tokenData = await tokenResponse.json();
+        const accessToken = tokenData.access_token;
+        const userResponse = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?access_token=${accessToken}`);
+        if (!userResponse.ok) {
+            throw new common_1.BadRequestException('Error al obtener perfil de Google');
+        }
+        const googleProfile = await userResponse.json();
+        let user = await this.prisma.user.findUnique({
+            where: { email: googleProfile.email },
+        });
+        if (user) {
+            user = await this.prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    avatar: googleProfile.picture || user.avatar,
+                },
+            });
+        }
+        else {
+            user = await this.prisma.user.create({
+                data: {
+                    email: googleProfile.email,
+                    name: googleProfile.name || googleProfile.email.split('@')[0],
+                    avatar: googleProfile.picture || null,
+                },
+            });
+        }
+        const jwt = this.jwtService.sign({ sub: user.id, email: user.email });
+        return {
+            access_token: jwt,
+            user: await this.usersService.findById(user.id),
+        };
+    }
     async resetPassword(email, newPassword) {
         const user = await this.usersService.findByEmail(email);
         if (!user) {

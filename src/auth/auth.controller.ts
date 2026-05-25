@@ -62,4 +62,17 @@ export class AuthController {
   instagramLogin(@Body('code') code: string) {
     return this.authService.instagramLogin(code);
   }
+
+  @Get('google/url')
+  @ApiOperation({ summary: 'Obtener URL de autorización de Google' })
+  getGoogleAuthUrl(@Query('state') state?: string) {
+    return this.authService.getGoogleAuthUrl(state);
+  }
+
+  @Post('google')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Iniciar sesión o registrarse con Google' })
+  googleLogin(@Body('code') code: string) {
+    return this.authService.googleLogin(code);
+  }
 }

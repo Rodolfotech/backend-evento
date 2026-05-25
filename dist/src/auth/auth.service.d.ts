@@ -87,6 +87,23 @@ export declare class AuthService {
     checkEmail(email: string): Promise<{
         exists: boolean;
     }>;
+    getGoogleAuthUrl(state?: string): {
+        url: string;
+    };
+    googleLogin(code: string): Promise<{
+        access_token: string;
+        user: {
+            id: string;
+            email: string;
+            facebookId: string | null;
+            instagramId: string | null;
+            name: string;
+            avatar: string | null;
+            role: import("../generated/prisma/enums").Role;
+            createdAt: Date;
+            updatedAt: Date;
+        } | null;
+    }>;
     resetPassword(email: string, newPassword: string): Promise<{
         access_token: string;
         user: {
