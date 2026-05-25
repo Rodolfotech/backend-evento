@@ -22,26 +22,26 @@ export declare class AttendeesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
             description: string;
             title: string;
             slug: string;
-            ownerId: string;
-            categoryId: string | null;
+            content: string | null;
+            date: Date;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
-            content: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
+            ownerId: string;
+            categoryId: string | null;
         };
     } & {
         id: string;
         createdAt: Date;
+        status: string;
         userId: string;
         eventId: string;
-        status: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
@@ -56,26 +56,26 @@ export declare class AttendeesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
             description: string;
             title: string;
             slug: string;
-            ownerId: string;
-            categoryId: string | null;
+            content: string | null;
+            date: Date;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
-            content: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
+            ownerId: string;
+            categoryId: string | null;
         };
     } & {
         id: string;
         createdAt: Date;
+        status: string;
         userId: string;
         eventId: string;
-        status: string;
     })[]>;
     findByEvent(eventId: string): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<({
         user: {
@@ -95,9 +95,9 @@ export declare class AttendeesController {
     } & {
         id: string;
         createdAt: Date;
+        status: string;
         userId: string;
         eventId: string;
-        status: string;
     })[]>;
     findByUser(userId: string): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<({
         event: {
@@ -110,32 +110,32 @@ export declare class AttendeesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
             description: string;
             title: string;
             slug: string;
-            ownerId: string;
-            categoryId: string | null;
+            content: string | null;
+            date: Date;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
-            content: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
+            ownerId: string;
+            categoryId: string | null;
         };
     } & {
         id: string;
         createdAt: Date;
+        status: string;
         userId: string;
         eventId: string;
-        status: string;
     })[]>;
     unregister(eventId: string, userId: string): Promise<{
         id: string;
         createdAt: Date;
+        status: string;
         userId: string;
         eventId: string;
-        status: string;
     }>;
 }
