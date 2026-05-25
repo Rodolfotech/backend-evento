@@ -7,9 +7,9 @@ export declare class CategoriesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            description: string;
             title: string;
             slug: string;
+            description: string;
             content: string | null;
             date: Date;
             locationName: string | null;

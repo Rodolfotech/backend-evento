@@ -19,6 +19,8 @@ export type UserMinAggregateOutputType = {
     instagramId: string | null;
     socialToken: string | null;
     tokenExpiresAt: Date | null;
+    instagramUsername: string | null;
+    instagramAvatar: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -34,6 +36,8 @@ export type UserMaxAggregateOutputType = {
     instagramId: string | null;
     socialToken: string | null;
     tokenExpiresAt: Date | null;
+    instagramUsername: string | null;
+    instagramAvatar: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -49,6 +53,8 @@ export type UserCountAggregateOutputType = {
     instagramId: number;
     socialToken: number;
     tokenExpiresAt: number;
+    instagramUsername: number;
+    instagramAvatar: number;
     createdAt: number;
     updatedAt: number;
     _all: number;
@@ -65,6 +71,8 @@ export type UserMinAggregateInputType = {
     instagramId?: true;
     socialToken?: true;
     tokenExpiresAt?: true;
+    instagramUsername?: true;
+    instagramAvatar?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -80,6 +88,8 @@ export type UserMaxAggregateInputType = {
     instagramId?: true;
     socialToken?: true;
     tokenExpiresAt?: true;
+    instagramUsername?: true;
+    instagramAvatar?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -95,6 +105,8 @@ export type UserCountAggregateInputType = {
     instagramId?: true;
     socialToken?: true;
     tokenExpiresAt?: true;
+    instagramUsername?: true;
+    instagramAvatar?: true;
     createdAt?: true;
     updatedAt?: true;
     _all?: true;
@@ -135,6 +147,8 @@ export type UserGroupByOutputType = {
     instagramId: string | null;
     socialToken: string | null;
     tokenExpiresAt: Date | null;
+    instagramUsername: string | null;
+    instagramAvatar: string | null;
     createdAt: Date;
     updatedAt: Date;
     _count: UserCountAggregateOutputType | null;
@@ -159,6 +173,8 @@ export type UserWhereInput = {
     instagramId?: Prisma.StringNullableFilter<"User"> | string | null;
     socialToken?: Prisma.StringNullableFilter<"User"> | string | null;
     tokenExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
+    instagramUsername?: Prisma.StringNullableFilter<"User"> | string | null;
+    instagramAvatar?: Prisma.StringNullableFilter<"User"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     ownedEvents?: Prisma.EventListRelationFilter;
@@ -176,6 +192,8 @@ export type UserOrderByWithRelationInput = {
     instagramId?: Prisma.SortOrderInput | Prisma.SortOrder;
     socialToken?: Prisma.SortOrderInput | Prisma.SortOrder;
     tokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    instagramUsername?: Prisma.SortOrderInput | Prisma.SortOrder;
+    instagramAvatar?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     ownedEvents?: Prisma.EventOrderByRelationAggregateInput;
@@ -196,6 +214,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     isActive?: Prisma.BoolFilter<"User"> | boolean;
     socialToken?: Prisma.StringNullableFilter<"User"> | string | null;
     tokenExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
+    instagramUsername?: Prisma.StringNullableFilter<"User"> | string | null;
+    instagramAvatar?: Prisma.StringNullableFilter<"User"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     ownedEvents?: Prisma.EventListRelationFilter;
@@ -213,6 +233,8 @@ export type UserOrderByWithAggregationInput = {
     instagramId?: Prisma.SortOrderInput | Prisma.SortOrder;
     socialToken?: Prisma.SortOrderInput | Prisma.SortOrder;
     tokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    instagramUsername?: Prisma.SortOrderInput | Prisma.SortOrder;
+    instagramAvatar?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     _count?: Prisma.UserCountOrderByAggregateInput;
@@ -234,6 +256,8 @@ export type UserScalarWhereWithAggregatesInput = {
     instagramId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     socialToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     tokenExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
+    instagramUsername?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
+    instagramAvatar?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
 };
@@ -249,6 +273,8 @@ export type UserCreateInput = {
     instagramId?: string | null;
     socialToken?: string | null;
     tokenExpiresAt?: Date | string | null;
+    instagramUsername?: string | null;
+    instagramAvatar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     ownedEvents?: Prisma.EventCreateNestedManyWithoutOwnerInput;
@@ -266,6 +292,8 @@ export type UserUncheckedCreateInput = {
     instagramId?: string | null;
     socialToken?: string | null;
     tokenExpiresAt?: Date | string | null;
+    instagramUsername?: string | null;
+    instagramAvatar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     ownedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutOwnerInput;
@@ -283,6 +311,8 @@ export type UserUpdateInput = {
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     ownedEvents?: Prisma.EventUpdateManyWithoutOwnerNestedInput;
@@ -300,6 +330,8 @@ export type UserUncheckedUpdateInput = {
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     ownedEvents?: Prisma.EventUncheckedUpdateManyWithoutOwnerNestedInput;
@@ -317,6 +349,8 @@ export type UserCreateManyInput = {
     instagramId?: string | null;
     socialToken?: string | null;
     tokenExpiresAt?: Date | string | null;
+    instagramUsername?: string | null;
+    instagramAvatar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -332,6 +366,8 @@ export type UserUpdateManyMutationInput = {
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -347,6 +383,8 @@ export type UserUncheckedUpdateManyInput = {
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -362,6 +400,8 @@ export type UserCountOrderByAggregateInput = {
     instagramId?: Prisma.SortOrder;
     socialToken?: Prisma.SortOrder;
     tokenExpiresAt?: Prisma.SortOrder;
+    instagramUsername?: Prisma.SortOrder;
+    instagramAvatar?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -377,6 +417,8 @@ export type UserMaxOrderByAggregateInput = {
     instagramId?: Prisma.SortOrder;
     socialToken?: Prisma.SortOrder;
     tokenExpiresAt?: Prisma.SortOrder;
+    instagramUsername?: Prisma.SortOrder;
+    instagramAvatar?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -392,6 +434,8 @@ export type UserMinOrderByAggregateInput = {
     instagramId?: Prisma.SortOrder;
     socialToken?: Prisma.SortOrder;
     tokenExpiresAt?: Prisma.SortOrder;
+    instagramUsername?: Prisma.SortOrder;
+    instagramAvatar?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -453,6 +497,8 @@ export type UserCreateWithoutOwnedEventsInput = {
     instagramId?: string | null;
     socialToken?: string | null;
     tokenExpiresAt?: Date | string | null;
+    instagramUsername?: string | null;
+    instagramAvatar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     registrations?: Prisma.AttendeeCreateNestedManyWithoutUserInput;
@@ -469,6 +515,8 @@ export type UserUncheckedCreateWithoutOwnedEventsInput = {
     instagramId?: string | null;
     socialToken?: string | null;
     tokenExpiresAt?: Date | string | null;
+    instagramUsername?: string | null;
+    instagramAvatar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     registrations?: Prisma.AttendeeUncheckedCreateNestedManyWithoutUserInput;
@@ -498,6 +546,8 @@ export type UserUpdateWithoutOwnedEventsInput = {
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     registrations?: Prisma.AttendeeUpdateManyWithoutUserNestedInput;
@@ -514,6 +564,8 @@ export type UserUncheckedUpdateWithoutOwnedEventsInput = {
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     registrations?: Prisma.AttendeeUncheckedUpdateManyWithoutUserNestedInput;
@@ -530,6 +582,8 @@ export type UserCreateWithoutRegistrationsInput = {
     instagramId?: string | null;
     socialToken?: string | null;
     tokenExpiresAt?: Date | string | null;
+    instagramUsername?: string | null;
+    instagramAvatar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     ownedEvents?: Prisma.EventCreateNestedManyWithoutOwnerInput;
@@ -546,6 +600,8 @@ export type UserUncheckedCreateWithoutRegistrationsInput = {
     instagramId?: string | null;
     socialToken?: string | null;
     tokenExpiresAt?: Date | string | null;
+    instagramUsername?: string | null;
+    instagramAvatar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     ownedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutOwnerInput;
@@ -575,6 +631,8 @@ export type UserUpdateWithoutRegistrationsInput = {
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     ownedEvents?: Prisma.EventUpdateManyWithoutOwnerNestedInput;
@@ -591,6 +649,8 @@ export type UserUncheckedUpdateWithoutRegistrationsInput = {
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     ownedEvents?: Prisma.EventUncheckedUpdateManyWithoutOwnerNestedInput;
@@ -624,6 +684,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     instagramId?: boolean;
     socialToken?: boolean;
     tokenExpiresAt?: boolean;
+    instagramUsername?: boolean;
+    instagramAvatar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     ownedEvents?: boolean | Prisma.User$ownedEventsArgs<ExtArgs>;
@@ -642,6 +704,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     instagramId?: boolean;
     socialToken?: boolean;
     tokenExpiresAt?: boolean;
+    instagramUsername?: boolean;
+    instagramAvatar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 }, ExtArgs["result"]["user"]>;
@@ -657,6 +721,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     instagramId?: boolean;
     socialToken?: boolean;
     tokenExpiresAt?: boolean;
+    instagramUsername?: boolean;
+    instagramAvatar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 }, ExtArgs["result"]["user"]>;
@@ -672,10 +738,12 @@ export type UserSelectScalar = {
     instagramId?: boolean;
     socialToken?: boolean;
     tokenExpiresAt?: boolean;
+    instagramUsername?: boolean;
+    instagramAvatar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "avatar" | "role" | "isActive" | "facebookId" | "instagramId" | "socialToken" | "tokenExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "avatar" | "role" | "isActive" | "facebookId" | "instagramId" | "socialToken" | "tokenExpiresAt" | "instagramUsername" | "instagramAvatar" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     ownedEvents?: boolean | Prisma.User$ownedEventsArgs<ExtArgs>;
     registrations?: boolean | Prisma.User$registrationsArgs<ExtArgs>;
@@ -701,6 +769,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
+        instagramUsername: string | null;
+        instagramAvatar: string | null;
         createdAt: Date;
         updatedAt: Date;
     }, ExtArgs["result"]["user"]>;
@@ -773,6 +843,8 @@ export interface UserFieldRefs {
     readonly instagramId: Prisma.FieldRef<"User", 'String'>;
     readonly socialToken: Prisma.FieldRef<"User", 'String'>;
     readonly tokenExpiresAt: Prisma.FieldRef<"User", 'DateTime'>;
+    readonly instagramUsername: Prisma.FieldRef<"User", 'String'>;
+    readonly instagramAvatar: Prisma.FieldRef<"User", 'String'>;
     readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>;
 }

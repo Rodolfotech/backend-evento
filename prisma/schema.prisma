@@ -20,6 +20,8 @@ model User {
   instagramId     String?   @unique
   socialToken     String?   @db.Text
   tokenExpiresAt  DateTime?
+  instagramUsername String?
+  instagramAvatar   String?
 
   ownedEvents     Event[]   @relation("EventOwner")
   registrations   Attendee[]

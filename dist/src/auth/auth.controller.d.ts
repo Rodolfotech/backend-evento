@@ -8,15 +8,17 @@ export declare class AuthController {
         user: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             password: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
+            facebookId: string | null;
+            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
+            instagramUsername: string | null;
+            instagramAvatar: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -26,14 +28,16 @@ export declare class AuthController {
         user: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
+            facebookId: string | null;
+            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
+            instagramUsername: string | null;
+            instagramAvatar: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -46,14 +50,16 @@ export declare class AuthController {
         user: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
+            facebookId: string | null;
+            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
+            instagramUsername: string | null;
+            instagramAvatar: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -66,11 +72,11 @@ export declare class AuthController {
         user: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
+            facebookId: string | null;
+            instagramId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -83,11 +89,11 @@ export declare class AuthController {
         user: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
+            facebookId: string | null;
+            instagramId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -100,11 +106,11 @@ export declare class AuthController {
         user: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
+            facebookId: string | null;
+            instagramId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
