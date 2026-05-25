@@ -48,6 +48,12 @@ let SocialController = class SocialController {
     syncFeed(userId, eventId) {
         return this.socialService.syncFeed(userId, eventId);
     }
+    verifyWebhook(mode, challenge, verifyToken) {
+        return this.socialService.verifyWebhook(mode, challenge, verifyToken);
+    }
+    handleWebhook(req) {
+        return this.socialService.handleWebhook(req.body);
+    }
 };
 exports.SocialController = SocialController;
 __decorate([
@@ -134,6 +140,25 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], SocialController.prototype, "syncFeed", null);
+__decorate([
+    (0, common_1.Get)('instagram/webhook'),
+    (0, swagger_1.ApiExcludeEndpoint)(),
+    __param(0, (0, common_1.Query)('hub.mode')),
+    __param(1, (0, common_1.Query)('hub.challenge')),
+    __param(2, (0, common_1.Query)('hub.verify_token')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:returntype", void 0)
+], SocialController.prototype, "verifyWebhook", null);
+__decorate([
+    (0, common_1.Post)('instagram/webhook'),
+    (0, swagger_1.ApiExcludeEndpoint)(),
+    (0, common_1.HttpCode)(200),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], SocialController.prototype, "handleWebhook", null);
 exports.SocialController = SocialController = __decorate([
     (0, swagger_1.ApiTags)('Social'),
     (0, common_1.Controller)('social'),

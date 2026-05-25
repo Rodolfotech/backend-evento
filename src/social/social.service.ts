@@ -66,13 +66,19 @@ export class SocialService {
       expiresIn = longLivedData.expires_in || 5184000;
     }
 
-    return this.prisma.user.update({
+    await this.prisma.user.update({
       where: { id: userId },
       data: {
         instagramId: igUserId,
         socialToken: finalToken,
         tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
       },
+    });
+
+    await this.syncAllUserEvents(userId);
+
+    return this.prisma.user.findUnique({
+      where: { id: userId },
       omit: { password: true },
     });
   }
@@ -149,6 +155,31 @@ export class SocialService {
     };
   }
 
+  async verifyWebhook(mode: string, challenge: string, verifyToken: string) {
+    const expected = this.config.get<string>('INSTAGRAM_WEBHOOK_TOKEN') || 'eventos-webhook-token';
+    if (mode === 'subscribe' && verifyToken === expected) {
+      return challenge;
+    }
+    throw new BadRequestException('Token de verificación inválido');
+  }
+
+  async handleWebhook(body: any) {
+    const changes = body?.entry?.[0]?.changes || [];
+    for (const change of changes) {
+      if (change.field === 'media') {
+        const igUserId = body.entry[0].id;
+        if (!igUserId) continue;
+        const user = await this.prisma.user.findUnique({
+          where: { instagramId: String(igUserId) },
+          select: { id: true },
+        });
+        if (user) {
+          await this.syncAllUserEvents(user.id);
+        }
+      }
+    }
+  }
+
   async refreshToken(userId: string) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -183,6 +214,58 @@ export class SocialService {
     });
   }
 
+  private async syncAllUserEvents(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { instagramId: true, socialToken: true },
+    });
+
+    if (!user?.instagramId || !user?.socialToken) return;
+
+    const events = await this.prisma.event.findMany({
+      where: { ownerId: userId },
+      select: { id: true },
+    });
+
+    for (const event of events) {
+      try {
+        await this.fetchAndSaveFeed(userId, event.id);
+      } catch {}
+    }
+  }
+
+  private async fetchAndSaveFeed(userId: string, eventId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { instagramId: true, socialToken: true },
+    });
+
+    if (!user?.instagramId || !user?.socialToken) return;
+
+    const response = await fetch(
+      `https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp&access_token=${user.socialToken}&limit=25`,
+    );
+    if (!response.ok) return;
+    const data: any = await response.json();
+
+    const posts = (data.data || []).map((post: any) => ({
+      id: post.id,
+      platform: 'instagram',
+      media_url: post.media_url || null,
+      caption: post.caption || null,
+      permalink: post.permalink || null,
+      timestamp: post.timestamp,
+    }));
+
+    await this.prisma.event.update({
+      where: { id: eventId },
+      data: {
+        socialFeed: posts,
+        lastSync: new Date(),
+      },
+    });
+  }
+
   async syncFeed(userId: string, eventId: string) {
     const event = await this.prisma.event.findUnique({
       where: { id: eventId },
@@ -205,29 +288,6 @@ export class SocialService {
       throw new BadRequestException('Instagram no está conectado');
     }
 
-    const response = await fetch(
-      `https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp&access_token=${user.socialToken}&limit=25`,
-    );
-    if (!response.ok) {
-      throw new BadRequestException('Error al obtener publicaciones de Instagram');
-    }
-    const data: any = await response.json();
-
-    const posts = (data.data || []).map((post: any) => ({
-      id: post.id,
-      platform: 'instagram',
-      media_url: post.media_url || null,
-      caption: post.caption || null,
-      permalink: post.permalink || null,
-      timestamp: post.timestamp,
-    }));
-
-    return this.prisma.event.update({
-      where: { id: eventId },
-      data: {
-        socialFeed: posts,
-        lastSync: new Date(),
-      },
-    });
+    return this.fetchAndSaveFeed(userId, eventId);
   }
 }
