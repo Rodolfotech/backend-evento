@@ -11,14 +11,16 @@ export declare class EventsService {
         owner: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
+            facebookId: string | null;
+            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
+            instagramUsername: string | null;
+            instagramAvatar: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -26,9 +28,9 @@ export declare class EventsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string;
         title: string;
         slug: string;
+        description: string;
         content: string | null;
         date: Date;
         locationName: string | null;
@@ -41,13 +43,6 @@ export declare class EventsService {
         categoryId: string | null;
     })[]>;
     findBySlug(slug: string): import("../generated/prisma/models").Prisma__EventClient<({
-        attendees: {
-            id: string;
-            createdAt: Date;
-            status: string;
-            userId: string;
-            eventId: string;
-        }[];
         category: {
             id: string;
             name: string;
@@ -56,24 +51,33 @@ export declare class EventsService {
         owner: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
+            facebookId: string | null;
+            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
+            instagramUsername: string | null;
+            instagramAvatar: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
+        attendees: {
+            id: string;
+            createdAt: Date;
+            userId: string;
+            eventId: string;
+            status: string;
+        }[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string;
         title: string;
         slug: string;
+        description: string;
         content: string | null;
         date: Date;
         locationName: string | null;
@@ -96,14 +100,16 @@ export declare class EventsService {
         owner: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
+            facebookId: string | null;
+            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
+            instagramUsername: string | null;
+            instagramAvatar: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -111,9 +117,9 @@ export declare class EventsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string;
         title: string;
         slug: string;
+        description: string;
         content: string | null;
         date: Date;
         locationName: string | null;
@@ -129,9 +135,9 @@ export declare class EventsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string;
         title: string;
         slug: string;
+        description: string;
         content: string | null;
         date: Date;
         locationName: string | null;
@@ -165,14 +171,16 @@ export declare class EventsService {
         owner: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
+            facebookId: string | null;
+            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
+            instagramUsername: string | null;
+            instagramAvatar: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -180,9 +188,9 @@ export declare class EventsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string;
         title: string;
         slug: string;
+        description: string;
         content: string | null;
         date: Date;
         locationName: string | null;
@@ -210,9 +218,9 @@ export declare class EventsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string;
         title: string;
         slug: string;
+        description: string;
         content: string | null;
         date: Date;
         locationName: string | null;
@@ -230,9 +238,9 @@ export declare class EventsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string;
         title: string;
         slug: string;
+        description: string;
         content: string | null;
         date: Date;
         locationName: string | null;

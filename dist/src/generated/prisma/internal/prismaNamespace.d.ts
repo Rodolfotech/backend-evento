@@ -516,6 +516,8 @@ export declare const UserScalarFieldEnum: {
     readonly instagramId: "instagramId";
     readonly socialToken: "socialToken";
     readonly tokenExpiresAt: "tokenExpiresAt";
+    readonly instagramUsername: "instagramUsername";
+    readonly instagramAvatar: "instagramAvatar";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };

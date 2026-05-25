@@ -13,11 +13,11 @@ export declare class JwtStrategy extends JwtStrategy_base {
     }): Promise<{
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
+        facebookId: string | null;
+        instagramId: string | null;
         createdAt: Date;
         updatedAt: Date;
     } | null>;
