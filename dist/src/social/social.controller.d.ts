@@ -81,6 +81,18 @@ export declare class SocialController {
         updatedAt: Date;
     }>;
     getUserMedia(userId: string): Promise<any>;
+    getValidation(userId: string): Promise<{
+        accountType: any;
+        mediaCount: any;
+        connectedAt: string;
+        oldestPostDate: string | null;
+        accountAgeDays: number;
+        isProfessional: boolean;
+        hasActivity: boolean;
+        hasMinAge: boolean;
+        hasMinPosts: boolean;
+        level: number;
+    }>;
     syncFeed(userId: string, eventId: string): Promise<void>;
     verifyWebhook(mode: string, challenge: string, verifyToken: string): Promise<string>;
     handleWebhook(req: any): Promise<void>;

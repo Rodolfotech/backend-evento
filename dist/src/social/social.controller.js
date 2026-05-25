@@ -48,6 +48,9 @@ let SocialController = class SocialController {
     getUserMedia(userId) {
         return this.socialService.getUserMedia(userId);
     }
+    getValidation(userId) {
+        return this.socialService.getValidation(userId);
+    }
     syncFeed(userId, eventId) {
         return this.socialService.syncFeed(userId, eventId);
     }
@@ -142,6 +145,16 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], SocialController.prototype, "getUserMedia", null);
+__decorate([
+    (0, common_1.Get)('instagram/validation'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener validación de la cuenta de Instagram' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], SocialController.prototype, "getValidation", null);
 __decorate([
     (0, common_1.Post)('sync/:eventId'),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
