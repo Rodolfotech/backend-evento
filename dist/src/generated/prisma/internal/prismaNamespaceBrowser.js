@@ -68,6 +68,8 @@ exports.UserScalarFieldEnum = {
     instagramId: 'instagramId',
     socialToken: 'socialToken',
     tokenExpiresAt: 'tokenExpiresAt',
+    instagramUsername: 'instagramUsername',
+    instagramAvatar: 'instagramAvatar',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };

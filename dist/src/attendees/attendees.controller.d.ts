@@ -7,14 +7,16 @@ export declare class AttendeesController {
         user: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
+            facebookId: string | null;
+            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
+            instagramUsername: string | null;
+            instagramAvatar: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -22,9 +24,9 @@ export declare class AttendeesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            description: string;
             title: string;
             slug: string;
+            description: string;
             content: string | null;
             date: Date;
             locationName: string | null;
@@ -39,9 +41,9 @@ export declare class AttendeesController {
     } & {
         id: string;
         createdAt: Date;
-        status: string;
         userId: string;
         eventId: string;
+        status: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
@@ -56,9 +58,9 @@ export declare class AttendeesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            description: string;
             title: string;
             slug: string;
+            description: string;
             content: string | null;
             date: Date;
             locationName: string | null;
@@ -73,31 +75,33 @@ export declare class AttendeesController {
     } & {
         id: string;
         createdAt: Date;
-        status: string;
         userId: string;
         eventId: string;
+        status: string;
     })[]>;
     findByEvent(eventId: string): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<({
         user: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
+            facebookId: string | null;
+            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
+            instagramUsername: string | null;
+            instagramAvatar: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
     } & {
         id: string;
         createdAt: Date;
-        status: string;
         userId: string;
         eventId: string;
+        status: string;
     })[]>;
     findByUser(userId: string): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<({
         event: {
@@ -110,9 +114,9 @@ export declare class AttendeesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            description: string;
             title: string;
             slug: string;
+            description: string;
             content: string | null;
             date: Date;
             locationName: string | null;
@@ -127,15 +131,15 @@ export declare class AttendeesController {
     } & {
         id: string;
         createdAt: Date;
-        status: string;
         userId: string;
         eventId: string;
+        status: string;
     })[]>;
     unregister(eventId: string, userId: string): Promise<{
         id: string;
         createdAt: Date;
-        status: string;
         userId: string;
         eventId: string;
+        status: string;
     }>;
 }

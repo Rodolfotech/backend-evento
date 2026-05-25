@@ -46,6 +46,12 @@ let AuthController = class AuthController {
     instagramLogin(code) {
         return this.authService.instagramLogin(code);
     }
+    getGoogleAuthUrl(state) {
+        return this.authService.getGoogleAuthUrl(state);
+    }
+    googleLogin(code) {
+        return this.authService.googleLogin(code);
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -120,6 +126,23 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "instagramLogin", null);
+__decorate([
+    (0, common_1.Get)('google/url'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener URL de autorización de Google' }),
+    __param(0, (0, common_1.Query)('state')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "getGoogleAuthUrl", null);
+__decorate([
+    (0, common_1.Post)('google'),
+    (0, common_1.HttpCode)(200),
+    (0, swagger_1.ApiOperation)({ summary: 'Iniciar sesión o registrarse con Google' }),
+    __param(0, (0, common_1.Body)('code')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "googleLogin", null);
 exports.AuthController = AuthController = __decorate([
     (0, swagger_1.ApiTags)('Auth'),
     (0, common_1.Controller)('auth'),
