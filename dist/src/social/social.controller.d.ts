@@ -19,7 +19,7 @@ export declare class SocialController {
         tokenExpiresAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
-    }>;
+    } | null>;
     connectInstagram(userId: string, body: ConnectSocialDto): Promise<{
         id: string;
         email: string;
@@ -80,22 +80,7 @@ export declare class SocialController {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    syncFeed(userId: string, eventId: string): Promise<{
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        date: Date;
-        description: string;
-        title: string;
-        slug: string;
-        ownerId: string;
-        categoryId: string | null;
-        locationName: string | null;
-        address: string | null;
-        city: string | null;
-        isOnline: boolean;
-        content: string | null;
-        socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
-        lastSync: Date | null;
-    }>;
+    syncFeed(userId: string, eventId: string): Promise<void>;
+    verifyWebhook(mode: string, challenge: string, verifyToken: string): Promise<string>;
+    handleWebhook(req: any): Promise<void>;
 }

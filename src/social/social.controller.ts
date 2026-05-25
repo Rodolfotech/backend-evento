@@ -1,6 +1,6 @@
-import { Controller, Post, Delete, Get, Param, Body, UseGuards, HttpCode } from '@nestjs/common';
+import { Controller, Post, Delete, Get, Param, Body, UseGuards, HttpCode, Query, Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiExcludeEndpoint } from '@nestjs/swagger';
 import { SocialService } from './social.service';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { ConnectSocialDto } from '../common/dto';
@@ -72,5 +72,22 @@ export class SocialController {
   @ApiOperation({ summary: 'Sincronizar publicaciones de Instagram a un evento' })
   syncFeed(@CurrentUser('id') userId: string, @Param('eventId') eventId: string) {
     return this.socialService.syncFeed(userId, eventId);
+  }
+
+  @Get('instagram/webhook')
+  @ApiExcludeEndpoint()
+  verifyWebhook(
+    @Query('hub.mode') mode: string,
+    @Query('hub.challenge') challenge: string,
+    @Query('hub.verify_token') verifyToken: string,
+  ) {
+    return this.socialService.verifyWebhook(mode, challenge, verifyToken);
+  }
+
+  @Post('instagram/webhook')
+  @ApiExcludeEndpoint()
+  @HttpCode(200)
+  handleWebhook(@Req() req: any) {
+    return this.socialService.handleWebhook(req.body);
   }
 }

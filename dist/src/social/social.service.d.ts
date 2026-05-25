@@ -23,7 +23,7 @@ export declare class SocialService {
         tokenExpiresAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
-    }>;
+    } | null>;
     connectInstagram(userId: string, accessToken: string): Promise<{
         id: string;
         email: string;
@@ -70,6 +70,8 @@ export declare class SocialService {
         facebook: boolean;
         instagram: boolean;
     }>;
+    verifyWebhook(mode: string, challenge: string, verifyToken: string): Promise<string>;
+    handleWebhook(body: any): Promise<void>;
     refreshToken(userId: string): Promise<{
         id: string;
         email: string;
@@ -84,22 +86,7 @@ export declare class SocialService {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    syncFeed(userId: string, eventId: string): Promise<{
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        date: Date;
-        description: string;
-        title: string;
-        slug: string;
-        ownerId: string;
-        categoryId: string | null;
-        locationName: string | null;
-        address: string | null;
-        city: string | null;
-        isOnline: boolean;
-        content: string | null;
-        socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
-        lastSync: Date | null;
-    }>;
+    private syncAllUserEvents;
+    private fetchAndSaveFeed;
+    syncFeed(userId: string, eventId: string): Promise<void>;
 }
