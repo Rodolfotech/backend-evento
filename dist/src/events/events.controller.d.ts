@@ -27,19 +27,19 @@ export declare class EventsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
         description: string;
         title: string;
         slug: string;
-        ownerId: string;
-        categoryId: string | null;
+        content: string | null;
+        date: Date;
         locationName: string | null;
         address: string | null;
         city: string | null;
         isOnline: boolean;
-        content: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
+        ownerId: string;
+        categoryId: string | null;
     })[]>;
     findByOwner(userId: string): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<({
         category: {
@@ -65,21 +65,28 @@ export declare class EventsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
         description: string;
         title: string;
         slug: string;
-        ownerId: string;
-        categoryId: string | null;
+        content: string | null;
+        date: Date;
         locationName: string | null;
         address: string | null;
         city: string | null;
         isOnline: boolean;
-        content: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
+        ownerId: string;
+        categoryId: string | null;
     })[]>;
     findBySlug(slug: string): import("../generated/prisma/models").Prisma__EventClient<({
+        attendees: {
+            id: string;
+            createdAt: Date;
+            status: string;
+            userId: string;
+            eventId: string;
+        }[];
         category: {
             id: string;
             name: string;
@@ -99,30 +106,23 @@ export declare class EventsController {
             createdAt: Date;
             updatedAt: Date;
         };
-        attendees: {
-            id: string;
-            createdAt: Date;
-            userId: string;
-            eventId: string;
-            status: string;
-        }[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
         description: string;
         title: string;
         slug: string;
-        ownerId: string;
-        categoryId: string | null;
+        content: string | null;
+        date: Date;
         locationName: string | null;
         address: string | null;
         city: string | null;
         isOnline: boolean;
-        content: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
+        ownerId: string;
+        categoryId: string | null;
     }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
@@ -150,19 +150,19 @@ export declare class EventsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
         description: string;
         title: string;
         slug: string;
-        ownerId: string;
-        categoryId: string | null;
+        content: string | null;
+        date: Date;
         locationName: string | null;
         address: string | null;
         city: string | null;
         isOnline: boolean;
-        content: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
+        ownerId: string;
+        categoryId: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
@@ -170,19 +170,19 @@ export declare class EventsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
         description: string;
         title: string;
         slug: string;
-        ownerId: string;
-        categoryId: string | null;
+        content: string | null;
+        date: Date;
         locationName: string | null;
         address: string | null;
         city: string | null;
         isOnline: boolean;
-        content: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
+        ownerId: string;
+        categoryId: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
@@ -190,19 +190,19 @@ export declare class EventsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        date: Date;
         description: string;
         title: string;
         slug: string;
-        ownerId: string;
-        categoryId: string | null;
+        content: string | null;
+        date: Date;
         locationName: string | null;
         address: string | null;
         city: string | null;
         isOnline: boolean;
-        content: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
+        ownerId: string;
+        categoryId: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
