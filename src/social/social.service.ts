@@ -32,6 +32,8 @@ export class SocialService {
       redirect_uri: this.igRedirectUri,
       response_type: 'code',
       scope: 'instagram_business_basic',
+      force_login: 'true',
+      prompt: 'consent',
     });
     return { url: `https://api.instagram.com/oauth/authorize?${params.toString()}` };
   }
