@@ -22,11 +22,17 @@ let SocialService = class SocialService {
     constructor(prisma, config) {
         this.prisma = prisma;
         this.config = config;
-        this.igClientId = this.config.get('INSTAGRAM_CLIENT_ID');
-        this.igClientSecret = this.config.get('INSTAGRAM_CLIENT_SECRET');
-        this.igRedirectUri = this.config.get('INSTAGRAM_REDIRECT_URI');
+        this.igClientId = this.config.get('INSTAGRAM_CLIENT_ID') || '';
+        this.igClientSecret = this.config.get('INSTAGRAM_CLIENT_SECRET') || '';
+        this.igRedirectUri = this.config.get('INSTAGRAM_REDIRECT_URI') || '';
+    }
+    checkInstagramConfig() {
+        if (!this.igClientId || !this.igClientSecret || !this.igRedirectUri) {
+            throw new common_1.BadRequestException('Instagram no está configurado. Falta INSTAGRAM_CLIENT_ID, INSTAGRAM_CLIENT_SECRET o INSTAGRAM_REDIRECT_URI en las variables de entorno.');
+        }
     }
     getInstagramAuthUrl() {
+        this.checkInstagramConfig();
         const params = new URLSearchParams({
             client_id: this.igClientId,
             redirect_uri: this.igRedirectUri,
@@ -36,6 +42,7 @@ let SocialService = class SocialService {
         return { url: `https://api.instagram.com/oauth/authorize?${params.toString()}` };
     }
     async instagramCallback(userId, code) {
+        this.checkInstagramConfig();
         if (!code)
             throw new common_1.BadRequestException('Código de autorización requerido');
         const tokenResponse = await fetch('https://api.instagram.com/oauth/access_token', {
@@ -80,6 +87,7 @@ let SocialService = class SocialService {
         });
     }
     async connectInstagram(userId, accessToken) {
+        this.checkInstagramConfig();
         const response = await fetch(`https://graph.instagram.com/me?fields=id,username&access_token=${accessToken}`);
         if (!response.ok) {
             throw new common_1.BadRequestException('Token de Instagram inválido o expirado');
@@ -162,6 +170,7 @@ let SocialService = class SocialService {
         }
     }
     async refreshToken(userId) {
+        this.checkInstagramConfig();
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
             select: { socialToken: true, tokenExpiresAt: true },
@@ -233,6 +242,7 @@ let SocialService = class SocialService {
         });
     }
     async getUserMedia(userId) {
+        this.checkInstagramConfig();
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
             select: { instagramId: true, socialToken: true },

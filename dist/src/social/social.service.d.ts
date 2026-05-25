@@ -7,6 +7,7 @@ export declare class SocialService {
     private readonly igClientSecret;
     private readonly igRedirectUri;
     constructor(prisma: PrismaService, config: ConfigService);
+    private checkInstagramConfig;
     getInstagramAuthUrl(): {
         url: string;
     };

@@ -92,4 +92,21 @@ export declare class AuthController {
             updatedAt: Date;
         } | null;
     }>;
+    getGoogleAuthUrl(state?: string): {
+        url: string;
+    };
+    googleLogin(code: string): Promise<{
+        access_token: string;
+        user: {
+            id: string;
+            email: string;
+            facebookId: string | null;
+            instagramId: string | null;
+            name: string;
+            avatar: string | null;
+            role: import("../generated/prisma/enums").Role;
+            createdAt: Date;
+            updatedAt: Date;
+        } | null;
+    }>;
 }
