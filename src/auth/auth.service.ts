@@ -118,7 +118,8 @@ export class AuthService {
 
   getGoogleAuthUrl(state?: string) {
     const clientId = this.config.get<string>('GOOGLE_CLIENT_ID')!;
-    const redirectUri = this.config.get<string>('GOOGLE_REDIRECT_URI')!;
+    const frontendUrl = this.config.get<string>('FRONTEND_URL', 'http://localhost:5173');
+    const redirectUri = this.config.get<string>('GOOGLE_REDIRECT_URI') || `${frontendUrl}/auth/google/callback`;
     const params = new URLSearchParams({
       client_id: clientId,
       redirect_uri: redirectUri,
@@ -136,7 +137,8 @@ export class AuthService {
 
     const clientId = this.config.get<string>('GOOGLE_CLIENT_ID')!;
     const clientSecret = this.config.get<string>('GOOGLE_CLIENT_SECRET')!;
-    const redirectUri = this.config.get<string>('GOOGLE_REDIRECT_URI')!;
+    const frontendUrl = this.config.get<string>('FRONTEND_URL', 'http://localhost:5173');
+    const redirectUri = this.config.get<string>('GOOGLE_REDIRECT_URI') || `${frontendUrl}/auth/google/callback`;
 
     const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
