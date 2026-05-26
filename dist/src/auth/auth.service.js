@@ -78,7 +78,7 @@ let AuthService = class AuthService {
             throw new common_1.UnauthorizedException('Credenciales inválidas');
         return {
             access_token: this.jwtService.sign({ sub: user.id, email: user.email }),
-            user,
+            user: await this.usersService.findById(user.id),
         };
     }
     async register(data) {
@@ -140,13 +140,15 @@ let AuthService = class AuthService {
     }
     getGoogleAuthUrl(state) {
         const clientId = this.config.get('GOOGLE_CLIENT_ID');
-        const redirectUri = this.config.get('GOOGLE_REDIRECT_URI');
+        const frontendUrl = this.config.get('FRONTEND_URL', 'http://localhost:5173');
+        const redirectUri = this.config.get('GOOGLE_REDIRECT_URI') || `${frontendUrl}/auth/google/callback`;
         const params = new URLSearchParams({
             client_id: clientId,
             redirect_uri: redirectUri,
             response_type: 'code',
             scope: 'openid email profile',
             access_type: 'offline',
+            prompt: 'consent',
         });
         if (state)
             params.set('state', state);
@@ -157,7 +159,8 @@ let AuthService = class AuthService {
             throw new common_1.BadRequestException('Código de autorización requerido');
         const clientId = this.config.get('GOOGLE_CLIENT_ID');
         const clientSecret = this.config.get('GOOGLE_CLIENT_SECRET');
-        const redirectUri = this.config.get('GOOGLE_REDIRECT_URI');
+        const frontendUrl = this.config.get('FRONTEND_URL', 'http://localhost:5173');
+        const redirectUri = this.config.get('GOOGLE_REDIRECT_URI') || `${frontendUrl}/auth/google/callback`;
         const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -284,6 +287,7 @@ let AuthService = class AuthService {
                 data: {
                     socialToken: finalToken,
                     tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
+                    instagramUsername: igProfile.username || user.instagramUsername,
                 },
             });
         }
@@ -294,6 +298,7 @@ let AuthService = class AuthService {
                     email: placeholderEmail,
                     name: igProfile.username || `Instagram ${igUserId.slice(0, 6)}`,
                     instagramId: igUserId,
+                    instagramUsername: igProfile.username || null,
                     socialToken: finalToken,
                     tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
                 },

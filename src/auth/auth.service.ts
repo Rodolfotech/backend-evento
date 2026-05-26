@@ -43,7 +43,7 @@ export class AuthService {
     if (!user) throw new UnauthorizedException('Credenciales inválidas');
     return {
       access_token: this.jwtService.sign({ sub: user.id, email: user.email }),
-      user,
+      user: await this.usersService.findById(user.id),
     };
   }
 
@@ -118,13 +118,15 @@ export class AuthService {
 
   getGoogleAuthUrl(state?: string) {
     const clientId = this.config.get<string>('GOOGLE_CLIENT_ID')!;
-    const redirectUri = this.config.get<string>('GOOGLE_REDIRECT_URI')!;
+    const frontendUrl = this.config.get<string>('FRONTEND_URL', 'http://localhost:5173');
+    const redirectUri = this.config.get<string>('GOOGLE_REDIRECT_URI') || `${frontendUrl}/auth/google/callback`;
     const params = new URLSearchParams({
       client_id: clientId,
       redirect_uri: redirectUri,
       response_type: 'code',
       scope: 'openid email profile',
       access_type: 'offline',
+      prompt: 'consent',
     });
     if (state) params.set('state', state);
     return { url: `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}` };
@@ -135,7 +137,8 @@ export class AuthService {
 
     const clientId = this.config.get<string>('GOOGLE_CLIENT_ID')!;
     const clientSecret = this.config.get<string>('GOOGLE_CLIENT_SECRET')!;
-    const redirectUri = this.config.get<string>('GOOGLE_REDIRECT_URI')!;
+    const frontendUrl = this.config.get<string>('FRONTEND_URL', 'http://localhost:5173');
+    const redirectUri = this.config.get<string>('GOOGLE_REDIRECT_URI') || `${frontendUrl}/auth/google/callback`;
 
     const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
@@ -287,6 +290,7 @@ export class AuthService {
         data: {
           socialToken: finalToken,
           tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
+          instagramUsername: igProfile.username || user.instagramUsername,
         },
       });
     } else {
@@ -296,6 +300,7 @@ export class AuthService {
           email: placeholderEmail,
           name: igProfile.username || `Instagram ${igUserId.slice(0, 6)}`,
           instagramId: igUserId,
+          instagramUsername: igProfile.username || null,
           socialToken: finalToken,
           tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
         },

@@ -6,12 +6,12 @@ export declare class AttendeesService {
         user: {
             id: string;
             email: string;
+            facebookId: string | null;
+            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
-            facebookId: string | null;
-            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
@@ -23,19 +23,19 @@ export declare class AttendeesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            description: string;
             title: string;
             slug: string;
-            description: string;
-            content: string | null;
-            date: Date;
+            ownerId: string;
+            categoryId: string | null;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
+            content: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
-            ownerId: string;
-            categoryId: string | null;
         };
     } & {
         id: string;
@@ -50,12 +50,12 @@ export declare class AttendeesService {
         user: {
             id: string;
             email: string;
+            facebookId: string | null;
+            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
-            facebookId: string | null;
-            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
@@ -81,19 +81,19 @@ export declare class AttendeesService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            description: string;
             title: string;
             slug: string;
-            description: string;
-            content: string | null;
-            date: Date;
+            ownerId: string;
+            categoryId: string | null;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
+            content: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
-            ownerId: string;
-            categoryId: string | null;
         };
     } & {
         id: string;
