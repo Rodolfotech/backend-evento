@@ -147,6 +147,7 @@ let AuthService = class AuthService {
             response_type: 'code',
             scope: 'openid email profile',
             access_type: 'offline',
+            prompt: 'consent',
         });
         if (state)
             params.set('state', state);
