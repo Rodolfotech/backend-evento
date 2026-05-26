@@ -14,12 +14,12 @@ export declare class SocialService {
     instagramCallback(userId: string, code: string): Promise<{
         id: string;
         email: string;
+        facebookId: string | null;
+        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
-        facebookId: string | null;
-        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -30,12 +30,12 @@ export declare class SocialService {
     connectInstagram(userId: string, accessToken: string): Promise<{
         id: string;
         email: string;
+        facebookId: string | null;
+        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
-        facebookId: string | null;
-        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -46,12 +46,12 @@ export declare class SocialService {
     connectFacebook(userId: string, accessToken: string): Promise<{
         id: string;
         email: string;
+        facebookId: string | null;
+        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
-        facebookId: string | null;
-        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -62,12 +62,12 @@ export declare class SocialService {
     disconnect(userId: string, platform: string): Promise<{
         id: string;
         email: string;
+        facebookId: string | null;
+        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
-        facebookId: string | null;
-        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -78,18 +78,20 @@ export declare class SocialService {
     getStatus(userId: string): Promise<{
         facebook: boolean;
         instagram: boolean;
+        instagramUsername: string | null;
+        instagramAvatar: string | null;
     }>;
     verifyWebhook(mode: string, challenge: string, verifyToken: string): Promise<string>;
     handleWebhook(body: any): Promise<void>;
     refreshToken(userId: string): Promise<{
         id: string;
         email: string;
+        facebookId: string | null;
+        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
-        facebookId: string | null;
-        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;

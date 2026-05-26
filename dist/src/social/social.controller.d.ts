@@ -9,12 +9,12 @@ export declare class SocialController {
     instagramCallback(userId: string, code: string): Promise<{
         id: string;
         email: string;
+        facebookId: string | null;
+        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
-        facebookId: string | null;
-        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -25,12 +25,12 @@ export declare class SocialController {
     connectInstagram(userId: string, body: ConnectSocialDto): Promise<{
         id: string;
         email: string;
+        facebookId: string | null;
+        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
-        facebookId: string | null;
-        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -41,12 +41,12 @@ export declare class SocialController {
     connectFacebook(userId: string, body: ConnectSocialDto): Promise<{
         id: string;
         email: string;
+        facebookId: string | null;
+        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
-        facebookId: string | null;
-        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -57,12 +57,12 @@ export declare class SocialController {
     disconnect(userId: string, platform: string): Promise<{
         id: string;
         email: string;
+        facebookId: string | null;
+        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
-        facebookId: string | null;
-        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -73,16 +73,18 @@ export declare class SocialController {
     getStatus(userId: string): Promise<{
         facebook: boolean;
         instagram: boolean;
+        instagramUsername: string | null;
+        instagramAvatar: string | null;
     }>;
     refreshToken(userId: string): Promise<{
         id: string;
         email: string;
+        facebookId: string | null;
+        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
-        facebookId: string | null;
-        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;

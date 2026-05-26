@@ -38,6 +38,8 @@ let SocialService = class SocialService {
             redirect_uri: this.igRedirectUri,
             response_type: 'code',
             scope: 'instagram_business_basic',
+            force_login: 'true',
+            prompt: 'consent',
         });
         return { url: `https://api.instagram.com/oauth/authorize?${params.toString()}` };
     }
@@ -72,12 +74,22 @@ let SocialService = class SocialService {
             finalToken = longLivedData.access_token;
             expiresIn = longLivedData.expires_in || 5184000;
         }
+        let igUsername = null;
+        let igAvatar = null;
+        const profileResponse = await fetch(`https://graph.instagram.com/${igUserId}?fields=id,username,profile_picture&access_token=${finalToken}`);
+        if (profileResponse.ok) {
+            const profileData = await profileResponse.json();
+            igUsername = profileData.username || null;
+            igAvatar = profileData.profile_picture || null;
+        }
         await this.prisma.user.update({
             where: { id: userId },
             data: {
                 instagramId: igUserId,
                 socialToken: finalToken,
                 tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
+                instagramUsername: igUsername,
+                instagramAvatar: igAvatar,
             },
         });
         await this.syncAllUserEvents(userId);
@@ -88,7 +100,7 @@ let SocialService = class SocialService {
     }
     async connectInstagram(userId, accessToken) {
         this.checkInstagramConfig();
-        const response = await fetch(`https://graph.instagram.com/me?fields=id,username&access_token=${accessToken}`);
+        const response = await fetch(`https://graph.instagram.com/me?fields=id,username,profile_picture&access_token=${accessToken}`);
         if (!response.ok) {
             throw new common_1.BadRequestException('Token de Instagram inválido o expirado');
         }
@@ -102,6 +114,8 @@ let SocialService = class SocialService {
                 instagramId: data.id,
                 socialToken: accessToken,
                 tokenExpiresAt: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
+                instagramUsername: data.username || null,
+                instagramAvatar: data.profile_picture || null,
             },
             omit: { password: true },
         });
@@ -138,11 +152,13 @@ let SocialService = class SocialService {
     async getStatus(userId) {
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
-            select: { facebookId: true, instagramId: true },
+            select: { facebookId: true, instagramId: true, instagramUsername: true, instagramAvatar: true },
         });
         return {
             facebook: !!user?.facebookId,
             instagram: !!user?.instagramId,
+            instagramUsername: user?.instagramUsername || null,
+            instagramAvatar: user?.instagramAvatar || null,
         };
     }
     async verifyWebhook(mode, challenge, verifyToken) {

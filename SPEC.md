@@ -12,9 +12,11 @@ Todo cambio, sin excepción, debe seguir este flujo:
 1. Crear rama desde main → feature/<nombre-descritivo>
 2. Hacer cambios en la rama
 3. Commit + Push a GitHub
-4. Crear Pull Request (PR) en GitHub
-5. Merge a main solo después de PR aprobado
+4. Git checkout main + git merge --no-ff <rama>
+5. Git push origin main
 ```
+
+**Prohibido:** Crear Pull Requests en GitHub. El merge se hace local con `--no-ff`.
 
 ## Convención de Nombres de Ramas
 

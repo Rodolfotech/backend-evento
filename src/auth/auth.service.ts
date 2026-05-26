@@ -43,7 +43,7 @@ export class AuthService {
     if (!user) throw new UnauthorizedException('Credenciales inválidas');
     return {
       access_token: this.jwtService.sign({ sub: user.id, email: user.email }),
-      user,
+      user: await this.usersService.findById(user.id),
     };
   }
 
@@ -287,6 +287,7 @@ export class AuthService {
         data: {
           socialToken: finalToken,
           tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
+          instagramUsername: igProfile.username || user.instagramUsername,
         },
       });
     } else {
@@ -296,6 +297,7 @@ export class AuthService {
           email: placeholderEmail,
           name: igProfile.username || `Instagram ${igUserId.slice(0, 6)}`,
           instagramId: igUserId,
+          instagramUsername: igProfile.username || null,
           socialToken: finalToken,
           tokenExpiresAt: new Date(Date.now() + expiresIn * 1000),
         },

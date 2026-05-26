@@ -26,6 +26,8 @@ export declare class UsersService {
         role: import("../generated/prisma/enums").Role;
         facebookId: string | null;
         instagramId: string | null;
+        instagramUsername: string | null;
+        instagramAvatar: string | null;
         createdAt: Date;
         updatedAt: Date;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {

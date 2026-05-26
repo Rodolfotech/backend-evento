@@ -18,6 +18,8 @@ export declare class JwtStrategy extends JwtStrategy_base {
         role: import("../generated/prisma/enums").Role;
         facebookId: string | null;
         instagramId: string | null;
+        instagramUsername: string | null;
+        instagramAvatar: string | null;
         createdAt: Date;
         updatedAt: Date;
     } | null>;

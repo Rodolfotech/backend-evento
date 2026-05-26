@@ -8,19 +8,19 @@ export declare class CategoriesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            date: Date;
+            description: string;
             title: string;
             slug: string;
-            description: string;
-            content: string | null;
-            date: Date;
+            ownerId: string;
+            categoryId: string | null;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
+            content: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
-            ownerId: string;
-            categoryId: string | null;
         }[];
     } & {
         id: string;
