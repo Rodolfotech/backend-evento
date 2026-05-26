@@ -24,7 +24,8 @@ let SocialService = class SocialService {
         this.config = config;
         this.igClientId = this.config.get('INSTAGRAM_CLIENT_ID') || '';
         this.igClientSecret = this.config.get('INSTAGRAM_CLIENT_SECRET') || '';
-        this.igRedirectUri = this.config.get('INSTAGRAM_REDIRECT_URI') || '';
+        const frontendUrl = this.config.get('FRONTEND_URL', 'http://localhost:5173');
+        this.igRedirectUri = this.config.get('INSTAGRAM_REDIRECT_URI') || `${frontendUrl}/social/callback`;
     }
     checkInstagramConfig() {
         if (!this.igClientId || !this.igClientSecret || !this.igRedirectUri) {

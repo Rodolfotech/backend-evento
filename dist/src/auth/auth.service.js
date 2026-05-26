@@ -140,7 +140,8 @@ let AuthService = class AuthService {
     }
     getGoogleAuthUrl(state) {
         const clientId = this.config.get('GOOGLE_CLIENT_ID');
-        const redirectUri = this.config.get('GOOGLE_REDIRECT_URI');
+        const frontendUrl = this.config.get('FRONTEND_URL', 'http://localhost:5173');
+        const redirectUri = this.config.get('GOOGLE_REDIRECT_URI') || `${frontendUrl}/auth/google/callback`;
         const params = new URLSearchParams({
             client_id: clientId,
             redirect_uri: redirectUri,
@@ -158,7 +159,8 @@ let AuthService = class AuthService {
             throw new common_1.BadRequestException('Código de autorización requerido');
         const clientId = this.config.get('GOOGLE_CLIENT_ID');
         const clientSecret = this.config.get('GOOGLE_CLIENT_SECRET');
-        const redirectUri = this.config.get('GOOGLE_REDIRECT_URI');
+        const frontendUrl = this.config.get('FRONTEND_URL', 'http://localhost:5173');
+        const redirectUri = this.config.get('GOOGLE_REDIRECT_URI') || `${frontendUrl}/auth/google/callback`;
         const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
