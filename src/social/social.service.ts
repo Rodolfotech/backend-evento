@@ -32,7 +32,7 @@ export class SocialService {
       client_id: this.igClientId,
       redirect_uri: this.igRedirectUri,
       response_type: 'code',
-      scope: 'user_profile,user_media',
+      scope: 'instagram_business_basic',
     });
     return { url: `https://api.instagram.com/oauth/authorize?${params.toString()}` };
   }
