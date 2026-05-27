@@ -75,6 +75,9 @@ export class SocialService {
       const longLivedData: any = await longLivedResponse.json();
       finalToken = longLivedData.access_token;
       expiresIn = longLivedData.expires_in || 5184000;
+    } else {
+      const errText = await longLivedResponse.text().catch(() => '');
+      console.error(`Error al obtener long-lived token: ${longLivedResponse.status} ${errText}`);
     }
 
     // Fetch Instagram username and avatar
@@ -301,15 +304,26 @@ export class SocialService {
     this.checkInstagramConfig();
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      select: { instagramId: true, socialToken: true },
+      select: { instagramId: true, socialToken: true, tokenExpiresAt: true },
     });
 
     if (!user?.instagramId || !user?.socialToken) {
       throw new BadRequestException('Instagram no está conectado');
     }
 
+    // Auto-refresh if token expires within next hour
+    let token = user.socialToken;
+    if (user.tokenExpiresAt && new Date(user.tokenExpiresAt).getTime() - Date.now() < 3600000) {
+      try {
+        const refreshed = await this.refreshToken(userId);
+        token = refreshed.socialToken || token;
+      } catch (e: any) {
+        throw new BadRequestException(`Token de Instagram expirado y no se pudo renovar: ${e.message}`);
+      }
+    }
+
     const response = await fetch(
-      `https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp,media_type,thumbnail_url&access_token=${user.socialToken}&limit=50`,
+      `https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp,media_type,thumbnail_url&access_token=${token}&limit=50`,
     );
 
     if (!response.ok) {
