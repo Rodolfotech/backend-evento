@@ -39,8 +39,6 @@ let SocialService = class SocialService {
             redirect_uri: this.igRedirectUri,
             response_type: 'code',
             scope: 'instagram_business_basic',
-            force_login: 'true',
-            prompt: 'consent',
         });
         return { url: `https://api.instagram.com/oauth/authorize?${params.toString()}` };
     }
@@ -74,6 +72,10 @@ let SocialService = class SocialService {
             const longLivedData = await longLivedResponse.json();
             finalToken = longLivedData.access_token;
             expiresIn = longLivedData.expires_in || 5184000;
+        }
+        else {
+            const errText = await longLivedResponse.text().catch(() => '');
+            console.error(`Error al obtener long-lived token: ${longLivedResponse.status} ${errText}`);
         }
         let igUsername = null;
         let igAvatar = null;
@@ -262,14 +264,33 @@ let SocialService = class SocialService {
         this.checkInstagramConfig();
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
-            select: { instagramId: true, socialToken: true },
+            select: { instagramId: true, socialToken: true, tokenExpiresAt: true },
         });
         if (!user?.instagramId || !user?.socialToken) {
             throw new common_1.BadRequestException('Instagram no está conectado');
         }
-        const response = await fetch(`https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp,media_type,thumbnail_url&access_token=${user.socialToken}&limit=50`);
+        let token = user.socialToken;
+        if (user.tokenExpiresAt && new Date(user.tokenExpiresAt).getTime() - Date.now() < 3600000) {
+            try {
+                const refreshed = await this.refreshToken(userId);
+                token = refreshed.socialToken || token;
+            }
+            catch (e) {
+                throw new common_1.BadRequestException(`Token de Instagram expirado y no se pudo renovar: ${e.message}`);
+            }
+        }
+        let response = await fetch(`https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp,media_type,thumbnail_url&access_token=${token}&limit=50`);
         if (!response.ok) {
-            throw new common_1.BadRequestException('Error al obtener publicaciones de Instagram');
+            response = await fetch(`https://graph.instagram.com/me/media?fields=id,media_url,caption,permalink,timestamp,media_type,thumbnail_url&access_token=${token}&limit=50`);
+        }
+        if (!response.ok) {
+            const errBody = await response.text().catch(() => '');
+            if (errBody.includes('IGApiException') || errBody.includes('does not exist')) {
+                throw new common_1.BadRequestException('Error de permisos de Instagram. Asegúrate de que en Meta Developers la app tenga ' +
+                    'el producto "Instagram" agregado (no "Instagram Basic Display") y que la cuenta esté ' +
+                    'configurada como Business o Creator.');
+            }
+            throw new common_1.BadRequestException(`Error al obtener publicaciones: ${response.status} ${errBody}`);
         }
         const data = await response.json();
         return (data.data || []).map((post) => ({
