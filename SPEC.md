@@ -9,11 +9,12 @@ Todo cambio, sin excepción, debe seguir este flujo:
 ## Flujo Obligatorio
 
 ```
-1. Crear rama desde main → feature/<nombre-descritivo>
-2. Hacer cambios en la rama
-3. Commit + Push a GitHub
-4. Git checkout main + git merge --no-ff <rama>
-5. Git push origin main
+1. cada vez que se comienza sin ramas se debe crear una rama
+2. Crear rama desde main → feature/<nombre-descritivo>
+3. Hacer cambios en la rama
+4. Commit + Push a GitHub
+5. Git checkout main + git merge --no-ff <rama>
+6. Git push origin main
 ```
 
 **Prohibido:** Crear Pull Requests en GitHub. El merge se hace local con `--no-ff`.
