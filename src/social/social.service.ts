@@ -313,7 +313,8 @@ export class SocialService {
     );
 
     if (!response.ok) {
-      throw new BadRequestException('Error al obtener publicaciones de Instagram');
+      const errBody = await response.text().catch(() => '');
+      throw new BadRequestException(`Error al obtener publicaciones: ${response.status} ${errBody}`);
     }
 
     const data: any = await response.json();
