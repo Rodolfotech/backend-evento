@@ -80,23 +80,16 @@ export class SocialService {
       console.error(`Error al obtener long-lived token: ${longLivedResponse.status} ${errText}`);
     }
 
-    // Fetch Instagram username, avatar and account type
+    // Fetch Instagram username and avatar
     let igUsername: string | null = null;
     let igAvatar: string | null = null;
     const profileResponse = await fetch(
-      `https://graph.instagram.com/${igUserId}?fields=id,username,profile_picture,account_type&access_token=${finalToken}`,
+      `https://graph.instagram.com/${igUserId}?fields=id,username,profile_picture&access_token=${finalToken}`,
     );
     if (profileResponse.ok) {
       const profileData: any = await profileResponse.json();
       igUsername = profileData.username || null;
       igAvatar = profileData.profile_picture || null;
-      const accountType = (profileData.account_type || '').toUpperCase();
-      if (accountType === 'PERSONAL') {
-        throw new BadRequestException(
-          'La cuenta de Instagram es personal. Debe ser una cuenta Business o Creator (Professional). ' +
-          'Ve a Configuración > Tipo de cuenta en Instagram y cámbiala a "Creador" o "Empresa".'
-        );
-      }
     }
 
     await this.prisma.user.update({
@@ -329,17 +322,25 @@ export class SocialService {
       }
     }
 
-    const response = await fetch(
+    // Try with stored userId first, fallback to me/media
+    let response = await fetch(
       `https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp,media_type,thumbnail_url&access_token=${token}&limit=50`,
     );
 
     if (!response.ok) {
+      // Fallback: try me/media in case userId format doesn't match
+      response = await fetch(
+        `https://graph.instagram.com/me/media?fields=id,media_url,caption,permalink,timestamp,media_type,thumbnail_url&access_token=${token}&limit=50`,
+      );
+    }
+
+    if (!response.ok) {
       const errBody = await response.text().catch(() => '');
-      if (errBody.includes('IGApiException') || (response.status === 400 && errBody.includes('does not exist'))) {
+      if (errBody.includes('IGApiException') || errBody.includes('does not exist')) {
         throw new BadRequestException(
-          'La cuenta de Instagram no es Professional (Business/Creator) o el token expiró. ' +
-          'Para usar esta función, cambia tu cuenta a "Creador" o "Empresa" en la app de Instagram. ' +
-          'Luego desvincula y vuelve a vincular.'
+          'Error de permisos de Instagram. Asegúrate de que en Meta Developers la app tenga ' +
+          'el producto "Instagram" agregado (no "Instagram Basic Display") y que la cuenta esté ' +
+          'configurada como Business o Creator.'
         );
       }
       throw new BadRequestException(`Error al obtener publicaciones: ${response.status} ${errBody}`);
