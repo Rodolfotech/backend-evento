@@ -5,13 +5,10 @@ export declare class CategoriesController {
     constructor(categoriesService: CategoriesService);
     findAll(): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<({
         events: {
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            date: Date;
             description: string;
             title: string;
             slug: string;
+            date: Date;
             ownerId: string;
             categoryId: string | null;
             locationName: string | null;
@@ -19,18 +16,21 @@ export declare class CategoriesController {
             city: string | null;
             isOnline: boolean;
             content: string | null;
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
         }[];
     } & {
-        id: string;
-        name: string;
         description: string | null;
+        name: string;
+        id: string;
     })[]>;
     create(body: CreateCategoryDto): import("../generated/prisma/models").Prisma__CategoryClient<{
-        id: string;
-        name: string;
         description: string | null;
+        name: string;
+        id: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;

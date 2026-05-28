@@ -53,6 +53,9 @@ class CreateEventDto {
     address;
     city;
     isOnline;
+    publicationStartDate;
+    publicationEndDate;
+    categoryName;
 }
 exports.CreateEventDto = CreateEventDto;
 __decorate([
@@ -95,6 +98,18 @@ __decorate([
     (0, swagger_1.ApiProperty)({ required: false, default: false }),
     __metadata("design:type", Boolean)
 ], CreateEventDto.prototype, "isOnline", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false, example: '2026-06-01T00:00:00Z' }),
+    __metadata("design:type", String)
+], CreateEventDto.prototype, "publicationStartDate", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false, example: '2026-06-30T23:59:59Z' }),
+    __metadata("design:type", String)
+], CreateEventDto.prototype, "publicationEndDate", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false, example: 'Música' }),
+    __metadata("design:type", String)
+], CreateEventDto.prototype, "categoryName", void 0);
 class UpdateEventDto {
     title;
     description;
@@ -103,6 +118,9 @@ class UpdateEventDto {
     address;
     city;
     isOnline;
+    publicationStartDate;
+    publicationEndDate;
+    categoryName;
 }
 exports.UpdateEventDto = UpdateEventDto;
 __decorate([
@@ -133,6 +151,18 @@ __decorate([
     (0, swagger_1.ApiProperty)({ required: false }),
     __metadata("design:type", Boolean)
 ], UpdateEventDto.prototype, "isOnline", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false }),
+    __metadata("design:type", String)
+], UpdateEventDto.prototype, "publicationStartDate", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false }),
+    __metadata("design:type", String)
+], UpdateEventDto.prototype, "publicationEndDate", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false }),
+    __metadata("design:type", String)
+], UpdateEventDto.prototype, "categoryName", void 0);
 class CreateCategoryDto {
     name;
     description;
