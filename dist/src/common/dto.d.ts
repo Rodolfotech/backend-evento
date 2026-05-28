@@ -18,6 +18,9 @@ export declare class CreateEventDto {
     address?: string;
     city?: string;
     isOnline?: boolean;
+    publicationStartDate?: string;
+    publicationEndDate?: string;
+    categoryName?: string;
 }
 export declare class UpdateEventDto {
     title?: string;
@@ -27,6 +30,9 @@ export declare class UpdateEventDto {
     address?: string;
     city?: string;
     isOnline?: boolean;
+    publicationStartDate?: string;
+    publicationEndDate?: string;
+    categoryName?: string;
 }
 export declare class CreateCategoryDto {
     name: string;

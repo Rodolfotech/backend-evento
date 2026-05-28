@@ -6,7 +6,20 @@ export class EventsService {
   constructor(private prisma: PrismaService) {}
 
   findAll() {
+    const now = new Date();
     return this.prisma.event.findMany({
+      where: {
+        OR: [
+          { publicationEndDate: null },
+          { publicationEndDate: { gte: now } },
+        ],
+        AND: [
+          { OR: [
+            { publicationStartDate: null },
+            { publicationStartDate: { lte: now } },
+          ]},
+        ],
+      },
       include: { owner: { omit: { password: true } }, category: true },
     });
   }
@@ -29,25 +42,44 @@ export class EventsService {
     return this.prisma.event.findUnique({ where: { id } });
   }
 
-  create(data: {
+  private async resolveCategory(categoryName?: string): Promise<string | undefined> {
+    if (!categoryName) return undefined;
+    const existing = await this.prisma.category.findUnique({ where: { name: categoryName } });
+    if (existing) return existing.id;
+    const created = await this.prisma.category.create({ data: { name: categoryName } });
+    return created.id;
+  }
+
+  async create(data: {
     title: string;
     slug: string;
     description: string;
     date: string;
     ownerId: string;
     categoryId?: string;
+    categoryName?: string;
     locationName?: string;
     address?: string;
     city?: string;
     isOnline?: boolean;
+    publicationStartDate?: string;
+    publicationEndDate?: string;
   }) {
+    const categoryId = data.categoryId || await this.resolveCategory(data.categoryName);
+    const { categoryName, ...rest } = data;
     return this.prisma.event.create({
-      data: { ...data, date: new Date(data.date) },
+      data: {
+        ...rest,
+        categoryId,
+        date: new Date(data.date),
+        publicationStartDate: data.publicationStartDate ? new Date(data.publicationStartDate) : undefined,
+        publicationEndDate: data.publicationEndDate ? new Date(data.publicationEndDate) : undefined,
+      },
       include: { owner: { omit: { password: true } }, category: true },
     });
   }
 
-  update(id: string, data: Partial<{
+  async update(id: string, data: Partial<{
     title: string;
     description: string;
     date: string;
@@ -57,10 +89,19 @@ export class EventsService {
     isOnline: boolean;
     socialFeed: any;
     lastSync: string;
+    publicationStartDate: string;
+    publicationEndDate: string;
+    categoryName: string;
   }>) {
     const updateData: any = { ...data };
     if (data.date) updateData.date = new Date(data.date);
     if (data.lastSync) updateData.lastSync = new Date(data.lastSync);
+    if (data.publicationStartDate) updateData.publicationStartDate = new Date(data.publicationStartDate);
+    if (data.publicationEndDate) updateData.publicationEndDate = new Date(data.publicationEndDate);
+    if (data.categoryName) {
+      updateData.categoryId = await this.resolveCategory(data.categoryName);
+    }
+    delete updateData.categoryName;
     return this.prisma.event.update({ where: { id }, data: updateData });
   }
 

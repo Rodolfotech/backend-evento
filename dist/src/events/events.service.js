@@ -18,7 +18,20 @@ let EventsService = class EventsService {
         this.prisma = prisma;
     }
     findAll() {
+        const now = new Date();
         return this.prisma.event.findMany({
+            where: {
+                OR: [
+                    { publicationEndDate: null },
+                    { publicationEndDate: { gte: now } },
+                ],
+                AND: [
+                    { OR: [
+                            { publicationStartDate: null },
+                            { publicationStartDate: { lte: now } },
+                        ] },
+                ],
+            },
             include: { owner: { omit: { password: true } }, category: true },
         });
     }
@@ -37,18 +50,43 @@ let EventsService = class EventsService {
     findById(id) {
         return this.prisma.event.findUnique({ where: { id } });
     }
-    create(data) {
+    async resolveCategory(categoryName) {
+        if (!categoryName)
+            return undefined;
+        const existing = await this.prisma.category.findUnique({ where: { name: categoryName } });
+        if (existing)
+            return existing.id;
+        const created = await this.prisma.category.create({ data: { name: categoryName } });
+        return created.id;
+    }
+    async create(data) {
+        const categoryId = data.categoryId || await this.resolveCategory(data.categoryName);
+        const { categoryName, ...rest } = data;
         return this.prisma.event.create({
-            data: { ...data, date: new Date(data.date) },
+            data: {
+                ...rest,
+                categoryId,
+                date: new Date(data.date),
+                publicationStartDate: data.publicationStartDate ? new Date(data.publicationStartDate) : undefined,
+                publicationEndDate: data.publicationEndDate ? new Date(data.publicationEndDate) : undefined,
+            },
             include: { owner: { omit: { password: true } }, category: true },
         });
     }
-    update(id, data) {
+    async update(id, data) {
         const updateData = { ...data };
         if (data.date)
             updateData.date = new Date(data.date);
         if (data.lastSync)
             updateData.lastSync = new Date(data.lastSync);
+        if (data.publicationStartDate)
+            updateData.publicationStartDate = new Date(data.publicationStartDate);
+        if (data.publicationEndDate)
+            updateData.publicationEndDate = new Date(data.publicationEndDate);
+        if (data.categoryName) {
+            updateData.categoryId = await this.resolveCategory(data.categoryName);
+        }
+        delete updateData.categoryName;
         return this.prisma.event.update({ where: { id }, data: updateData });
     }
     delete(id) {

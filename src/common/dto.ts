@@ -49,6 +49,15 @@ export class CreateEventDto {
 
   @ApiProperty({ required: false, default: false })
   isOnline?: boolean;
+
+  @ApiProperty({ required: false, example: '2026-06-01T00:00:00Z' })
+  publicationStartDate?: string;
+
+  @ApiProperty({ required: false, example: '2026-06-30T23:59:59Z' })
+  publicationEndDate?: string;
+
+  @ApiProperty({ required: false, example: 'Música' })
+  categoryName?: string;
 }
 
 export class UpdateEventDto {
@@ -72,6 +81,15 @@ export class UpdateEventDto {
 
   @ApiProperty({ required: false })
   isOnline?: boolean;
+
+  @ApiProperty({ required: false })
+  publicationStartDate?: string;
+
+  @ApiProperty({ required: false })
+  publicationEndDate?: string;
+
+  @ApiProperty({ required: false })
+  categoryName?: string;
 }
 
 export class CreateCategoryDto {

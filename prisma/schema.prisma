@@ -40,6 +40,8 @@ model Event {
   content         String?   @db.Text
 
   date            DateTime
+  publicationStartDate DateTime?
+  publicationEndDate   DateTime?
   locationName    String?
   address         String?
   city            String?

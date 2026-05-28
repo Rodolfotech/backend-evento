@@ -6,11 +6,11 @@ export declare class AuthController {
     login(body: LoginDto): Promise<{
         access_token: string;
         user: {
-            id: string;
             email: string;
+            name: string;
+            id: string;
             facebookId: string | null;
             instagramId: string | null;
-            name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             instagramUsername: string | null;
@@ -22,11 +22,11 @@ export declare class AuthController {
     register(body: RegisterDto): Promise<{
         access_token: string;
         user: {
-            id: string;
             email: string;
+            name: string;
+            id: string;
             facebookId: string | null;
             instagramId: string | null;
-            name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
@@ -44,11 +44,11 @@ export declare class AuthController {
     resetPasswordWithToken(token: string, password: string): Promise<{
         access_token: string;
         user: {
-            id: string;
             email: string;
+            name: string;
+            id: string;
             facebookId: string | null;
             instagramId: string | null;
-            name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
@@ -66,11 +66,11 @@ export declare class AuthController {
     resetPasswordDirect(body: LoginDto): Promise<{
         access_token: string;
         user: {
-            id: string;
             email: string;
+            name: string;
+            id: string;
             facebookId: string | null;
             instagramId: string | null;
-            name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             instagramUsername: string | null;
@@ -85,11 +85,11 @@ export declare class AuthController {
     instagramLogin(code: string): Promise<{
         access_token: string;
         user: {
-            id: string;
             email: string;
+            name: string;
+            id: string;
             facebookId: string | null;
             instagramId: string | null;
-            name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             instagramUsername: string | null;
@@ -104,11 +104,11 @@ export declare class AuthController {
     googleLogin(code: string): Promise<{
         access_token: string;
         user: {
-            id: string;
             email: string;
+            name: string;
+            id: string;
             facebookId: string | null;
             instagramId: string | null;
-            name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             instagramUsername: string | null;
