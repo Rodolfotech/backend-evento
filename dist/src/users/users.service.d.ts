@@ -5,12 +5,12 @@ export declare class UsersService {
     findAll(): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<{
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
+        facebookId: string | null;
+        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -21,11 +21,11 @@ export declare class UsersService {
     findById(id: string): import("../generated/prisma/models").Prisma__UserClient<{
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
+        facebookId: string | null;
+        instagramId: string | null;
         instagramUsername: string | null;
         instagramAvatar: string | null;
         createdAt: Date;
@@ -36,13 +36,13 @@ export declare class UsersService {
     findByEmail(email: string): import("../generated/prisma/models").Prisma__UserClient<{
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         password: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
+        facebookId: string | null;
+        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -59,12 +59,12 @@ export declare class UsersService {
     }): import("../generated/prisma/models").Prisma__UserClient<{
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
+        facebookId: string | null;
+        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -80,12 +80,12 @@ export declare class UsersService {
     }): import("../generated/prisma/models").Prisma__UserClient<{
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
+        facebookId: string | null;
+        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
