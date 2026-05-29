@@ -72,6 +72,7 @@ export class EventsService {
     address?: string;
     city?: string;
     isOnline?: boolean;
+    imageUrl?: string;
     publicationStartDate?: string;
     publicationEndDate?: string;
   }) {
