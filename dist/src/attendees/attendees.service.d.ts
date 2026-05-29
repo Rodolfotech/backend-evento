@@ -33,6 +33,8 @@ export declare class AttendeesService {
             address: string | null;
             city: string | null;
             isOnline: boolean;
+            publicationStartDate: Date | null;
+            publicationEndDate: Date | null;
             content: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
@@ -91,6 +93,8 @@ export declare class AttendeesService {
             address: string | null;
             city: string | null;
             isOnline: boolean;
+            publicationStartDate: Date | null;
+            publicationEndDate: Date | null;
             content: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;

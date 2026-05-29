@@ -34,8 +34,8 @@ export class EventsController {
   @Post()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un evento' })
-  create(@Body() body: CreateEventDto) {
-    return this.eventsService.create(body);
+  create(@Body() body: CreateEventDto, @CurrentUser('id') userId: string) {
+    return this.eventsService.create({ ...body, ownerId: userId });
   }
 
   @UseGuards(AuthGuard('jwt'))

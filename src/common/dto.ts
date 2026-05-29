@@ -23,8 +23,8 @@ export class CreateEventDto {
   @ApiProperty({ example: 'Concierto Rock 2026' })
   title: string;
 
-  @ApiProperty({ example: 'concierto-rock-2026' })
-  slug: string;
+  @ApiProperty({ required: false, example: 'concierto-rock-2026' })
+  slug?: string;
 
   @ApiProperty({ example: 'El mejor concierto del año' })
   description: string;
@@ -32,8 +32,8 @@ export class CreateEventDto {
   @ApiProperty({ example: '2026-06-15T20:00:00Z' })
   date: string;
 
-  @ApiProperty()
-  ownerId: string;
+  @ApiProperty({ required: false })
+  ownerId?: string;
 
   @ApiProperty({ required: false })
   categoryId?: string;
