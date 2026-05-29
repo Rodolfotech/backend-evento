@@ -17,6 +17,8 @@ export declare class CategoriesService {
             address: string | null;
             city: string | null;
             isOnline: boolean;
+            publicationStartDate: Date | null;
+            publicationEndDate: Date | null;
             content: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;

@@ -7,11 +7,11 @@ export declare class SocialController {
         url: string;
     };
     instagramCallback(userId: string, code: string): Promise<{
-        email: string;
-        name: string;
         id: string;
+        email: string;
         facebookId: string | null;
         instagramId: string | null;
+        name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
@@ -23,11 +23,11 @@ export declare class SocialController {
         updatedAt: Date;
     } | null>;
     connectInstagram(userId: string, body: ConnectSocialDto): Promise<{
-        email: string;
-        name: string;
         id: string;
+        email: string;
         facebookId: string | null;
         instagramId: string | null;
+        name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
@@ -39,11 +39,11 @@ export declare class SocialController {
         updatedAt: Date;
     }>;
     connectFacebook(userId: string, body: ConnectSocialDto): Promise<{
-        email: string;
-        name: string;
         id: string;
+        email: string;
         facebookId: string | null;
         instagramId: string | null;
+        name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
@@ -55,11 +55,11 @@ export declare class SocialController {
         updatedAt: Date;
     }>;
     disconnect(userId: string, platform: string): Promise<{
-        email: string;
-        name: string;
         id: string;
+        email: string;
         facebookId: string | null;
         instagramId: string | null;
+        name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
@@ -77,11 +77,11 @@ export declare class SocialController {
         instagramAvatar: string | null;
     }>;
     refreshToken(userId: string): Promise<{
-        email: string;
-        name: string;
         id: string;
+        email: string;
         facebookId: string | null;
         instagramId: string | null;
+        name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;

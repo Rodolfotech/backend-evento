@@ -80,6 +80,8 @@ exports.EventScalarFieldEnum = {
     description: 'description',
     content: 'content',
     date: 'date',
+    publicationStartDate: 'publicationStartDate',
+    publicationEndDate: 'publicationEndDate',
     locationName: 'locationName',
     address: 'address',
     city: 'city',

@@ -63,7 +63,7 @@ __decorate([
     __metadata("design:type", String)
 ], CreateEventDto.prototype, "title", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'concierto-rock-2026' }),
+    (0, swagger_1.ApiProperty)({ required: false, example: 'concierto-rock-2026' }),
     __metadata("design:type", String)
 ], CreateEventDto.prototype, "slug", void 0);
 __decorate([
@@ -75,7 +75,7 @@ __decorate([
     __metadata("design:type", String)
 ], CreateEventDto.prototype, "date", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
+    (0, swagger_1.ApiProperty)({ required: false }),
     __metadata("design:type", String)
 ], CreateEventDto.prototype, "ownerId", void 0);
 __decorate([

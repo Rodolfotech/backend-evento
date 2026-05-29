@@ -9,10 +9,10 @@ export declare class RegisterDto {
 }
 export declare class CreateEventDto {
     title: string;
-    slug: string;
+    slug?: string;
     description: string;
     date: string;
-    ownerId: string;
+    ownerId?: string;
     categoryId?: string;
     locationName?: string;
     address?: string;

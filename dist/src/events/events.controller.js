@@ -33,8 +33,8 @@ let EventsController = class EventsController {
     findBySlug(slug) {
         return this.eventsService.findBySlug(slug);
     }
-    create(body) {
-        return this.eventsService.create(body);
+    create(body, userId) {
+        return this.eventsService.create({ ...body, ownerId: userId });
     }
     update(id, body) {
         return this.eventsService.update(id, body);
@@ -75,8 +75,9 @@ __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un evento' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, current_user_decorator_1.CurrentUser)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [dto_1.CreateEventDto]),
+    __metadata("design:paramtypes", [dto_1.CreateEventDto, String]),
     __metadata("design:returntype", void 0)
 ], EventsController.prototype, "create", null);
 __decorate([

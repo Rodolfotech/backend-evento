@@ -50,9 +50,19 @@ export class EventsService {
     return created.id;
   }
 
+  private generateSlug(title: string): string {
+    const base = title
+      .toLowerCase()
+      .replace(/[^a-z0-9áéíóúñü]+/g, '-')
+      .replace(/^-|-$/g, '')
+      .slice(0, 80);
+    const suffix = Date.now().toString(36);
+    return `${base}-${suffix}`;
+  }
+
   async create(data: {
     title: string;
-    slug: string;
+    slug?: string;
     description: string;
     date: string;
     ownerId: string;
@@ -66,10 +76,12 @@ export class EventsService {
     publicationEndDate?: string;
   }) {
     const categoryId = data.categoryId || await this.resolveCategory(data.categoryName);
-    const { categoryName, ...rest } = data;
+    const slug = data.slug || this.generateSlug(data.title);
+    const { categoryName: _, ...rest } = data;
     return this.prisma.event.create({
       data: {
         ...rest,
+        slug,
         categoryId,
         date: new Date(data.date),
         publicationStartDate: data.publicationStartDate ? new Date(data.publicationStartDate) : undefined,
