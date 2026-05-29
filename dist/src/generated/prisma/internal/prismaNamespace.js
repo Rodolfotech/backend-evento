@@ -101,6 +101,7 @@ exports.EventScalarFieldEnum = {
     address: 'address',
     city: 'city',
     isOnline: 'isOnline',
+    imageUrl: 'imageUrl',
     socialFeed: 'socialFeed',
     lastSync: 'lastSync',
     ownerId: 'ownerId',

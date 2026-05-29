@@ -5,12 +5,12 @@ export declare class UsersController {
     findAll(): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<{
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
+        facebookId: string | null;
+        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -21,11 +21,11 @@ export declare class UsersController {
     getProfile(userId: string): import("../generated/prisma/models").Prisma__UserClient<{
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
+        facebookId: string | null;
+        instagramId: string | null;
         instagramUsername: string | null;
         instagramAvatar: string | null;
         createdAt: Date;
@@ -39,12 +39,12 @@ export declare class UsersController {
     }): import("../generated/prisma/models").Prisma__UserClient<{
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
+        facebookId: string | null;
+        instagramId: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -57,11 +57,11 @@ export declare class UsersController {
     findOne(id: string): import("../generated/prisma/models").Prisma__UserClient<{
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
+        facebookId: string | null;
+        instagramId: string | null;
         instagramUsername: string | null;
         instagramAvatar: string | null;
         createdAt: Date;
