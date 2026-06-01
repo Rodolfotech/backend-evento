@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { EventsService } from './events.service';
 import { CreateEventDto, UpdateEventDto } from '../common/dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
@@ -12,8 +12,15 @@ export class EventsController {
 
   @Get()
   @ApiOperation({ summary: 'Listar todos los eventos' })
-  findAll() {
-    return this.eventsService.findAll();
+  @ApiQuery({ name: 'city', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  findAll(
+    @Query('city') city?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.eventsService.findAll(city, page ? parseInt(page, 10) : undefined, limit ? parseInt(limit, 10) : undefined);
   }
 
   @UseGuards(AuthGuard('jwt'))

@@ -17,23 +17,35 @@ let EventsService = class EventsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    findAll() {
+    async findAll(city, page = 1, limit = 12) {
         const now = new Date();
-        return this.prisma.event.findMany({
-            where: {
-                OR: [
-                    { publicationEndDate: null },
-                    { publicationEndDate: { gte: now } },
-                ],
-                AND: [
-                    { OR: [
-                            { publicationStartDate: null },
-                            { publicationStartDate: { lte: now } },
-                        ] },
-                ],
-            },
-            include: { owner: { omit: { password: true } }, category: true },
-        });
+        const skip = (page - 1) * limit;
+        const where = {
+            OR: [
+                { publicationEndDate: null },
+                { publicationEndDate: { gte: now } },
+            ],
+            AND: [
+                { OR: [
+                        { publicationStartDate: null },
+                        { publicationStartDate: { lte: now } },
+                    ] },
+            ],
+        };
+        if (city) {
+            where.city = { equals: city, mode: 'insensitive' };
+        }
+        const [data, total] = await Promise.all([
+            this.prisma.event.findMany({
+                where,
+                include: { owner: { omit: { password: true } }, category: true },
+                skip,
+                take: limit,
+                orderBy: { date: 'asc' },
+            }),
+            this.prisma.event.count({ where }),
+        ]);
+        return { data, total, page, limit };
     }
     findBySlug(slug) {
         return this.prisma.event.findUnique({

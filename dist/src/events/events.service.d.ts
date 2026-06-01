@@ -2,57 +2,59 @@ import { PrismaService } from '../prisma/prisma.service';
 export declare class EventsService {
     private prisma;
     constructor(prisma: PrismaService);
-    findAll(): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<({
-        category: {
+    findAll(city?: string, page?: number, limit?: number): Promise<{
+        data: ({
+            owner: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                email: string;
+                name: string;
+                avatar: string | null;
+                role: import("../generated/prisma/enums").Role;
+                isActive: boolean;
+                facebookId: string | null;
+                instagramId: string | null;
+                socialToken: string | null;
+                tokenExpiresAt: Date | null;
+                instagramUsername: string | null;
+                instagramAvatar: string | null;
+            };
+            category: {
+                id: string;
+                description: string | null;
+                name: string;
+            } | null;
+        } & {
             id: string;
-            name: string;
-            description: string | null;
-        } | null;
-        owner: {
-            id: string;
-            email: string;
-            name: string;
-            avatar: string | null;
-            role: import("../generated/prisma/enums").Role;
-            isActive: boolean;
-            facebookId: string | null;
-            instagramId: string | null;
-            socialToken: string | null;
-            tokenExpiresAt: Date | null;
-            instagramUsername: string | null;
-            instagramAvatar: string | null;
+            title: string;
+            slug: string;
+            description: string;
+            content: string | null;
+            date: Date;
+            publicationStartDate: Date | null;
+            publicationEndDate: Date | null;
+            locationName: string | null;
+            address: string | null;
+            city: string | null;
+            isOnline: boolean;
+            imageUrl: string | null;
+            socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
+            lastSync: Date | null;
+            ownerId: string;
+            categoryId: string | null;
             createdAt: Date;
             updatedAt: Date;
-        };
-    } & {
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        title: string;
-        slug: string;
-        description: string;
-        content: string | null;
-        date: Date;
-        publicationStartDate: Date | null;
-        publicationEndDate: Date | null;
-        locationName: string | null;
-        address: string | null;
-        city: string | null;
-        isOnline: boolean;
-        imageUrl: string | null;
-        socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
-        lastSync: Date | null;
-        ownerId: string;
-        categoryId: string | null;
-    })[]>;
+        })[];
+        total: number;
+        page: number;
+        limit: number;
+    }>;
     findBySlug(slug: string): import("../generated/prisma/models").Prisma__EventClient<({
-        category: {
-            id: string;
-            name: string;
-            description: string | null;
-        } | null;
         owner: {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             email: string;
             name: string;
             avatar: string | null;
@@ -64,9 +66,12 @@ export declare class EventsService {
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
             instagramAvatar: string | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
+        category: {
+            id: string;
+            description: string | null;
+            name: string;
+        } | null;
         attendees: {
             id: string;
             createdAt: Date;
@@ -76,8 +81,6 @@ export declare class EventsService {
         }[];
     } & {
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
         slug: string;
         description: string;
@@ -94,17 +97,16 @@ export declare class EventsService {
         lastSync: Date | null;
         ownerId: string;
         categoryId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
     findByOwner(ownerId: string): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<({
-        category: {
-            id: string;
-            name: string;
-            description: string | null;
-        } | null;
         owner: {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             email: string;
             name: string;
             avatar: string | null;
@@ -116,13 +118,14 @@ export declare class EventsService {
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
             instagramAvatar: string | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
+        category: {
+            id: string;
+            description: string | null;
+            name: string;
+        } | null;
     } & {
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
         slug: string;
         description: string;
@@ -139,11 +142,11 @@ export declare class EventsService {
         lastSync: Date | null;
         ownerId: string;
         categoryId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     })[]>;
     findById(id: string): import("../generated/prisma/models").Prisma__EventClient<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
         slug: string;
         description: string;
@@ -160,6 +163,8 @@ export declare class EventsService {
         lastSync: Date | null;
         ownerId: string;
         categoryId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
@@ -181,13 +186,10 @@ export declare class EventsService {
         publicationStartDate?: string;
         publicationEndDate?: string;
     }): Promise<{
-        category: {
-            id: string;
-            name: string;
-            description: string | null;
-        } | null;
         owner: {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             email: string;
             name: string;
             avatar: string | null;
@@ -199,13 +201,14 @@ export declare class EventsService {
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
             instagramAvatar: string | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
+        category: {
+            id: string;
+            description: string | null;
+            name: string;
+        } | null;
     } & {
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
         slug: string;
         description: string;
@@ -222,6 +225,8 @@ export declare class EventsService {
         lastSync: Date | null;
         ownerId: string;
         categoryId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: string, data: Partial<{
         title: string;
@@ -238,8 +243,6 @@ export declare class EventsService {
         categoryName: string;
     }>): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
         slug: string;
         description: string;
@@ -256,11 +259,11 @@ export declare class EventsService {
         lastSync: Date | null;
         ownerId: string;
         categoryId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     delete(id: string): import("../generated/prisma/models").Prisma__EventClient<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
         slug: string;
         description: string;
@@ -277,6 +280,8 @@ export declare class EventsService {
         lastSync: Date | null;
         ownerId: string;
         categoryId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;

@@ -24,8 +24,8 @@ let EventsController = class EventsController {
     constructor(eventsService) {
         this.eventsService = eventsService;
     }
-    findAll() {
-        return this.eventsService.findAll();
+    findAll(city, page, limit) {
+        return this.eventsService.findAll(city, page ? parseInt(page, 10) : undefined, limit ? parseInt(limit, 10) : undefined);
     }
     findByOwner(userId) {
         return this.eventsService.findByOwner(userId);
@@ -47,8 +47,14 @@ exports.EventsController = EventsController;
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Listar todos los eventos' }),
+    (0, swagger_1.ApiQuery)({ name: 'city', required: false }),
+    (0, swagger_1.ApiQuery)({ name: 'page', required: false }),
+    (0, swagger_1.ApiQuery)({ name: 'limit', required: false }),
+    __param(0, (0, common_1.Query)('city')),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", void 0)
 ], EventsController.prototype, "findAll", null);
 __decorate([
