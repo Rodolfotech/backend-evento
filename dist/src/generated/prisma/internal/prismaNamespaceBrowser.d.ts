@@ -12,6 +12,8 @@ export declare const JsonNull: import("@prisma/client/runtime/client").JsonNullC
 export declare const AnyNull: import("@prisma/client/runtime/client").AnyNullClass;
 export declare const ModelName: {
     readonly User: "User";
+    readonly InstagramClick: "InstagramClick";
+    readonly AdminAuditLog: "AdminAuditLog";
     readonly Event: "Event";
     readonly Category: "Category";
     readonly Attendee: "Attendee";
@@ -32,6 +34,7 @@ export declare const UserScalarFieldEnum: {
     readonly avatar: "avatar";
     readonly role: "role";
     readonly isActive: "isActive";
+    readonly comuna: "comuna";
     readonly facebookId: "facebookId";
     readonly instagramId: "instagramId";
     readonly socialToken: "socialToken";
@@ -42,6 +45,22 @@ export declare const UserScalarFieldEnum: {
     readonly updatedAt: "updatedAt";
 };
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
+export declare const InstagramClickScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly eventId: "eventId";
+    readonly createdAt: "createdAt";
+};
+export type InstagramClickScalarFieldEnum = (typeof InstagramClickScalarFieldEnum)[keyof typeof InstagramClickScalarFieldEnum];
+export declare const AdminAuditLogScalarFieldEnum: {
+    readonly id: "id";
+    readonly adminId: "adminId";
+    readonly action: "action";
+    readonly detail: "detail";
+    readonly ip: "ip";
+    readonly createdAt: "createdAt";
+};
+export type AdminAuditLogScalarFieldEnum = (typeof AdminAuditLogScalarFieldEnum)[keyof typeof AdminAuditLogScalarFieldEnum];
 export declare const EventScalarFieldEnum: {
     readonly id: "id";
     readonly title: "title";

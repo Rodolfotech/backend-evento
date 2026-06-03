@@ -15,6 +15,7 @@ export type UserMinAggregateOutputType = {
     avatar: string | null;
     role: $Enums.Role | null;
     isActive: boolean | null;
+    comuna: string | null;
     facebookId: string | null;
     instagramId: string | null;
     socialToken: string | null;
@@ -32,6 +33,7 @@ export type UserMaxAggregateOutputType = {
     avatar: string | null;
     role: $Enums.Role | null;
     isActive: boolean | null;
+    comuna: string | null;
     facebookId: string | null;
     instagramId: string | null;
     socialToken: string | null;
@@ -49,6 +51,7 @@ export type UserCountAggregateOutputType = {
     avatar: number;
     role: number;
     isActive: number;
+    comuna: number;
     facebookId: number;
     instagramId: number;
     socialToken: number;
@@ -67,6 +70,7 @@ export type UserMinAggregateInputType = {
     avatar?: true;
     role?: true;
     isActive?: true;
+    comuna?: true;
     facebookId?: true;
     instagramId?: true;
     socialToken?: true;
@@ -84,6 +88,7 @@ export type UserMaxAggregateInputType = {
     avatar?: true;
     role?: true;
     isActive?: true;
+    comuna?: true;
     facebookId?: true;
     instagramId?: true;
     socialToken?: true;
@@ -101,6 +106,7 @@ export type UserCountAggregateInputType = {
     avatar?: true;
     role?: true;
     isActive?: true;
+    comuna?: true;
     facebookId?: true;
     instagramId?: true;
     socialToken?: true;
@@ -143,6 +149,7 @@ export type UserGroupByOutputType = {
     avatar: string | null;
     role: $Enums.Role;
     isActive: boolean;
+    comuna: string | null;
     facebookId: string | null;
     instagramId: string | null;
     socialToken: string | null;
@@ -169,6 +176,7 @@ export type UserWhereInput = {
     avatar?: Prisma.StringNullableFilter<"User"> | string | null;
     role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
     isActive?: Prisma.BoolFilter<"User"> | boolean;
+    comuna?: Prisma.StringNullableFilter<"User"> | string | null;
     facebookId?: Prisma.StringNullableFilter<"User"> | string | null;
     instagramId?: Prisma.StringNullableFilter<"User"> | string | null;
     socialToken?: Prisma.StringNullableFilter<"User"> | string | null;
@@ -179,6 +187,8 @@ export type UserWhereInput = {
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     ownedEvents?: Prisma.EventListRelationFilter;
     registrations?: Prisma.AttendeeListRelationFilter;
+    instagramClicks?: Prisma.InstagramClickListRelationFilter;
+    adminAuditLogs?: Prisma.AdminAuditLogListRelationFilter;
 };
 export type UserOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -188,6 +198,7 @@ export type UserOrderByWithRelationInput = {
     avatar?: Prisma.SortOrderInput | Prisma.SortOrder;
     role?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    comuna?: Prisma.SortOrderInput | Prisma.SortOrder;
     facebookId?: Prisma.SortOrderInput | Prisma.SortOrder;
     instagramId?: Prisma.SortOrderInput | Prisma.SortOrder;
     socialToken?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -198,6 +209,8 @@ export type UserOrderByWithRelationInput = {
     updatedAt?: Prisma.SortOrder;
     ownedEvents?: Prisma.EventOrderByRelationAggregateInput;
     registrations?: Prisma.AttendeeOrderByRelationAggregateInput;
+    instagramClicks?: Prisma.InstagramClickOrderByRelationAggregateInput;
+    adminAuditLogs?: Prisma.AdminAuditLogOrderByRelationAggregateInput;
 };
 export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -212,6 +225,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     avatar?: Prisma.StringNullableFilter<"User"> | string | null;
     role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
     isActive?: Prisma.BoolFilter<"User"> | boolean;
+    comuna?: Prisma.StringNullableFilter<"User"> | string | null;
     socialToken?: Prisma.StringNullableFilter<"User"> | string | null;
     tokenExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     instagramUsername?: Prisma.StringNullableFilter<"User"> | string | null;
@@ -220,6 +234,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     ownedEvents?: Prisma.EventListRelationFilter;
     registrations?: Prisma.AttendeeListRelationFilter;
+    instagramClicks?: Prisma.InstagramClickListRelationFilter;
+    adminAuditLogs?: Prisma.AdminAuditLogListRelationFilter;
 }, "id" | "email" | "facebookId" | "instagramId">;
 export type UserOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -229,6 +245,7 @@ export type UserOrderByWithAggregationInput = {
     avatar?: Prisma.SortOrderInput | Prisma.SortOrder;
     role?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    comuna?: Prisma.SortOrderInput | Prisma.SortOrder;
     facebookId?: Prisma.SortOrderInput | Prisma.SortOrder;
     instagramId?: Prisma.SortOrderInput | Prisma.SortOrder;
     socialToken?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -252,6 +269,7 @@ export type UserScalarWhereWithAggregatesInput = {
     avatar?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role;
     isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
+    comuna?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     facebookId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     instagramId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     socialToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
@@ -269,6 +287,7 @@ export type UserCreateInput = {
     avatar?: string | null;
     role?: $Enums.Role;
     isActive?: boolean;
+    comuna?: string | null;
     facebookId?: string | null;
     instagramId?: string | null;
     socialToken?: string | null;
@@ -279,6 +298,8 @@ export type UserCreateInput = {
     updatedAt?: Date | string;
     ownedEvents?: Prisma.EventCreateNestedManyWithoutOwnerInput;
     registrations?: Prisma.AttendeeCreateNestedManyWithoutUserInput;
+    instagramClicks?: Prisma.InstagramClickCreateNestedManyWithoutUserInput;
+    adminAuditLogs?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminInput;
 };
 export type UserUncheckedCreateInput = {
     id?: string;
@@ -288,6 +309,7 @@ export type UserUncheckedCreateInput = {
     avatar?: string | null;
     role?: $Enums.Role;
     isActive?: boolean;
+    comuna?: string | null;
     facebookId?: string | null;
     instagramId?: string | null;
     socialToken?: string | null;
@@ -298,6 +320,8 @@ export type UserUncheckedCreateInput = {
     updatedAt?: Date | string;
     ownedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutOwnerInput;
     registrations?: Prisma.AttendeeUncheckedCreateNestedManyWithoutUserInput;
+    instagramClicks?: Prisma.InstagramClickUncheckedCreateNestedManyWithoutUserInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminInput;
 };
 export type UserUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -307,6 +331,7 @@ export type UserUpdateInput = {
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -317,6 +342,8 @@ export type UserUpdateInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     ownedEvents?: Prisma.EventUpdateManyWithoutOwnerNestedInput;
     registrations?: Prisma.AttendeeUpdateManyWithoutUserNestedInput;
+    instagramClicks?: Prisma.InstagramClickUpdateManyWithoutUserNestedInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUpdateManyWithoutAdminNestedInput;
 };
 export type UserUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -326,6 +353,7 @@ export type UserUncheckedUpdateInput = {
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -336,6 +364,8 @@ export type UserUncheckedUpdateInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     ownedEvents?: Prisma.EventUncheckedUpdateManyWithoutOwnerNestedInput;
     registrations?: Prisma.AttendeeUncheckedUpdateManyWithoutUserNestedInput;
+    instagramClicks?: Prisma.InstagramClickUncheckedUpdateManyWithoutUserNestedInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminNestedInput;
 };
 export type UserCreateManyInput = {
     id?: string;
@@ -345,6 +375,7 @@ export type UserCreateManyInput = {
     avatar?: string | null;
     role?: $Enums.Role;
     isActive?: boolean;
+    comuna?: string | null;
     facebookId?: string | null;
     instagramId?: string | null;
     socialToken?: string | null;
@@ -362,6 +393,7 @@ export type UserUpdateManyMutationInput = {
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -379,6 +411,7 @@ export type UserUncheckedUpdateManyInput = {
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -396,6 +429,7 @@ export type UserCountOrderByAggregateInput = {
     avatar?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    comuna?: Prisma.SortOrder;
     facebookId?: Prisma.SortOrder;
     instagramId?: Prisma.SortOrder;
     socialToken?: Prisma.SortOrder;
@@ -413,6 +447,7 @@ export type UserMaxOrderByAggregateInput = {
     avatar?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    comuna?: Prisma.SortOrder;
     facebookId?: Prisma.SortOrder;
     instagramId?: Prisma.SortOrder;
     socialToken?: Prisma.SortOrder;
@@ -430,6 +465,7 @@ export type UserMinOrderByAggregateInput = {
     avatar?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    comuna?: Prisma.SortOrder;
     facebookId?: Prisma.SortOrder;
     instagramId?: Prisma.SortOrder;
     socialToken?: Prisma.SortOrder;
@@ -461,6 +497,30 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
 export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string;
 };
+export type UserCreateNestedOneWithoutInstagramClicksInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutInstagramClicksInput, Prisma.UserUncheckedCreateWithoutInstagramClicksInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutInstagramClicksInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutInstagramClicksNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutInstagramClicksInput, Prisma.UserUncheckedCreateWithoutInstagramClicksInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutInstagramClicksInput;
+    upsert?: Prisma.UserUpsertWithoutInstagramClicksInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInstagramClicksInput, Prisma.UserUpdateWithoutInstagramClicksInput>, Prisma.UserUncheckedUpdateWithoutInstagramClicksInput>;
+};
+export type UserCreateNestedOneWithoutAdminAuditLogsInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdminAuditLogsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutAdminAuditLogsNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdminAuditLogsInput;
+    upsert?: Prisma.UserUpsertWithoutAdminAuditLogsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAdminAuditLogsInput, Prisma.UserUpdateWithoutAdminAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAdminAuditLogsInput>;
+};
 export type UserCreateNestedOneWithoutOwnedEventsInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedEventsInput, Prisma.UserUncheckedCreateWithoutOwnedEventsInput>;
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedEventsInput;
@@ -485,6 +545,200 @@ export type UserUpdateOneRequiredWithoutRegistrationsNestedInput = {
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRegistrationsInput, Prisma.UserUpdateWithoutRegistrationsInput>, Prisma.UserUncheckedUpdateWithoutRegistrationsInput>;
 };
+export type UserCreateWithoutInstagramClicksInput = {
+    id?: string;
+    email: string;
+    password?: string | null;
+    name: string;
+    avatar?: string | null;
+    role?: $Enums.Role;
+    isActive?: boolean;
+    comuna?: string | null;
+    facebookId?: string | null;
+    instagramId?: string | null;
+    socialToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    instagramUsername?: string | null;
+    instagramAvatar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    ownedEvents?: Prisma.EventCreateNestedManyWithoutOwnerInput;
+    registrations?: Prisma.AttendeeCreateNestedManyWithoutUserInput;
+    adminAuditLogs?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminInput;
+};
+export type UserUncheckedCreateWithoutInstagramClicksInput = {
+    id?: string;
+    email: string;
+    password?: string | null;
+    name: string;
+    avatar?: string | null;
+    role?: $Enums.Role;
+    isActive?: boolean;
+    comuna?: string | null;
+    facebookId?: string | null;
+    instagramId?: string | null;
+    socialToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    instagramUsername?: string | null;
+    instagramAvatar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    ownedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutOwnerInput;
+    registrations?: Prisma.AttendeeUncheckedCreateNestedManyWithoutUserInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminInput;
+};
+export type UserCreateOrConnectWithoutInstagramClicksInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutInstagramClicksInput, Prisma.UserUncheckedCreateWithoutInstagramClicksInput>;
+};
+export type UserUpsertWithoutInstagramClicksInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutInstagramClicksInput, Prisma.UserUncheckedUpdateWithoutInstagramClicksInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutInstagramClicksInput, Prisma.UserUncheckedCreateWithoutInstagramClicksInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutInstagramClicksInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutInstagramClicksInput, Prisma.UserUncheckedUpdateWithoutInstagramClicksInput>;
+};
+export type UserUpdateWithoutInstagramClicksInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    ownedEvents?: Prisma.EventUpdateManyWithoutOwnerNestedInput;
+    registrations?: Prisma.AttendeeUpdateManyWithoutUserNestedInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUpdateManyWithoutAdminNestedInput;
+};
+export type UserUncheckedUpdateWithoutInstagramClicksInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    ownedEvents?: Prisma.EventUncheckedUpdateManyWithoutOwnerNestedInput;
+    registrations?: Prisma.AttendeeUncheckedUpdateManyWithoutUserNestedInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminNestedInput;
+};
+export type UserCreateWithoutAdminAuditLogsInput = {
+    id?: string;
+    email: string;
+    password?: string | null;
+    name: string;
+    avatar?: string | null;
+    role?: $Enums.Role;
+    isActive?: boolean;
+    comuna?: string | null;
+    facebookId?: string | null;
+    instagramId?: string | null;
+    socialToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    instagramUsername?: string | null;
+    instagramAvatar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    ownedEvents?: Prisma.EventCreateNestedManyWithoutOwnerInput;
+    registrations?: Prisma.AttendeeCreateNestedManyWithoutUserInput;
+    instagramClicks?: Prisma.InstagramClickCreateNestedManyWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutAdminAuditLogsInput = {
+    id?: string;
+    email: string;
+    password?: string | null;
+    name: string;
+    avatar?: string | null;
+    role?: $Enums.Role;
+    isActive?: boolean;
+    comuna?: string | null;
+    facebookId?: string | null;
+    instagramId?: string | null;
+    socialToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    instagramUsername?: string | null;
+    instagramAvatar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    ownedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutOwnerInput;
+    registrations?: Prisma.AttendeeUncheckedCreateNestedManyWithoutUserInput;
+    instagramClicks?: Prisma.InstagramClickUncheckedCreateNestedManyWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutAdminAuditLogsInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsInput>;
+};
+export type UserUpsertWithoutAdminAuditLogsInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutAdminAuditLogsInput, Prisma.UserUncheckedUpdateWithoutAdminAuditLogsInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutAdminAuditLogsInput, Prisma.UserUncheckedCreateWithoutAdminAuditLogsInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutAdminAuditLogsInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutAdminAuditLogsInput, Prisma.UserUncheckedUpdateWithoutAdminAuditLogsInput>;
+};
+export type UserUpdateWithoutAdminAuditLogsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    ownedEvents?: Prisma.EventUpdateManyWithoutOwnerNestedInput;
+    registrations?: Prisma.AttendeeUpdateManyWithoutUserNestedInput;
+    instagramClicks?: Prisma.InstagramClickUpdateManyWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutAdminAuditLogsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    instagramUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramAvatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    ownedEvents?: Prisma.EventUncheckedUpdateManyWithoutOwnerNestedInput;
+    registrations?: Prisma.AttendeeUncheckedUpdateManyWithoutUserNestedInput;
+    instagramClicks?: Prisma.InstagramClickUncheckedUpdateManyWithoutUserNestedInput;
+};
 export type UserCreateWithoutOwnedEventsInput = {
     id?: string;
     email: string;
@@ -493,6 +747,7 @@ export type UserCreateWithoutOwnedEventsInput = {
     avatar?: string | null;
     role?: $Enums.Role;
     isActive?: boolean;
+    comuna?: string | null;
     facebookId?: string | null;
     instagramId?: string | null;
     socialToken?: string | null;
@@ -502,6 +757,8 @@ export type UserCreateWithoutOwnedEventsInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     registrations?: Prisma.AttendeeCreateNestedManyWithoutUserInput;
+    instagramClicks?: Prisma.InstagramClickCreateNestedManyWithoutUserInput;
+    adminAuditLogs?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminInput;
 };
 export type UserUncheckedCreateWithoutOwnedEventsInput = {
     id?: string;
@@ -511,6 +768,7 @@ export type UserUncheckedCreateWithoutOwnedEventsInput = {
     avatar?: string | null;
     role?: $Enums.Role;
     isActive?: boolean;
+    comuna?: string | null;
     facebookId?: string | null;
     instagramId?: string | null;
     socialToken?: string | null;
@@ -520,6 +778,8 @@ export type UserUncheckedCreateWithoutOwnedEventsInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     registrations?: Prisma.AttendeeUncheckedCreateNestedManyWithoutUserInput;
+    instagramClicks?: Prisma.InstagramClickUncheckedCreateNestedManyWithoutUserInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminInput;
 };
 export type UserCreateOrConnectWithoutOwnedEventsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -542,6 +802,7 @@ export type UserUpdateWithoutOwnedEventsInput = {
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -551,6 +812,8 @@ export type UserUpdateWithoutOwnedEventsInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     registrations?: Prisma.AttendeeUpdateManyWithoutUserNestedInput;
+    instagramClicks?: Prisma.InstagramClickUpdateManyWithoutUserNestedInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUpdateManyWithoutAdminNestedInput;
 };
 export type UserUncheckedUpdateWithoutOwnedEventsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -560,6 +823,7 @@ export type UserUncheckedUpdateWithoutOwnedEventsInput = {
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -569,6 +833,8 @@ export type UserUncheckedUpdateWithoutOwnedEventsInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     registrations?: Prisma.AttendeeUncheckedUpdateManyWithoutUserNestedInput;
+    instagramClicks?: Prisma.InstagramClickUncheckedUpdateManyWithoutUserNestedInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminNestedInput;
 };
 export type UserCreateWithoutRegistrationsInput = {
     id?: string;
@@ -578,6 +844,7 @@ export type UserCreateWithoutRegistrationsInput = {
     avatar?: string | null;
     role?: $Enums.Role;
     isActive?: boolean;
+    comuna?: string | null;
     facebookId?: string | null;
     instagramId?: string | null;
     socialToken?: string | null;
@@ -587,6 +854,8 @@ export type UserCreateWithoutRegistrationsInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     ownedEvents?: Prisma.EventCreateNestedManyWithoutOwnerInput;
+    instagramClicks?: Prisma.InstagramClickCreateNestedManyWithoutUserInput;
+    adminAuditLogs?: Prisma.AdminAuditLogCreateNestedManyWithoutAdminInput;
 };
 export type UserUncheckedCreateWithoutRegistrationsInput = {
     id?: string;
@@ -596,6 +865,7 @@ export type UserUncheckedCreateWithoutRegistrationsInput = {
     avatar?: string | null;
     role?: $Enums.Role;
     isActive?: boolean;
+    comuna?: string | null;
     facebookId?: string | null;
     instagramId?: string | null;
     socialToken?: string | null;
@@ -605,6 +875,8 @@ export type UserUncheckedCreateWithoutRegistrationsInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     ownedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutOwnerInput;
+    instagramClicks?: Prisma.InstagramClickUncheckedCreateNestedManyWithoutUserInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUncheckedCreateNestedManyWithoutAdminInput;
 };
 export type UserCreateOrConnectWithoutRegistrationsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -627,6 +899,7 @@ export type UserUpdateWithoutRegistrationsInput = {
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -636,6 +909,8 @@ export type UserUpdateWithoutRegistrationsInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     ownedEvents?: Prisma.EventUpdateManyWithoutOwnerNestedInput;
+    instagramClicks?: Prisma.InstagramClickUpdateManyWithoutUserNestedInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUpdateManyWithoutAdminNestedInput;
 };
 export type UserUncheckedUpdateWithoutRegistrationsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -645,6 +920,7 @@ export type UserUncheckedUpdateWithoutRegistrationsInput = {
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    comuna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     instagramId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -654,14 +930,20 @@ export type UserUncheckedUpdateWithoutRegistrationsInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     ownedEvents?: Prisma.EventUncheckedUpdateManyWithoutOwnerNestedInput;
+    instagramClicks?: Prisma.InstagramClickUncheckedUpdateManyWithoutUserNestedInput;
+    adminAuditLogs?: Prisma.AdminAuditLogUncheckedUpdateManyWithoutAdminNestedInput;
 };
 export type UserCountOutputType = {
     ownedEvents: number;
     registrations: number;
+    instagramClicks: number;
+    adminAuditLogs: number;
 };
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     ownedEvents?: boolean | UserCountOutputTypeCountOwnedEventsArgs;
     registrations?: boolean | UserCountOutputTypeCountRegistrationsArgs;
+    instagramClicks?: boolean | UserCountOutputTypeCountInstagramClicksArgs;
+    adminAuditLogs?: boolean | UserCountOutputTypeCountAdminAuditLogsArgs;
 };
 export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null;
@@ -672,6 +954,12 @@ export type UserCountOutputTypeCountOwnedEventsArgs<ExtArgs extends runtime.Type
 export type UserCountOutputTypeCountRegistrationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.AttendeeWhereInput;
 };
+export type UserCountOutputTypeCountInstagramClicksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.InstagramClickWhereInput;
+};
+export type UserCountOutputTypeCountAdminAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.AdminAuditLogWhereInput;
+};
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     email?: boolean;
@@ -680,6 +968,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     avatar?: boolean;
     role?: boolean;
     isActive?: boolean;
+    comuna?: boolean;
     facebookId?: boolean;
     instagramId?: boolean;
     socialToken?: boolean;
@@ -690,6 +979,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     updatedAt?: boolean;
     ownedEvents?: boolean | Prisma.User$ownedEventsArgs<ExtArgs>;
     registrations?: boolean | Prisma.User$registrationsArgs<ExtArgs>;
+    instagramClicks?: boolean | Prisma.User$instagramClicksArgs<ExtArgs>;
+    adminAuditLogs?: boolean | Prisma.User$adminAuditLogsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -700,6 +991,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     avatar?: boolean;
     role?: boolean;
     isActive?: boolean;
+    comuna?: boolean;
     facebookId?: boolean;
     instagramId?: boolean;
     socialToken?: boolean;
@@ -717,6 +1009,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     avatar?: boolean;
     role?: boolean;
     isActive?: boolean;
+    comuna?: boolean;
     facebookId?: boolean;
     instagramId?: boolean;
     socialToken?: boolean;
@@ -734,6 +1027,7 @@ export type UserSelectScalar = {
     avatar?: boolean;
     role?: boolean;
     isActive?: boolean;
+    comuna?: boolean;
     facebookId?: boolean;
     instagramId?: boolean;
     socialToken?: boolean;
@@ -743,10 +1037,12 @@ export type UserSelectScalar = {
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "avatar" | "role" | "isActive" | "facebookId" | "instagramId" | "socialToken" | "tokenExpiresAt" | "instagramUsername" | "instagramAvatar" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "avatar" | "role" | "isActive" | "comuna" | "facebookId" | "instagramId" | "socialToken" | "tokenExpiresAt" | "instagramUsername" | "instagramAvatar" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     ownedEvents?: boolean | Prisma.User$ownedEventsArgs<ExtArgs>;
     registrations?: boolean | Prisma.User$registrationsArgs<ExtArgs>;
+    instagramClicks?: boolean | Prisma.User$instagramClicksArgs<ExtArgs>;
+    adminAuditLogs?: boolean | Prisma.User$adminAuditLogsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -756,6 +1052,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     objects: {
         ownedEvents: Prisma.$EventPayload<ExtArgs>[];
         registrations: Prisma.$AttendeePayload<ExtArgs>[];
+        instagramClicks: Prisma.$InstagramClickPayload<ExtArgs>[];
+        adminAuditLogs: Prisma.$AdminAuditLogPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -765,6 +1063,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         avatar: string | null;
         role: $Enums.Role;
         isActive: boolean;
+        comuna: string | null;
         facebookId: string | null;
         instagramId: string | null;
         socialToken: string | null;
@@ -827,6 +1126,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
     readonly [Symbol.toStringTag]: "PrismaPromise";
     ownedEvents<T extends Prisma.User$ownedEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     registrations<T extends Prisma.User$registrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$registrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    instagramClicks<T extends Prisma.User$instagramClicksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$instagramClicksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InstagramClickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    adminAuditLogs<T extends Prisma.User$adminAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$adminAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -839,6 +1140,7 @@ export interface UserFieldRefs {
     readonly avatar: Prisma.FieldRef<"User", 'String'>;
     readonly role: Prisma.FieldRef<"User", 'Role'>;
     readonly isActive: Prisma.FieldRef<"User", 'Boolean'>;
+    readonly comuna: Prisma.FieldRef<"User", 'String'>;
     readonly facebookId: Prisma.FieldRef<"User", 'String'>;
     readonly instagramId: Prisma.FieldRef<"User", 'String'>;
     readonly socialToken: Prisma.FieldRef<"User", 'String'>;
@@ -967,6 +1269,28 @@ export type User$registrationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
     take?: number;
     skip?: number;
     distinct?: Prisma.AttendeeScalarFieldEnum | Prisma.AttendeeScalarFieldEnum[];
+};
+export type User$instagramClicksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.InstagramClickSelect<ExtArgs> | null;
+    omit?: Prisma.InstagramClickOmit<ExtArgs> | null;
+    include?: Prisma.InstagramClickInclude<ExtArgs> | null;
+    where?: Prisma.InstagramClickWhereInput;
+    orderBy?: Prisma.InstagramClickOrderByWithRelationInput | Prisma.InstagramClickOrderByWithRelationInput[];
+    cursor?: Prisma.InstagramClickWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.InstagramClickScalarFieldEnum | Prisma.InstagramClickScalarFieldEnum[];
+};
+export type User$adminAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.AdminAuditLogSelect<ExtArgs> | null;
+    omit?: Prisma.AdminAuditLogOmit<ExtArgs> | null;
+    include?: Prisma.AdminAuditLogInclude<ExtArgs> | null;
+    where?: Prisma.AdminAuditLogWhereInput;
+    orderBy?: Prisma.AdminAuditLogOrderByWithRelationInput | Prisma.AdminAuditLogOrderByWithRelationInput[];
+    cursor?: Prisma.AdminAuditLogWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.AdminAuditLogScalarFieldEnum | Prisma.AdminAuditLogScalarFieldEnum[];
 };
 export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserSelect<ExtArgs> | null;

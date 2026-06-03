@@ -3,6 +3,8 @@ export { Prisma };
 export * as $Enums from './enums';
 export * from './enums';
 export type User = Prisma.UserModel;
+export type InstagramClick = Prisma.InstagramClickModel;
+export type AdminAuditLog = Prisma.AdminAuditLogModel;
 export type Event = Prisma.EventModel;
 export type Category = Prisma.CategoryModel;
 export type Attendee = Prisma.AttendeeModel;

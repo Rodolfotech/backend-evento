@@ -33,6 +33,12 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get user(): Prisma.UserDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get instagramClick(): Prisma.InstagramClickDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get adminAuditLog(): Prisma.AdminAuditLogDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
     get event(): Prisma.EventDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
