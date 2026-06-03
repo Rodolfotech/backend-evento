@@ -14,15 +14,47 @@ export class SeedService implements OnModuleInit {
   }
 
   private async createDemoUser() {
-    const demoEmail = "demo@eventos.cl";
-    const demoPassword = "demo123";
+    const oldEmail = "demo@eventos.cl";
+    const demoEmail = "admin@eventos.cl";
+    const demoPassword = "W^t,Ly0={I!LQiK9z+5a";
 
-    const existingUser = await this.prisma.user.findUnique({
+    const existingByNewEmail = await this.prisma.user.findUnique({
       where: { email: demoEmail },
     });
 
-    if (existingUser) {
-      this.logger.log(`Usuario demo ya existe: ${demoEmail}`);
+    if (existingByNewEmail) {
+      this.logger.log(`Usuario admin ya existe: ${demoEmail}`);
+      const hashedPassword = await bcrypt.hash(demoPassword, 10);
+      await this.prisma.user.update({
+        where: { id: existingByNewEmail.id },
+        data: { password: hashedPassword, role: Role.ADMIN, isActive: true },
+      });
+      this.logger.log("Contraseña actualizada");
+      return;
+    }
+
+    const existingByOldEmail = await this.prisma.user.findUnique({
+      where: { email: oldEmail },
+    });
+
+    if (existingByOldEmail) {
+      const hashedPassword = await bcrypt.hash(demoPassword, 10);
+      const user = await this.prisma.user.update({
+        where: { id: existingByOldEmail.id },
+        data: {
+          email: demoEmail,
+          password: hashedPassword,
+          role: Role.ADMIN,
+          isActive: true,
+          name: "Admin Demo",
+        },
+      });
+      this.logger.warn("=" .repeat(60));
+      this.logger.warn("⚠️  USUARIO ADMIN ACTUALIZADO (email y contraseña cambiados)");
+      this.logger.warn(`   Email: ${demoEmail}`);
+      this.logger.warn(`   Contraseña: ${demoPassword}`);
+      this.logger.warn(`   Role: ${user.role}`);
+      this.logger.warn("=" .repeat(60));
       return;
     }
 
@@ -32,14 +64,14 @@ export class SeedService implements OnModuleInit {
       data: {
         email: demoEmail,
         password: hashedPassword,
-        name: "Usuario Demo",
+        name: "Admin Demo",
         role: Role.ADMIN,
         isActive: true,
       },
     });
 
     this.logger.warn("=" .repeat(60));
-    this.logger.warn("⚠️  USUARIO DEMO CREADO (solo para desarrollo/pruebas)");
+    this.logger.warn("⚠️  USUARIO ADMIN CREADO (solo para desarrollo/pruebas)");
     this.logger.warn(`   Email: ${demoEmail}`);
     this.logger.warn(`   Contraseña: ${demoPassword}`);
     this.logger.warn(`   Role: ${user.role}`);

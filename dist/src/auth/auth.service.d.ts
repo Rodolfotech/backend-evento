@@ -20,6 +20,7 @@ export declare class AuthService {
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
+        comuna: string | null;
         socialToken: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
@@ -58,6 +59,7 @@ export declare class AuthService {
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
+            comuna: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
@@ -80,6 +82,7 @@ export declare class AuthService {
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
+            comuna: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;

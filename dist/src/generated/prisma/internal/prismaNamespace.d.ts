@@ -158,6 +158,8 @@ export type FieldRef<Model, FieldType> = runtime.FieldRef<Model, FieldType>;
 type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>;
 export declare const ModelName: {
     readonly User: "User";
+    readonly InstagramClick: "InstagramClick";
+    readonly AdminAuditLog: "AdminAuditLog";
     readonly Event: "Event";
     readonly Category: "Category";
     readonly Attendee: "Attendee";
@@ -173,7 +175,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "event" | "category" | "attendee";
+        modelProps: "user" | "instagramClick" | "adminAuditLog" | "event" | "category" | "attendee";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -248,6 +250,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 count: {
                     args: Prisma.UserCountArgs<ExtArgs>;
                     result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number;
+                };
+            };
+        };
+        InstagramClick: {
+            payload: Prisma.$InstagramClickPayload<ExtArgs>;
+            fields: Prisma.InstagramClickFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.InstagramClickFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$InstagramClickPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.InstagramClickFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$InstagramClickPayload>;
+                };
+                findFirst: {
+                    args: Prisma.InstagramClickFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$InstagramClickPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.InstagramClickFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$InstagramClickPayload>;
+                };
+                findMany: {
+                    args: Prisma.InstagramClickFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$InstagramClickPayload>[];
+                };
+                create: {
+                    args: Prisma.InstagramClickCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$InstagramClickPayload>;
+                };
+                createMany: {
+                    args: Prisma.InstagramClickCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.InstagramClickCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$InstagramClickPayload>[];
+                };
+                delete: {
+                    args: Prisma.InstagramClickDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$InstagramClickPayload>;
+                };
+                update: {
+                    args: Prisma.InstagramClickUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$InstagramClickPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.InstagramClickDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.InstagramClickUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.InstagramClickUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$InstagramClickPayload>[];
+                };
+                upsert: {
+                    args: Prisma.InstagramClickUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$InstagramClickPayload>;
+                };
+                aggregate: {
+                    args: Prisma.InstagramClickAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateInstagramClick>;
+                };
+                groupBy: {
+                    args: Prisma.InstagramClickGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.InstagramClickGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.InstagramClickCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.InstagramClickCountAggregateOutputType> | number;
+                };
+            };
+        };
+        AdminAuditLog: {
+            payload: Prisma.$AdminAuditLogPayload<ExtArgs>;
+            fields: Prisma.AdminAuditLogFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.AdminAuditLogFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminAuditLogPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.AdminAuditLogFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminAuditLogPayload>;
+                };
+                findFirst: {
+                    args: Prisma.AdminAuditLogFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminAuditLogPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.AdminAuditLogFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminAuditLogPayload>;
+                };
+                findMany: {
+                    args: Prisma.AdminAuditLogFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminAuditLogPayload>[];
+                };
+                create: {
+                    args: Prisma.AdminAuditLogCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminAuditLogPayload>;
+                };
+                createMany: {
+                    args: Prisma.AdminAuditLogCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.AdminAuditLogCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminAuditLogPayload>[];
+                };
+                delete: {
+                    args: Prisma.AdminAuditLogDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminAuditLogPayload>;
+                };
+                update: {
+                    args: Prisma.AdminAuditLogUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminAuditLogPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.AdminAuditLogDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.AdminAuditLogUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.AdminAuditLogUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminAuditLogPayload>[];
+                };
+                upsert: {
+                    args: Prisma.AdminAuditLogUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminAuditLogPayload>;
+                };
+                aggregate: {
+                    args: Prisma.AdminAuditLogAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateAdminAuditLog>;
+                };
+                groupBy: {
+                    args: Prisma.AdminAuditLogGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AdminAuditLogGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.AdminAuditLogCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AdminAuditLogCountAggregateOutputType> | number;
                 };
             };
         };
@@ -512,6 +662,7 @@ export declare const UserScalarFieldEnum: {
     readonly avatar: "avatar";
     readonly role: "role";
     readonly isActive: "isActive";
+    readonly comuna: "comuna";
     readonly facebookId: "facebookId";
     readonly instagramId: "instagramId";
     readonly socialToken: "socialToken";
@@ -522,6 +673,22 @@ export declare const UserScalarFieldEnum: {
     readonly updatedAt: "updatedAt";
 };
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
+export declare const InstagramClickScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly eventId: "eventId";
+    readonly createdAt: "createdAt";
+};
+export type InstagramClickScalarFieldEnum = (typeof InstagramClickScalarFieldEnum)[keyof typeof InstagramClickScalarFieldEnum];
+export declare const AdminAuditLogScalarFieldEnum: {
+    readonly id: "id";
+    readonly adminId: "adminId";
+    readonly action: "action";
+    readonly detail: "detail";
+    readonly ip: "ip";
+    readonly createdAt: "createdAt";
+};
+export type AdminAuditLogScalarFieldEnum = (typeof AdminAuditLogScalarFieldEnum)[keyof typeof AdminAuditLogScalarFieldEnum];
 export declare const EventScalarFieldEnum: {
     readonly id: "id";
     readonly title: "title";
@@ -621,6 +788,8 @@ export type PrismaClientOptions = ({
 };
 export type GlobalOmitConfig = {
     user?: Prisma.UserOmit;
+    instagramClick?: Prisma.InstagramClickOmit;
+    adminAuditLog?: Prisma.AdminAuditLogOmit;
     event?: Prisma.EventOmit;
     category?: Prisma.CategoryOmit;
     attendee?: Prisma.AttendeeOmit;

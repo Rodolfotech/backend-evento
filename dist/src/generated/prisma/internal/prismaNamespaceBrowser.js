@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.NullableJsonNullValueInput = exports.SortOrder = exports.AttendeeScalarFieldEnum = exports.CategoryScalarFieldEnum = exports.EventScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.NullableJsonNullValueInput = exports.SortOrder = exports.AttendeeScalarFieldEnum = exports.CategoryScalarFieldEnum = exports.EventScalarFieldEnum = exports.AdminAuditLogScalarFieldEnum = exports.InstagramClickScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -46,6 +46,8 @@ exports.JsonNull = runtime.JsonNull;
 exports.AnyNull = runtime.AnyNull;
 exports.ModelName = {
     User: 'User',
+    InstagramClick: 'InstagramClick',
+    AdminAuditLog: 'AdminAuditLog',
     Event: 'Event',
     Category: 'Category',
     Attendee: 'Attendee'
@@ -64,6 +66,7 @@ exports.UserScalarFieldEnum = {
     avatar: 'avatar',
     role: 'role',
     isActive: 'isActive',
+    comuna: 'comuna',
     facebookId: 'facebookId',
     instagramId: 'instagramId',
     socialToken: 'socialToken',
@@ -72,6 +75,20 @@ exports.UserScalarFieldEnum = {
     instagramAvatar: 'instagramAvatar',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+};
+exports.InstagramClickScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    eventId: 'eventId',
+    createdAt: 'createdAt'
+};
+exports.AdminAuditLogScalarFieldEnum = {
+    id: 'id',
+    adminId: 'adminId',
+    action: 'action',
+    detail: 'detail',
+    ip: 'ip',
+    createdAt: 'createdAt'
 };
 exports.EventScalarFieldEnum = {
     id: 'id',
