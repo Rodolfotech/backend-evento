@@ -92,6 +92,18 @@ export class SocialService {
       igAvatar = profileData.profile_picture || null;
     }
 
+    // Desvincular la cuenta de Instagram de cualquier otro usuario que la tenga
+    await this.prisma.user.updateMany({
+      where: { instagramId: igUserId, NOT: { id: userId } },
+      data: {
+        instagramId: null,
+        socialToken: null,
+        tokenExpiresAt: null,
+        instagramUsername: null,
+        instagramAvatar: null,
+      },
+    });
+
     await this.prisma.user.update({
       where: { id: userId },
       data: {
