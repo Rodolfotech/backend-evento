@@ -3,17 +3,17 @@ import { RegisterAttendeeDto } from '../common/dto';
 export declare class AttendeesController {
     private attendeesService;
     constructor(attendeesService: AttendeesService);
-    register(body: RegisterAttendeeDto, userId: string): import("../generated/prisma/models").Prisma__AttendeeClient<{
+    register(body: RegisterAttendeeDto, userId: string): Promise<{
         user: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
             comuna: string | null;
+            facebookId: string | null;
+            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
@@ -25,22 +25,22 @@ export declare class AttendeesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            description: string;
             title: string;
             slug: string;
-            ownerId: string;
-            categoryId: string | null;
+            description: string;
+            content: string | null;
+            date: Date;
+            publicationStartDate: Date | null;
+            publicationEndDate: Date | null;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
-            publicationStartDate: Date | null;
-            publicationEndDate: Date | null;
-            content: string | null;
             imageUrl: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
+            ownerId: string;
+            categoryId: string | null;
         };
     } & {
         id: string;
@@ -48,8 +48,6 @@ export declare class AttendeesController {
         userId: string;
         eventId: string;
         status: string;
-    }, never, import("@prisma/client/runtime/client").DefaultArgs, {
-        omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
     findMy(userId: string): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<({
         event: {
@@ -62,22 +60,22 @@ export declare class AttendeesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            description: string;
             title: string;
             slug: string;
-            ownerId: string;
-            categoryId: string | null;
+            description: string;
+            content: string | null;
+            date: Date;
+            publicationStartDate: Date | null;
+            publicationEndDate: Date | null;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
-            publicationStartDate: Date | null;
-            publicationEndDate: Date | null;
-            content: string | null;
             imageUrl: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
+            ownerId: string;
+            categoryId: string | null;
         };
     } & {
         id: string;
@@ -90,13 +88,13 @@ export declare class AttendeesController {
         user: {
             id: string;
             email: string;
-            facebookId: string | null;
-            instagramId: string | null;
             name: string;
             avatar: string | null;
             role: import("../generated/prisma/enums").Role;
             isActive: boolean;
             comuna: string | null;
+            facebookId: string | null;
+            instagramId: string | null;
             socialToken: string | null;
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
@@ -122,22 +120,22 @@ export declare class AttendeesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            description: string;
             title: string;
             slug: string;
-            ownerId: string;
-            categoryId: string | null;
+            description: string;
+            content: string | null;
+            date: Date;
+            publicationStartDate: Date | null;
+            publicationEndDate: Date | null;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
-            publicationStartDate: Date | null;
-            publicationEndDate: Date | null;
-            content: string | null;
             imageUrl: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
+            ownerId: string;
+            categoryId: string | null;
         };
     } & {
         id: string;

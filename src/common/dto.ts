@@ -1,5 +1,7 @@
 import { ApiProperty, ApiBody } from '@nestjs/swagger';
 
+// --- Auth ---
+
 export class LoginDto {
   @ApiProperty({ example: 'user@example.com' })
   email: string;
@@ -18,6 +20,8 @@ export class RegisterDto {
   @ApiProperty({ example: 'password123' })
   password: string;
 }
+
+// --- Events ---
 
 export class CreateEventDto {
   @ApiProperty({ example: 'Concierto Rock 2026' })
@@ -92,6 +96,8 @@ export class UpdateEventDto {
   categoryName?: string;
 }
 
+// --- Categories ---
+
 export class CreateCategoryDto {
   @ApiProperty({ example: 'Música' })
   name: string;
@@ -100,6 +106,8 @@ export class CreateCategoryDto {
   description?: string;
 }
 
+// --- Attendees ---
+
 export class RegisterAttendeeDto {
   @ApiProperty({ required: false })
   userId?: string;
@@ -107,6 +115,8 @@ export class RegisterAttendeeDto {
   @ApiProperty()
   eventId: string;
 }
+
+// --- Social ---
 
 export class ConnectSocialDto {
   @ApiProperty({ example: 'instagram' })

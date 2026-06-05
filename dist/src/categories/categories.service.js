@@ -20,8 +20,15 @@ let CategoriesService = class CategoriesService {
     findAll() {
         return this.prisma.category.findMany({ include: { events: true } });
     }
-    create(data) {
-        return this.prisma.category.create({ data });
+    async create(data) {
+        try {
+            return await this.prisma.category.create({ data });
+        }
+        catch (e) {
+            if (e?.code === 'P2002')
+                throw new common_1.ConflictException('Ya existe una categoría con ese nombre');
+            throw e;
+        }
     }
 };
 exports.CategoriesService = CategoriesService;
