@@ -17,11 +17,18 @@ let AttendeesService = class AttendeesService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    register(userId, eventId) {
-        return this.prisma.attendee.create({
-            data: { userId, eventId },
-            include: { user: { omit: { password: true } }, event: true },
-        });
+    async register(userId, eventId) {
+        try {
+            return await this.prisma.attendee.create({
+                data: { userId, eventId },
+                include: { user: { omit: { password: true } }, event: true },
+            });
+        }
+        catch (e) {
+            if (e?.code === 'P2002')
+                throw new common_1.ConflictException('Ya estás registrado en este evento');
+            throw e;
+        }
     }
     findByEvent(eventId) {
         return this.prisma.attendee.findMany({

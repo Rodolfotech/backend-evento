@@ -84,17 +84,24 @@ let EventsService = class EventsService {
         const categoryId = data.categoryId || await this.resolveCategory(data.categoryName);
         const slug = data.slug || this.generateSlug(data.title);
         const { categoryName: _, ...rest } = data;
-        return this.prisma.event.create({
-            data: {
-                ...rest,
-                slug,
-                categoryId,
-                date: new Date(data.date),
-                publicationStartDate: data.publicationStartDate ? new Date(data.publicationStartDate) : undefined,
-                publicationEndDate: data.publicationEndDate ? new Date(data.publicationEndDate) : undefined,
-            },
-            include: { owner: { omit: { password: true } }, category: true },
-        });
+        try {
+            return await this.prisma.event.create({
+                data: {
+                    ...rest,
+                    slug,
+                    categoryId,
+                    date: new Date(data.date),
+                    publicationStartDate: data.publicationStartDate ? new Date(data.publicationStartDate) : undefined,
+                    publicationEndDate: data.publicationEndDate ? new Date(data.publicationEndDate) : undefined,
+                },
+                include: { owner: { omit: { password: true } }, category: true },
+            });
+        }
+        catch (e) {
+            if (e?.code === 'P2002')
+                throw new common_1.ConflictException('Ya existe un evento con ese slug');
+            throw e;
+        }
     }
     async update(id, data) {
         const updateData = { ...data };

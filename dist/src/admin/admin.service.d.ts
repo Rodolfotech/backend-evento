@@ -10,13 +10,13 @@ export declare class AdminService {
         _count: undefined;
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
         comuna: string | null;
+        facebookId: string | null;
+        instagramId: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
         instagramAvatar: string | null;
@@ -30,9 +30,9 @@ export declare class AdminService {
         _count: undefined;
         ownedEvents: {
             id: string;
-            date: Date;
             title: string;
             slug: string;
+            date: Date;
             city: string | null;
         }[];
         registrations: {
@@ -40,20 +40,20 @@ export declare class AdminService {
             createdAt: Date;
             event: {
                 id: string;
-                date: Date;
                 title: string;
                 slug: string;
+                date: Date;
             };
         }[];
         id: string;
         email: string;
-        facebookId: string | null;
-        instagramId: string | null;
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
         isActive: boolean;
         comuna: string | null;
+        facebookId: string | null;
+        instagramId: string | null;
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
         instagramAvatar: string | null;

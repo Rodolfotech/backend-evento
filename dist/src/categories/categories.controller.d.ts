@@ -8,33 +8,31 @@ export declare class CategoriesController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            date: Date;
-            description: string;
             title: string;
             slug: string;
-            ownerId: string;
-            categoryId: string | null;
+            description: string;
+            content: string | null;
+            date: Date;
+            publicationStartDate: Date | null;
+            publicationEndDate: Date | null;
             locationName: string | null;
             address: string | null;
             city: string | null;
             isOnline: boolean;
-            publicationStartDate: Date | null;
-            publicationEndDate: Date | null;
-            content: string | null;
             imageUrl: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
+            ownerId: string;
+            categoryId: string | null;
         }[];
     } & {
         id: string;
         name: string;
         description: string | null;
     })[]>;
-    create(body: CreateCategoryDto): import("../generated/prisma/models").Prisma__CategoryClient<{
+    create(body: CreateCategoryDto): Promise<{
         id: string;
         name: string;
         description: string | null;
-    }, never, import("@prisma/client/runtime/client").DefaultArgs, {
-        omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
 }
