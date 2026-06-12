@@ -290,7 +290,7 @@ export class SocialService {
     if (!user?.instagramId || !user?.socialToken) return;
 
     const response = await fetch(
-      `https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp&access_token=${user.socialToken}&limit=25`,
+      `https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,thumbnail_url,caption,permalink,timestamp,media_type&access_token=${user.socialToken}&limit=25`,
     );
     if (!response.ok) return;
     const data: any = await response.json();
@@ -299,9 +299,11 @@ export class SocialService {
       id: post.id,
       platform: 'instagram',
       media_url: post.media_url || null,
+      thumbnail_url: post.thumbnail_url || null,
       caption: post.caption || null,
       permalink: post.permalink || null,
       timestamp: post.timestamp,
+      media_type: post.media_type || null,
     }));
 
     await this.prisma.event.update({
@@ -363,7 +365,8 @@ export class SocialService {
     return (data.data || []).map((post: any) => ({
       id: post.id,
       platform: 'instagram' as const,
-      media_url: post.media_url || post.thumbnail_url || null,
+      media_url: post.media_url || null,
+      thumbnail_url: post.thumbnail_url || null,
       caption: post.caption || null,
       permalink: post.permalink || null,
       timestamp: post.timestamp,
