@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
+import { createHmac, randomBytes } from 'crypto';
 
 @Injectable()
 export class SocialService {
@@ -433,6 +434,54 @@ export class SocialService {
     if (score >= 6) return 3;
     if (score >= 3) return 2;
     return 1;
+  }
+
+  async handleDeletionCallback(signedRequest: string): Promise<{ url: string; confirmation_code: string }> {
+    if (!signedRequest) throw new BadRequestException('signed_request requerido');
+
+    const parts = signedRequest.split('.');
+    if (parts.length !== 2) throw new BadRequestException('signed_request inválido');
+
+    const [encodedSig, encodedPayload] = parts;
+
+    const payload = Buffer.from(encodedPayload.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8');
+    const parsed = JSON.parse(payload);
+
+    if (parsed.algorithm?.toUpperCase() !== 'HMAC-SHA256') {
+      throw new BadRequestException('Algoritmo no soportado');
+    }
+
+    const expectedSig = createHmac('sha256', this.igClientSecret)
+      .update(encodedPayload)
+      .digest('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
+
+    if (expectedSig !== encodedSig) {
+      throw new BadRequestException('Firma inválida');
+    }
+
+    const igUserId: string = String(parsed.user_id);
+
+    await this.prisma.user.updateMany({
+      where: { instagramId: igUserId },
+      data: {
+        instagramId: null,
+        socialToken: null,
+        tokenExpiresAt: null,
+        instagramUsername: null,
+        instagramAvatar: null,
+      },
+    });
+
+    const confirmationCode = randomBytes(8).toString('hex').toUpperCase();
+    const frontendUrl = this.config.get<string>('FRONTEND_URL', 'http://localhost:5173');
+
+    return {
+      url: `${frontendUrl}/eliminacion-datos`,
+      confirmation_code: confirmationCode,
+    };
   }
 
   async syncFeed(userId: string, eventId: string) {
