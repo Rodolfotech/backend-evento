@@ -31,4 +31,23 @@ export class UsersService {
       omit: { password: true },
     });
   }
+
+  async deleteAccount(id: string) {
+    await this.prisma.instagramClick.deleteMany({ where: { userId: id } });
+    await this.prisma.adminAuditLog.deleteMany({ where: { adminId: id } });
+    await this.prisma.attendee.deleteMany({ where: { userId: id } });
+
+    const ownedEvents = await this.prisma.event.findMany({
+      where: { ownerId: id },
+      select: { id: true },
+    });
+    const eventIds = ownedEvents.map((e) => e.id);
+
+    if (eventIds.length > 0) {
+      await this.prisma.attendee.deleteMany({ where: { eventId: { in: eventIds } } });
+      await this.prisma.event.deleteMany({ where: { ownerId: id } });
+    }
+
+    await this.prisma.user.delete({ where: { id } });
+  }
 }

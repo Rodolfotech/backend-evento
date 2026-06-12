@@ -1,4 +1,4 @@
-import { Controller, Post, Delete, Get, Param, Body, UseGuards, HttpCode, Query, Req } from '@nestjs/common';
+import { Controller, Post, Delete, Get, Param, Body, UseGuards, HttpCode, Query, Req, HttpException, HttpStatus } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiExcludeEndpoint } from '@nestjs/swagger';
 import { SocialService } from './social.service';
@@ -105,5 +105,16 @@ export class SocialController {
   @HttpCode(200)
   handleWebhook(@Req() req: any) {
     return this.socialService.handleWebhook(req.body);
+  }
+
+  @Post('instagram/deletion')
+  @ApiExcludeEndpoint()
+  @HttpCode(200)
+  async handleDeletion(@Body('signed_request') signedRequest: string) {
+    try {
+      return await this.socialService.handleDeletionCallback(signedRequest);
+    } catch {
+      throw new HttpException('Error al procesar la solicitud de eliminación', HttpStatus.BAD_REQUEST);
+    }
   }
 }

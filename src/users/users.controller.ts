@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Param, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Delete, Param, Body, UseGuards, HttpCode } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
@@ -31,6 +31,15 @@ export class UsersController {
   @ApiOperation({ summary: 'Actualizar perfil del usuario autenticado' })
   updateProfile(@CurrentUser('id') userId: string, @Body() body: { name?: string; avatar?: string }) {
     return this.usersService.update(userId, body);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('me')
+  @ApiBearerAuth()
+  @HttpCode(204)
+  @ApiOperation({ summary: 'Eliminar cuenta del usuario autenticado y todos sus datos' })
+  deleteAccount(@CurrentUser('id') userId: string) {
+    return this.usersService.deleteAccount(userId);
   }
 
   @UseGuards(AuthGuard('jwt'))
