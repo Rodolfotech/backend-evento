@@ -37,6 +37,7 @@ export declare class AttendeesController {
             city: string | null;
             isOnline: boolean;
             imageUrl: string | null;
+            instagramMediaId: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
             ownerId: string;
@@ -72,6 +73,7 @@ export declare class AttendeesController {
             city: string | null;
             isOnline: boolean;
             imageUrl: string | null;
+            instagramMediaId: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
             ownerId: string;
@@ -132,6 +134,7 @@ export declare class AttendeesController {
             city: string | null;
             isOnline: boolean;
             imageUrl: string | null;
+            instagramMediaId: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
             ownerId: string;

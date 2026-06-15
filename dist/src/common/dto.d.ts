@@ -21,6 +21,7 @@ export declare class CreateEventDto {
     publicationStartDate?: string;
     publicationEndDate?: string;
     categoryName?: string;
+    instagramMediaId?: string;
 }
 export declare class UpdateEventDto {
     title?: string;

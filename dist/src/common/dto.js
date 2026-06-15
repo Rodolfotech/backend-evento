@@ -56,6 +56,7 @@ class CreateEventDto {
     publicationStartDate;
     publicationEndDate;
     categoryName;
+    instagramMediaId;
 }
 exports.CreateEventDto = CreateEventDto;
 __decorate([
@@ -110,6 +111,10 @@ __decorate([
     (0, swagger_1.ApiProperty)({ required: false, example: 'Música' }),
     __metadata("design:type", String)
 ], CreateEventDto.prototype, "categoryName", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false, example: '17854321098765432' }),
+    __metadata("design:type", String)
+], CreateEventDto.prototype, "instagramMediaId", void 0);
 class UpdateEventDto {
     title;
     description;

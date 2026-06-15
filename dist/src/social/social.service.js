@@ -13,6 +13,7 @@ exports.SocialService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const prisma_service_1 = require("../prisma/prisma.service");
+const crypto_1 = require("crypto");
 let SocialService = class SocialService {
     prisma;
     config;
@@ -250,7 +251,7 @@ let SocialService = class SocialService {
         });
         if (!user?.instagramId || !user?.socialToken)
             return;
-        const response = await fetch(`https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp&access_token=${user.socialToken}&limit=25`);
+        const response = await fetch(`https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,thumbnail_url,caption,permalink,timestamp,media_type&access_token=${user.socialToken}&limit=25`);
         if (!response.ok)
             return;
         const data = await response.json();
@@ -258,9 +259,11 @@ let SocialService = class SocialService {
             id: post.id,
             platform: 'instagram',
             media_url: post.media_url || null,
+            thumbnail_url: post.thumbnail_url || null,
             caption: post.caption || null,
             permalink: post.permalink || null,
             timestamp: post.timestamp,
+            media_type: post.media_type || null,
         }));
         await this.prisma.event.update({
             where: { id: eventId },
@@ -306,7 +309,8 @@ let SocialService = class SocialService {
         return (data.data || []).map((post) => ({
             id: post.id,
             platform: 'instagram',
-            media_url: post.media_url || post.thumbnail_url || null,
+            media_url: post.media_url || null,
+            thumbnail_url: post.thumbnail_url || null,
             caption: post.caption || null,
             permalink: post.permalink || null,
             timestamp: post.timestamp,
@@ -372,6 +376,45 @@ let SocialService = class SocialService {
             return 2;
         return 1;
     }
+    async handleDeletionCallback(signedRequest) {
+        if (!signedRequest)
+            throw new common_1.BadRequestException('signed_request requerido');
+        const parts = signedRequest.split('.');
+        if (parts.length !== 2)
+            throw new common_1.BadRequestException('signed_request inválido');
+        const [encodedSig, encodedPayload] = parts;
+        const payload = Buffer.from(encodedPayload.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8');
+        const parsed = JSON.parse(payload);
+        if (parsed.algorithm?.toUpperCase() !== 'HMAC-SHA256') {
+            throw new common_1.BadRequestException('Algoritmo no soportado');
+        }
+        const expectedSig = (0, crypto_1.createHmac)('sha256', this.igClientSecret)
+            .update(encodedPayload)
+            .digest('base64')
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=/g, '');
+        if (expectedSig !== encodedSig) {
+            throw new common_1.BadRequestException('Firma inválida');
+        }
+        const igUserId = String(parsed.user_id);
+        await this.prisma.user.updateMany({
+            where: { instagramId: igUserId },
+            data: {
+                instagramId: null,
+                socialToken: null,
+                tokenExpiresAt: null,
+                instagramUsername: null,
+                instagramAvatar: null,
+            },
+        });
+        const confirmationCode = (0, crypto_1.randomBytes)(8).toString('hex').toUpperCase();
+        const frontendUrl = this.config.get('FRONTEND_URL', 'http://localhost:5173');
+        return {
+            url: `${frontendUrl}/eliminacion-datos`,
+            confirmation_code: confirmationCode,
+        };
+    }
     async syncFeed(userId, eventId) {
         const event = await this.prisma.event.findUnique({
             where: { id: eventId },
@@ -391,6 +434,103 @@ let SocialService = class SocialService {
             throw new common_1.BadRequestException('Instagram no está conectado');
         }
         return this.fetchAndSaveFeed(userId, eventId);
+    }
+    extractUrlPath(url) {
+        try {
+            return new URL(url).pathname;
+        }
+        catch {
+            return '';
+        }
+    }
+    async getOwnerToken(ownerId, cache) {
+        const cached = cache.get(ownerId);
+        if (cached)
+            return cached;
+        const user = await this.prisma.user.findUnique({
+            where: { id: ownerId },
+            select: { socialToken: true, tokenExpiresAt: true },
+        });
+        if (!user?.socialToken)
+            return null;
+        let token = user.socialToken;
+        if (user.tokenExpiresAt && user.tokenExpiresAt.getTime() - Date.now() < 86400000) {
+            try {
+                token = (await this.refreshToken(ownerId)).socialToken ?? token;
+            }
+            catch { }
+        }
+        cache.set(ownerId, token);
+        return token;
+    }
+    async refreshEventImages() {
+        const events = await this.prisma.event.findMany({
+            where: { imageUrl: { contains: 'cdninstagram.com' } },
+            select: { id: true, instagramMediaId: true, ownerId: true, imageUrl: true },
+        });
+        const tokenCache = new Map();
+        const mediaCache = new Map();
+        let updated = 0;
+        let skipped = 0;
+        for (const event of events) {
+            if (!event.imageUrl) {
+                skipped++;
+                continue;
+            }
+            const token = await this.getOwnerToken(event.ownerId, tokenCache);
+            if (!token) {
+                skipped++;
+                continue;
+            }
+            if (event.instagramMediaId) {
+                try {
+                    const res = await fetch(`https://graph.instagram.com/${event.instagramMediaId}?fields=id,media_url&access_token=${token}`);
+                    if (!res.ok) {
+                        skipped++;
+                        continue;
+                    }
+                    const media = await res.json();
+                    if (!media.media_url) {
+                        skipped++;
+                        continue;
+                    }
+                    await this.prisma.event.update({ where: { id: event.id }, data: { imageUrl: media.media_url } });
+                    updated++;
+                }
+                catch {
+                    skipped++;
+                }
+                continue;
+            }
+            if (!mediaCache.has(event.ownerId)) {
+                try {
+                    const user = await this.prisma.user.findUnique({
+                        where: { id: event.ownerId },
+                        select: { instagramId: true },
+                    });
+                    const res = await fetch(`https://graph.instagram.com/${user?.instagramId}/media?fields=id,media_url&access_token=${token}&limit=50`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        mediaCache.set(event.ownerId, (data.data || []).map((p) => ({ id: p.id, media_url: p.media_url || '' })));
+                    }
+                }
+                catch { }
+            }
+            const feed = mediaCache.get(event.ownerId) ?? [];
+            const storedPath = this.extractUrlPath(event.imageUrl);
+            const match = feed.find(m => m.media_url && this.extractUrlPath(m.media_url) === storedPath);
+            if (match?.media_url) {
+                await this.prisma.event.update({
+                    where: { id: event.id },
+                    data: { imageUrl: match.media_url, instagramMediaId: match.id },
+                });
+                updated++;
+            }
+            else {
+                skipped++;
+            }
+        }
+        return { updated, skipped };
     }
 };
 exports.SocialService = SocialService;

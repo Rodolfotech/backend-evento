@@ -42,6 +42,7 @@ export declare class EventsService {
             city: string | null;
             isOnline: boolean;
             imageUrl: string | null;
+            instagramMediaId: string | null;
             socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
             lastSync: Date | null;
             ownerId: string;
@@ -97,6 +98,7 @@ export declare class EventsService {
         city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
+        instagramMediaId: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
         ownerId: string;
@@ -143,6 +145,7 @@ export declare class EventsService {
         city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
+        instagramMediaId: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
         ownerId: string;
@@ -164,6 +167,7 @@ export declare class EventsService {
         city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
+        instagramMediaId: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
         ownerId: string;
@@ -186,6 +190,7 @@ export declare class EventsService {
         city?: string;
         isOnline?: boolean;
         imageUrl?: string;
+        instagramMediaId?: string;
         publicationStartDate?: string;
         publicationEndDate?: string;
     }): Promise<{
@@ -227,6 +232,7 @@ export declare class EventsService {
         city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
+        instagramMediaId: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
         ownerId: string;
@@ -261,6 +267,7 @@ export declare class EventsService {
         city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
+        instagramMediaId: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
         ownerId: string;
@@ -282,6 +289,7 @@ export declare class EventsService {
         city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
+        instagramMediaId: string | null;
         socialFeed: import("@prisma/client/runtime/client").JsonValue | null;
         lastSync: Date | null;
         ownerId: string;
