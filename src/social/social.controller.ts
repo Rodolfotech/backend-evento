@@ -107,6 +107,12 @@ export class SocialController {
     return this.socialService.handleWebhook(req.body);
   }
 
+  @Get('refresh-images')
+  @ApiOperation({ summary: 'Refrescar imageUrl de eventos desde Instagram (cron job)' })
+  refreshEventImages() {
+    return this.socialService.refreshEventImages();
+  }
+
   @Post('instagram/deletion')
   @ApiExcludeEndpoint()
   @HttpCode(200)

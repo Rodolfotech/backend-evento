@@ -72,9 +72,10 @@ model Event {
   city            String?
   isOnline        Boolean   @default(false)
 
-  imageUrl        String?
-  socialFeed      Json?     @db.JsonB
-  lastSync        DateTime?
+  imageUrl           String?
+  instagramMediaId   String?
+  socialFeed         Json?     @db.JsonB
+  lastSync           DateTime?
 
   ownerId         String
   owner           User      @relation("EventOwner", fields: [ownerId], references: [id])

@@ -62,6 +62,9 @@ export class CreateEventDto {
 
   @ApiProperty({ required: false, example: 'Música' })
   categoryName?: string;
+
+  @ApiProperty({ required: false, example: '17854321098765432' })
+  instagramMediaId?: string;
 }
 
 export class UpdateEventDto {

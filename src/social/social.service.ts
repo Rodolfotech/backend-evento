@@ -511,4 +511,62 @@ export class SocialService {
 
     return this.fetchAndSaveFeed(userId, eventId);
   }
+
+  async refreshEventImages(): Promise<{ updated: number; skipped: number }> {
+    const events = await this.prisma.event.findMany({
+      where: { instagramMediaId: { not: null } },
+      select: { id: true, instagramMediaId: true, ownerId: true },
+    });
+
+    const ownerTokens = new Map<string, string>();
+    let updated = 0;
+    let skipped = 0;
+
+    for (const event of events) {
+      if (!event.instagramMediaId) { skipped++; continue; }
+
+      let token = ownerTokens.get(event.ownerId);
+      if (!token) {
+        const user = await this.prisma.user.findUnique({
+          where: { id: event.ownerId },
+          select: { socialToken: true, tokenExpiresAt: true },
+        });
+        if (!user?.socialToken) { skipped++; continue; }
+
+        // Auto-refresh token if it expires within 24 hours
+        if (user.tokenExpiresAt && user.tokenExpiresAt.getTime() - Date.now() < 86400000) {
+          try {
+            const refreshed = await this.refreshToken(event.ownerId);
+            token = refreshed.socialToken ?? undefined;
+          } catch {
+            token = user.socialToken;
+          }
+        } else {
+          token = user.socialToken;
+        }
+        if (token) ownerTokens.set(event.ownerId, token);
+      }
+
+      if (!token) { skipped++; continue; }
+
+      try {
+        const res = await fetch(
+          `https://graph.instagram.com/${event.instagramMediaId}?fields=id,media_url&access_token=${token}`,
+        );
+        if (!res.ok) { skipped++; continue; }
+        const media: any = await res.json();
+        if (!media.media_url) { skipped++; continue; }
+
+        await this.prisma.event.update({
+          where: { id: event.id },
+          data: { imageUrl: media.media_url },
+        });
+        updated++;
+      } catch {
+        skipped++;
+      }
+    }
+
+    return { updated, skipped };
+  }
 }
