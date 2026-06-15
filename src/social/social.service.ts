@@ -512,57 +512,87 @@ export class SocialService {
     return this.fetchAndSaveFeed(userId, eventId);
   }
 
+  private extractUrlPath(url: string): string {
+    try { return new URL(url).pathname; } catch { return ''; }
+  }
+
+  private async getOwnerToken(ownerId: string, cache: Map<string, string>): Promise<string | null> {
+    const cached = cache.get(ownerId);
+    if (cached) return cached;
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: ownerId },
+      select: { socialToken: true, tokenExpiresAt: true },
+    });
+    if (!user?.socialToken) return null;
+
+    let token = user.socialToken;
+    if (user.tokenExpiresAt && user.tokenExpiresAt.getTime() - Date.now() < 86400000) {
+      try { token = (await this.refreshToken(ownerId)).socialToken ?? token; } catch {}
+    }
+    cache.set(ownerId, token);
+    return token;
+  }
+
   async refreshEventImages(): Promise<{ updated: number; skipped: number }> {
     const events = await this.prisma.event.findMany({
-      where: { instagramMediaId: { not: null } },
-      select: { id: true, instagramMediaId: true, ownerId: true },
+      where: { imageUrl: { contains: 'cdninstagram.com' } },
+      select: { id: true, instagramMediaId: true, ownerId: true, imageUrl: true },
     });
 
-    const ownerTokens = new Map<string, string>();
+    const tokenCache = new Map<string, string>();
+    const mediaCache = new Map<string, Array<{ id: string; media_url: string }>>();
     let updated = 0;
     let skipped = 0;
 
     for (const event of events) {
-      if (!event.instagramMediaId) { skipped++; continue; }
-
-      let token = ownerTokens.get(event.ownerId);
-      if (!token) {
-        const user = await this.prisma.user.findUnique({
-          where: { id: event.ownerId },
-          select: { socialToken: true, tokenExpiresAt: true },
-        });
-        if (!user?.socialToken) { skipped++; continue; }
-
-        // Auto-refresh token if it expires within 24 hours
-        if (user.tokenExpiresAt && user.tokenExpiresAt.getTime() - Date.now() < 86400000) {
-          try {
-            const refreshed = await this.refreshToken(event.ownerId);
-            token = refreshed.socialToken ?? undefined;
-          } catch {
-            token = user.socialToken;
-          }
-        } else {
-          token = user.socialToken;
-        }
-        if (token) ownerTokens.set(event.ownerId, token);
-      }
-
+      if (!event.imageUrl) { skipped++; continue; }
+      const token = await this.getOwnerToken(event.ownerId, tokenCache);
       if (!token) { skipped++; continue; }
 
-      try {
-        const res = await fetch(
-          `https://graph.instagram.com/${event.instagramMediaId}?fields=id,media_url&access_token=${token}`,
-        );
-        if (!res.ok) { skipped++; continue; }
-        const media: any = await res.json();
-        if (!media.media_url) { skipped++; continue; }
+      // Case 1: has instagramMediaId → fetch fresh URL directly
+      if (event.instagramMediaId) {
+        try {
+          const res = await fetch(
+            `https://graph.instagram.com/${event.instagramMediaId}?fields=id,media_url&access_token=${token}`,
+          );
+          if (!res.ok) { skipped++; continue; }
+          const media: any = await res.json();
+          if (!media.media_url) { skipped++; continue; }
+          await this.prisma.event.update({ where: { id: event.id }, data: { imageUrl: media.media_url } });
+          updated++;
+        } catch { skipped++; }
+        continue;
+      }
 
+      // Case 2: no instagramMediaId → match by URL path against owner's media feed
+      if (!mediaCache.has(event.ownerId)) {
+        try {
+          const user = await this.prisma.user.findUnique({
+            where: { id: event.ownerId },
+            select: { instagramId: true },
+          });
+          const res = await fetch(
+            `https://graph.instagram.com/${user?.instagramId}/media?fields=id,media_url&access_token=${token}&limit=50`,
+          );
+          if (res.ok) {
+            const data: any = await res.json();
+            mediaCache.set(event.ownerId, (data.data || []).map((p: any) => ({ id: p.id, media_url: p.media_url || '' })));
+          }
+        } catch {}
+      }
+
+      const feed = mediaCache.get(event.ownerId) ?? [];
+      const storedPath = this.extractUrlPath(event.imageUrl);
+      const match = feed.find(m => m.media_url && this.extractUrlPath(m.media_url) === storedPath);
+
+      if (match?.media_url) {
         await this.prisma.event.update({
           where: { id: event.id },
-          data: { imageUrl: media.media_url },
+          data: { imageUrl: match.media_url, instagramMediaId: match.id },
         });
         updated++;
-      } catch {
+      } else {
         skipped++;
       }
     }
