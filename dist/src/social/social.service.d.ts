@@ -120,5 +120,15 @@ export declare class SocialService {
         level: number;
     }>;
     private calculateLevel;
+    handleDeletionCallback(signedRequest: string): Promise<{
+        url: string;
+        confirmation_code: string;
+    }>;
     syncFeed(userId: string, eventId: string): Promise<void>;
+    private extractUrlPath;
+    private getOwnerToken;
+    refreshEventImages(): Promise<{
+        updated: number;
+        skipped: number;
+    }>;
 }

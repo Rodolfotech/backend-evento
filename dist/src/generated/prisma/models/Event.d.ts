@@ -20,6 +20,7 @@ export type EventMinAggregateOutputType = {
     city: string | null;
     isOnline: boolean | null;
     imageUrl: string | null;
+    instagramMediaId: string | null;
     lastSync: Date | null;
     ownerId: string | null;
     categoryId: string | null;
@@ -40,6 +41,7 @@ export type EventMaxAggregateOutputType = {
     city: string | null;
     isOnline: boolean | null;
     imageUrl: string | null;
+    instagramMediaId: string | null;
     lastSync: Date | null;
     ownerId: string | null;
     categoryId: string | null;
@@ -60,6 +62,7 @@ export type EventCountAggregateOutputType = {
     city: number;
     isOnline: number;
     imageUrl: number;
+    instagramMediaId: number;
     socialFeed: number;
     lastSync: number;
     ownerId: number;
@@ -82,6 +85,7 @@ export type EventMinAggregateInputType = {
     city?: true;
     isOnline?: true;
     imageUrl?: true;
+    instagramMediaId?: true;
     lastSync?: true;
     ownerId?: true;
     categoryId?: true;
@@ -102,6 +106,7 @@ export type EventMaxAggregateInputType = {
     city?: true;
     isOnline?: true;
     imageUrl?: true;
+    instagramMediaId?: true;
     lastSync?: true;
     ownerId?: true;
     categoryId?: true;
@@ -122,6 +127,7 @@ export type EventCountAggregateInputType = {
     city?: true;
     isOnline?: true;
     imageUrl?: true;
+    instagramMediaId?: true;
     socialFeed?: true;
     lastSync?: true;
     ownerId?: true;
@@ -168,6 +174,7 @@ export type EventGroupByOutputType = {
     city: string | null;
     isOnline: boolean;
     imageUrl: string | null;
+    instagramMediaId: string | null;
     socialFeed: runtime.JsonValue | null;
     lastSync: Date | null;
     ownerId: string;
@@ -198,6 +205,7 @@ export type EventWhereInput = {
     city?: Prisma.StringNullableFilter<"Event"> | string | null;
     isOnline?: Prisma.BoolFilter<"Event"> | boolean;
     imageUrl?: Prisma.StringNullableFilter<"Event"> | string | null;
+    instagramMediaId?: Prisma.StringNullableFilter<"Event"> | string | null;
     socialFeed?: Prisma.JsonNullableFilter<"Event">;
     lastSync?: Prisma.DateTimeNullableFilter<"Event"> | Date | string | null;
     ownerId?: Prisma.StringFilter<"Event"> | string;
@@ -222,6 +230,7 @@ export type EventOrderByWithRelationInput = {
     city?: Prisma.SortOrderInput | Prisma.SortOrder;
     isOnline?: Prisma.SortOrder;
     imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    instagramMediaId?: Prisma.SortOrderInput | Prisma.SortOrder;
     socialFeed?: Prisma.SortOrderInput | Prisma.SortOrder;
     lastSync?: Prisma.SortOrderInput | Prisma.SortOrder;
     ownerId?: Prisma.SortOrder;
@@ -249,6 +258,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
     city?: Prisma.StringNullableFilter<"Event"> | string | null;
     isOnline?: Prisma.BoolFilter<"Event"> | boolean;
     imageUrl?: Prisma.StringNullableFilter<"Event"> | string | null;
+    instagramMediaId?: Prisma.StringNullableFilter<"Event"> | string | null;
     socialFeed?: Prisma.JsonNullableFilter<"Event">;
     lastSync?: Prisma.DateTimeNullableFilter<"Event"> | Date | string | null;
     ownerId?: Prisma.StringFilter<"Event"> | string;
@@ -273,6 +283,7 @@ export type EventOrderByWithAggregationInput = {
     city?: Prisma.SortOrderInput | Prisma.SortOrder;
     isOnline?: Prisma.SortOrder;
     imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    instagramMediaId?: Prisma.SortOrderInput | Prisma.SortOrder;
     socialFeed?: Prisma.SortOrderInput | Prisma.SortOrder;
     lastSync?: Prisma.SortOrderInput | Prisma.SortOrder;
     ownerId?: Prisma.SortOrder;
@@ -300,6 +311,7 @@ export type EventScalarWhereWithAggregatesInput = {
     city?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null;
     isOnline?: Prisma.BoolWithAggregatesFilter<"Event"> | boolean;
     imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null;
+    instagramMediaId?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null;
     socialFeed?: Prisma.JsonNullableWithAggregatesFilter<"Event">;
     lastSync?: Prisma.DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null;
     ownerId?: Prisma.StringWithAggregatesFilter<"Event"> | string;
@@ -321,6 +333,7 @@ export type EventCreateInput = {
     city?: string | null;
     isOnline?: boolean;
     imageUrl?: string | null;
+    instagramMediaId?: string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Date | string | null;
     createdAt?: Date | string;
@@ -343,6 +356,7 @@ export type EventUncheckedCreateInput = {
     city?: string | null;
     isOnline?: boolean;
     imageUrl?: string | null;
+    instagramMediaId?: string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Date | string | null;
     ownerId: string;
@@ -365,6 +379,7 @@ export type EventUpdateInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -387,6 +402,7 @@ export type EventUncheckedUpdateInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     ownerId?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -409,6 +425,7 @@ export type EventCreateManyInput = {
     city?: string | null;
     isOnline?: boolean;
     imageUrl?: string | null;
+    instagramMediaId?: string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Date | string | null;
     ownerId: string;
@@ -430,6 +447,7 @@ export type EventUpdateManyMutationInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -449,6 +467,7 @@ export type EventUncheckedUpdateManyInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     ownerId?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -478,6 +497,7 @@ export type EventCountOrderByAggregateInput = {
     city?: Prisma.SortOrder;
     isOnline?: Prisma.SortOrder;
     imageUrl?: Prisma.SortOrder;
+    instagramMediaId?: Prisma.SortOrder;
     socialFeed?: Prisma.SortOrder;
     lastSync?: Prisma.SortOrder;
     ownerId?: Prisma.SortOrder;
@@ -499,6 +519,7 @@ export type EventMaxOrderByAggregateInput = {
     city?: Prisma.SortOrder;
     isOnline?: Prisma.SortOrder;
     imageUrl?: Prisma.SortOrder;
+    instagramMediaId?: Prisma.SortOrder;
     lastSync?: Prisma.SortOrder;
     ownerId?: Prisma.SortOrder;
     categoryId?: Prisma.SortOrder;
@@ -519,6 +540,7 @@ export type EventMinOrderByAggregateInput = {
     city?: Prisma.SortOrder;
     isOnline?: Prisma.SortOrder;
     imageUrl?: Prisma.SortOrder;
+    instagramMediaId?: Prisma.SortOrder;
     lastSync?: Prisma.SortOrder;
     ownerId?: Prisma.SortOrder;
     categoryId?: Prisma.SortOrder;
@@ -631,6 +653,7 @@ export type EventCreateWithoutOwnerInput = {
     city?: string | null;
     isOnline?: boolean;
     imageUrl?: string | null;
+    instagramMediaId?: string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Date | string | null;
     createdAt?: Date | string;
@@ -652,6 +675,7 @@ export type EventUncheckedCreateWithoutOwnerInput = {
     city?: string | null;
     isOnline?: boolean;
     imageUrl?: string | null;
+    instagramMediaId?: string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Date | string | null;
     categoryId?: string | null;
@@ -697,6 +721,7 @@ export type EventScalarWhereInput = {
     city?: Prisma.StringNullableFilter<"Event"> | string | null;
     isOnline?: Prisma.BoolFilter<"Event"> | boolean;
     imageUrl?: Prisma.StringNullableFilter<"Event"> | string | null;
+    instagramMediaId?: Prisma.StringNullableFilter<"Event"> | string | null;
     socialFeed?: Prisma.JsonNullableFilter<"Event">;
     lastSync?: Prisma.DateTimeNullableFilter<"Event"> | Date | string | null;
     ownerId?: Prisma.StringFilter<"Event"> | string;
@@ -718,6 +743,7 @@ export type EventCreateWithoutCategoryInput = {
     city?: string | null;
     isOnline?: boolean;
     imageUrl?: string | null;
+    instagramMediaId?: string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Date | string | null;
     createdAt?: Date | string;
@@ -739,6 +765,7 @@ export type EventUncheckedCreateWithoutCategoryInput = {
     city?: string | null;
     isOnline?: boolean;
     imageUrl?: string | null;
+    instagramMediaId?: string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Date | string | null;
     ownerId: string;
@@ -781,6 +808,7 @@ export type EventCreateWithoutAttendeesInput = {
     city?: string | null;
     isOnline?: boolean;
     imageUrl?: string | null;
+    instagramMediaId?: string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Date | string | null;
     createdAt?: Date | string;
@@ -802,6 +830,7 @@ export type EventUncheckedCreateWithoutAttendeesInput = {
     city?: string | null;
     isOnline?: boolean;
     imageUrl?: string | null;
+    instagramMediaId?: string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Date | string | null;
     ownerId: string;
@@ -836,6 +865,7 @@ export type EventUpdateWithoutAttendeesInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -857,6 +887,7 @@ export type EventUncheckedUpdateWithoutAttendeesInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     ownerId?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -878,6 +909,7 @@ export type EventCreateManyOwnerInput = {
     city?: string | null;
     isOnline?: boolean;
     imageUrl?: string | null;
+    instagramMediaId?: string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Date | string | null;
     categoryId?: string | null;
@@ -898,6 +930,7 @@ export type EventUpdateWithoutOwnerInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -919,6 +952,7 @@ export type EventUncheckedUpdateWithoutOwnerInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -940,6 +974,7 @@ export type EventUncheckedUpdateManyWithoutOwnerInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -960,6 +995,7 @@ export type EventCreateManyCategoryInput = {
     city?: string | null;
     isOnline?: boolean;
     imageUrl?: string | null;
+    instagramMediaId?: string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Date | string | null;
     ownerId: string;
@@ -980,6 +1016,7 @@ export type EventUpdateWithoutCategoryInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1001,6 +1038,7 @@ export type EventUncheckedUpdateWithoutCategoryInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     ownerId?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1022,6 +1060,7 @@ export type EventUncheckedUpdateManyWithoutCategoryInput = {
     city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instagramMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     socialFeed?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastSync?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     ownerId?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1054,6 +1093,7 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     city?: boolean;
     isOnline?: boolean;
     imageUrl?: boolean;
+    instagramMediaId?: boolean;
     socialFeed?: boolean;
     lastSync?: boolean;
     ownerId?: boolean;
@@ -1079,6 +1119,7 @@ export type EventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     city?: boolean;
     isOnline?: boolean;
     imageUrl?: boolean;
+    instagramMediaId?: boolean;
     socialFeed?: boolean;
     lastSync?: boolean;
     ownerId?: boolean;
@@ -1102,6 +1143,7 @@ export type EventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     city?: boolean;
     isOnline?: boolean;
     imageUrl?: boolean;
+    instagramMediaId?: boolean;
     socialFeed?: boolean;
     lastSync?: boolean;
     ownerId?: boolean;
@@ -1125,6 +1167,7 @@ export type EventSelectScalar = {
     city?: boolean;
     isOnline?: boolean;
     imageUrl?: boolean;
+    instagramMediaId?: boolean;
     socialFeed?: boolean;
     lastSync?: boolean;
     ownerId?: boolean;
@@ -1132,7 +1175,7 @@ export type EventSelectScalar = {
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "description" | "content" | "date" | "publicationStartDate" | "publicationEndDate" | "locationName" | "address" | "city" | "isOnline" | "imageUrl" | "socialFeed" | "lastSync" | "ownerId" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>;
+export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "description" | "content" | "date" | "publicationStartDate" | "publicationEndDate" | "locationName" | "address" | "city" | "isOnline" | "imageUrl" | "instagramMediaId" | "socialFeed" | "lastSync" | "ownerId" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>;
 export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     category?: boolean | Prisma.Event$categoryArgs<ExtArgs>;
@@ -1168,6 +1211,7 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
         city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
+        instagramMediaId: string | null;
         socialFeed: runtime.JsonValue | null;
         lastSync: Date | null;
         ownerId: string;
@@ -1247,6 +1291,7 @@ export interface EventFieldRefs {
     readonly city: Prisma.FieldRef<"Event", 'String'>;
     readonly isOnline: Prisma.FieldRef<"Event", 'Boolean'>;
     readonly imageUrl: Prisma.FieldRef<"Event", 'String'>;
+    readonly instagramMediaId: Prisma.FieldRef<"Event", 'String'>;
     readonly socialFeed: Prisma.FieldRef<"Event", 'Json'>;
     readonly lastSync: Prisma.FieldRef<"Event", 'DateTime'>;
     readonly ownerId: Prisma.FieldRef<"Event", 'String'>;

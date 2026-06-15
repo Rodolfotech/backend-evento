@@ -56,6 +56,7 @@ export declare class UsersController {
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
+    deleteAccount(userId: string): Promise<void>;
     findOne(id: string): import("../generated/prisma/models").Prisma__UserClient<{
         id: string;
         email: string;

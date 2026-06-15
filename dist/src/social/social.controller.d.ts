@@ -113,4 +113,12 @@ export declare class SocialController {
     syncFeed(userId: string, eventId: string): Promise<void>;
     verifyWebhook(mode: string, challenge: string, verifyToken: string): Promise<string>;
     handleWebhook(req: any): Promise<void>;
+    refreshEventImages(): Promise<{
+        updated: number;
+        skipped: number;
+    }>;
+    handleDeletion(signedRequest: string): Promise<{
+        url: string;
+        confirmation_code: string;
+    }>;
 }

@@ -60,6 +60,17 @@ let SocialController = class SocialController {
     handleWebhook(req) {
         return this.socialService.handleWebhook(req.body);
     }
+    refreshEventImages() {
+        return this.socialService.refreshEventImages();
+    }
+    async handleDeletion(signedRequest) {
+        try {
+            return await this.socialService.handleDeletionCallback(signedRequest);
+        }
+        catch {
+            throw new common_1.HttpException('Error al procesar la solicitud de eliminación', common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
 };
 exports.SocialController = SocialController;
 __decorate([
@@ -185,6 +196,22 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], SocialController.prototype, "handleWebhook", null);
+__decorate([
+    (0, common_1.Get)('refresh-images'),
+    (0, swagger_1.ApiOperation)({ summary: 'Refrescar imageUrl de eventos desde Instagram (cron job)' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], SocialController.prototype, "refreshEventImages", null);
+__decorate([
+    (0, common_1.Post)('instagram/deletion'),
+    (0, swagger_1.ApiExcludeEndpoint)(),
+    (0, common_1.HttpCode)(200),
+    __param(0, (0, common_1.Body)('signed_request')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], SocialController.prototype, "handleDeletion", null);
 exports.SocialController = SocialController = __decorate([
     (0, swagger_1.ApiTags)('Social'),
     (0, common_1.Controller)('social'),

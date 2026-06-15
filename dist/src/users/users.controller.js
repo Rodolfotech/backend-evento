@@ -32,6 +32,9 @@ let UsersController = class UsersController {
     updateProfile(userId, body) {
         return this.usersService.update(userId, body);
     }
+    deleteAccount(userId) {
+        return this.usersService.deleteAccount(userId);
+    }
     findOne(id) {
         return this.usersService.findById(id);
     }
@@ -67,6 +70,17 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "updateProfile", null);
+__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Delete)('me'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.HttpCode)(204),
+    (0, swagger_1.ApiOperation)({ summary: 'Eliminar cuenta del usuario autenticado y todos sus datos' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "deleteAccount", null);
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Get)(':id'),
