@@ -89,6 +89,7 @@ export class EventsService {
     city?: string;
     isOnline?: boolean;
     imageUrl?: string;
+    instagramMediaId?: string;
     publicationStartDate?: string;
     publicationEndDate?: string;
   }) {
