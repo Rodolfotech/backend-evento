@@ -75,6 +75,7 @@ export declare const EventScalarFieldEnum: {
     readonly city: "city";
     readonly isOnline: "isOnline";
     readonly imageUrl: "imageUrl";
+    readonly instagramMediaId: "instagramMediaId";
     readonly socialFeed: "socialFeed";
     readonly lastSync: "lastSync";
     readonly ownerId: "ownerId";

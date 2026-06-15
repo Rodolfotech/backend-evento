@@ -99,4 +99,5 @@ export declare class UsersService {
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
+    deleteAccount(id: string): Promise<void>;
 }
