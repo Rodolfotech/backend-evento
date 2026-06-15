@@ -60,10 +60,15 @@ export class EventsService {
 
   private async resolveCategory(categoryName?: string): Promise<string | undefined> {
     if (!categoryName) return undefined;
-    const existing = await this.prisma.category.findUnique({ where: { name: categoryName } });
-    if (existing) return existing.id;
-    const created = await this.prisma.category.create({ data: { name: categoryName } });
-    return created.id;
+    try {
+      const existing = await this.prisma.category.findUnique({ where: { name: categoryName } });
+      if (existing) return existing.id;
+      const created = await this.prisma.category.create({ data: { name: categoryName } });
+      return created.id;
+    } catch (e: any) {
+      console.error('[resolveCategory] Error resolving category:', categoryName, e?.message);
+      throw e;
+    }
   }
 
   private generateSlug(title: string): string {
@@ -95,20 +100,28 @@ export class EventsService {
   }) {
     const categoryId = data.categoryId || await this.resolveCategory(data.categoryName);
     const slug = data.slug || this.generateSlug(data.title);
-    const { categoryName: _, ...rest } = data;
     try {
       return await this.prisma.event.create({
         data: {
-          ...rest,
+          title: data.title,
+          description: data.description,
           slug,
-          categoryId,
           date: new Date(data.date),
+          ownerId: data.ownerId,
+          categoryId,
+          locationName: data.locationName,
+          address: data.address,
+          city: data.city,
+          isOnline: data.isOnline ?? false,
+          imageUrl: data.imageUrl,
+          instagramMediaId: data.instagramMediaId,
           publicationStartDate: data.publicationStartDate ? new Date(data.publicationStartDate) : undefined,
           publicationEndDate: data.publicationEndDate ? new Date(data.publicationEndDate) : undefined,
         },
         include: { owner: { omit: { password: true } }, category: true },
       });
     } catch (e: any) {
+      console.error('[events.create] Error:', JSON.stringify({ code: e?.code, message: e?.message, meta: e?.meta }));
       if (e?.code === 'P2002') throw new ConflictException('Ya existe un evento con ese slug');
       throw e;
     }
