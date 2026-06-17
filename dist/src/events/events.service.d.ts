@@ -23,11 +23,23 @@ export declare class EventsService {
                 tokenExpiresAt: Date | null;
                 instagramUsername: string | null;
                 instagramAvatar: string | null;
+                companyInstagram: string | null;
+                website: string | null;
+                companyRut: string | null;
+                companyGiro: string | null;
+                companyPhone: string | null;
+                companyAddress: string | null;
+                city: string | null;
+                adminFirstName: string | null;
+                adminLastName: string | null;
+                adminRut: string | null;
+                adminPhone: string | null;
                 createdAt: Date;
                 updatedAt: Date;
             };
         } & {
             id: string;
+            city: string | null;
             createdAt: Date;
             updatedAt: Date;
             title: string;
@@ -39,7 +51,6 @@ export declare class EventsService {
             publicationEndDate: Date | null;
             locationName: string | null;
             address: string | null;
-            city: string | null;
             isOnline: boolean;
             imageUrl: string | null;
             instagramMediaId: string | null;
@@ -72,6 +83,17 @@ export declare class EventsService {
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
             instagramAvatar: string | null;
+            companyInstagram: string | null;
+            website: string | null;
+            companyRut: string | null;
+            companyGiro: string | null;
+            companyPhone: string | null;
+            companyAddress: string | null;
+            city: string | null;
+            adminFirstName: string | null;
+            adminLastName: string | null;
+            adminRut: string | null;
+            adminPhone: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -84,6 +106,7 @@ export declare class EventsService {
         }[];
     } & {
         id: string;
+        city: string | null;
         createdAt: Date;
         updatedAt: Date;
         title: string;
@@ -95,7 +118,6 @@ export declare class EventsService {
         publicationEndDate: Date | null;
         locationName: string | null;
         address: string | null;
-        city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
         instagramMediaId: string | null;
@@ -126,11 +148,23 @@ export declare class EventsService {
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
             instagramAvatar: string | null;
+            companyInstagram: string | null;
+            website: string | null;
+            companyRut: string | null;
+            companyGiro: string | null;
+            companyPhone: string | null;
+            companyAddress: string | null;
+            city: string | null;
+            adminFirstName: string | null;
+            adminLastName: string | null;
+            adminRut: string | null;
+            adminPhone: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
     } & {
         id: string;
+        city: string | null;
         createdAt: Date;
         updatedAt: Date;
         title: string;
@@ -142,7 +176,6 @@ export declare class EventsService {
         publicationEndDate: Date | null;
         locationName: string | null;
         address: string | null;
-        city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
         instagramMediaId: string | null;
@@ -153,6 +186,7 @@ export declare class EventsService {
     })[]>;
     findById(id: string): import("../generated/prisma/models").Prisma__EventClient<{
         id: string;
+        city: string | null;
         createdAt: Date;
         updatedAt: Date;
         title: string;
@@ -164,7 +198,6 @@ export declare class EventsService {
         publicationEndDate: Date | null;
         locationName: string | null;
         address: string | null;
-        city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
         instagramMediaId: string | null;
@@ -213,11 +246,23 @@ export declare class EventsService {
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
             instagramAvatar: string | null;
+            companyInstagram: string | null;
+            website: string | null;
+            companyRut: string | null;
+            companyGiro: string | null;
+            companyPhone: string | null;
+            companyAddress: string | null;
+            city: string | null;
+            adminFirstName: string | null;
+            adminLastName: string | null;
+            adminRut: string | null;
+            adminPhone: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
     } & {
         id: string;
+        city: string | null;
         createdAt: Date;
         updatedAt: Date;
         title: string;
@@ -229,7 +274,6 @@ export declare class EventsService {
         publicationEndDate: Date | null;
         locationName: string | null;
         address: string | null;
-        city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
         instagramMediaId: string | null;
@@ -253,6 +297,7 @@ export declare class EventsService {
         categoryName: string;
     }>): Promise<{
         id: string;
+        city: string | null;
         createdAt: Date;
         updatedAt: Date;
         title: string;
@@ -264,7 +309,6 @@ export declare class EventsService {
         publicationEndDate: Date | null;
         locationName: string | null;
         address: string | null;
-        city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
         instagramMediaId: string | null;
@@ -275,6 +319,7 @@ export declare class EventsService {
     }>;
     delete(id: string): import("../generated/prisma/models").Prisma__EventClient<{
         id: string;
+        city: string | null;
         createdAt: Date;
         updatedAt: Date;
         title: string;
@@ -286,7 +331,6 @@ export declare class EventsService {
         publicationEndDate: Date | null;
         locationName: string | null;
         address: string | null;
-        city: string | null;
         isOnline: boolean;
         imageUrl: string | null;
         instagramMediaId: string | null;

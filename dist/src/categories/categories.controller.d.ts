@@ -6,6 +6,7 @@ export declare class CategoriesController {
     findAll(): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<({
         events: {
             id: string;
+            city: string | null;
             createdAt: Date;
             updatedAt: Date;
             title: string;
@@ -17,7 +18,6 @@ export declare class CategoriesController {
             publicationEndDate: Date | null;
             locationName: string | null;
             address: string | null;
-            city: string | null;
             isOnline: boolean;
             imageUrl: string | null;
             instagramMediaId: string | null;

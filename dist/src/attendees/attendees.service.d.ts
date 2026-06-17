@@ -17,11 +17,23 @@ export declare class AttendeesService {
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
             instagramAvatar: string | null;
+            companyInstagram: string | null;
+            website: string | null;
+            companyRut: string | null;
+            companyGiro: string | null;
+            companyPhone: string | null;
+            companyAddress: string | null;
+            city: string | null;
+            adminFirstName: string | null;
+            adminLastName: string | null;
+            adminRut: string | null;
+            adminPhone: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
         event: {
             id: string;
+            city: string | null;
             createdAt: Date;
             updatedAt: Date;
             title: string;
@@ -33,7 +45,6 @@ export declare class AttendeesService {
             publicationEndDate: Date | null;
             locationName: string | null;
             address: string | null;
-            city: string | null;
             isOnline: boolean;
             imageUrl: string | null;
             instagramMediaId: string | null;
@@ -64,6 +75,17 @@ export declare class AttendeesService {
             tokenExpiresAt: Date | null;
             instagramUsername: string | null;
             instagramAvatar: string | null;
+            companyInstagram: string | null;
+            website: string | null;
+            companyRut: string | null;
+            companyGiro: string | null;
+            companyPhone: string | null;
+            companyAddress: string | null;
+            city: string | null;
+            adminFirstName: string | null;
+            adminLastName: string | null;
+            adminRut: string | null;
+            adminPhone: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -83,6 +105,7 @@ export declare class AttendeesService {
             } | null;
         } & {
             id: string;
+            city: string | null;
             createdAt: Date;
             updatedAt: Date;
             title: string;
@@ -94,7 +117,6 @@ export declare class AttendeesService {
             publicationEndDate: Date | null;
             locationName: string | null;
             address: string | null;
-            city: string | null;
             isOnline: boolean;
             imageUrl: string | null;
             instagramMediaId: string | null;

@@ -23,7 +23,7 @@ let UsersService = class UsersService {
     findById(id) {
         return this.prisma.user.findUnique({
             where: { id },
-            select: { id: true, email: true, name: true, avatar: true, role: true, facebookId: true, instagramId: true, instagramUsername: true, instagramAvatar: true, createdAt: true, updatedAt: true },
+            omit: { password: true, socialToken: true },
         });
     }
     findByEmail(email) {
@@ -33,9 +33,10 @@ let UsersService = class UsersService {
         return this.prisma.user.create({ data, omit: { password: true } });
     }
     update(id, data) {
+        const { ...updateData } = data;
         return this.prisma.user.update({
             where: { id },
-            data,
+            data: updateData,
             omit: { password: true },
         });
     }

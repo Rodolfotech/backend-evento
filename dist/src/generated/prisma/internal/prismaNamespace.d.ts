@@ -669,6 +669,17 @@ export declare const UserScalarFieldEnum: {
     readonly tokenExpiresAt: "tokenExpiresAt";
     readonly instagramUsername: "instagramUsername";
     readonly instagramAvatar: "instagramAvatar";
+    readonly companyInstagram: "companyInstagram";
+    readonly website: "website";
+    readonly companyRut: "companyRut";
+    readonly companyGiro: "companyGiro";
+    readonly companyPhone: "companyPhone";
+    readonly companyAddress: "companyAddress";
+    readonly city: "city";
+    readonly adminFirstName: "adminFirstName";
+    readonly adminLastName: "adminLastName";
+    readonly adminRut: "adminRut";
+    readonly adminPhone: "adminPhone";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };

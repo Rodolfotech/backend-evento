@@ -16,6 +16,17 @@ export declare class UsersController {
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
         instagramAvatar: string | null;
+        companyInstagram: string | null;
+        website: string | null;
+        companyRut: string | null;
+        companyGiro: string | null;
+        companyPhone: string | null;
+        companyAddress: string | null;
+        city: string | null;
+        adminFirstName: string | null;
+        adminLastName: string | null;
+        adminRut: string | null;
+        adminPhone: string | null;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
@@ -25,10 +36,24 @@ export declare class UsersController {
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
+        isActive: boolean;
+        comuna: string | null;
         facebookId: string | null;
         instagramId: string | null;
+        tokenExpiresAt: Date | null;
         instagramUsername: string | null;
         instagramAvatar: string | null;
+        companyInstagram: string | null;
+        website: string | null;
+        companyRut: string | null;
+        companyGiro: string | null;
+        companyPhone: string | null;
+        companyAddress: string | null;
+        city: string | null;
+        adminFirstName: string | null;
+        adminLastName: string | null;
+        adminRut: string | null;
+        adminPhone: string | null;
         createdAt: Date;
         updatedAt: Date;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
@@ -37,6 +62,18 @@ export declare class UsersController {
     updateProfile(userId: string, body: {
         name?: string;
         avatar?: string;
+        companyInstagram?: string;
+        website?: string;
+        companyRut?: string;
+        companyGiro?: string;
+        companyPhone?: string;
+        companyAddress?: string;
+        city?: string;
+        comuna?: string;
+        adminFirstName?: string;
+        adminLastName?: string;
+        adminRut?: string;
+        adminPhone?: string;
     }): import("../generated/prisma/models").Prisma__UserClient<{
         id: string;
         email: string;
@@ -51,6 +88,17 @@ export declare class UsersController {
         tokenExpiresAt: Date | null;
         instagramUsername: string | null;
         instagramAvatar: string | null;
+        companyInstagram: string | null;
+        website: string | null;
+        companyRut: string | null;
+        companyGiro: string | null;
+        companyPhone: string | null;
+        companyAddress: string | null;
+        city: string | null;
+        adminFirstName: string | null;
+        adminLastName: string | null;
+        adminRut: string | null;
+        adminPhone: string | null;
         createdAt: Date;
         updatedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
@@ -63,10 +111,24 @@ export declare class UsersController {
         name: string;
         avatar: string | null;
         role: import("../generated/prisma/enums").Role;
+        isActive: boolean;
+        comuna: string | null;
         facebookId: string | null;
         instagramId: string | null;
+        tokenExpiresAt: Date | null;
         instagramUsername: string | null;
         instagramAvatar: string | null;
+        companyInstagram: string | null;
+        website: string | null;
+        companyRut: string | null;
+        companyGiro: string | null;
+        companyPhone: string | null;
+        companyAddress: string | null;
+        city: string | null;
+        adminFirstName: string | null;
+        adminLastName: string | null;
+        adminRut: string | null;
+        adminPhone: string | null;
         createdAt: Date;
         updatedAt: Date;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
