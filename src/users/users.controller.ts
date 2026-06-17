@@ -29,7 +29,25 @@ export class UsersController {
   @Put('profile')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar perfil del usuario autenticado' })
-  updateProfile(@CurrentUser('id') userId: string, @Body() body: { name?: string; avatar?: string }) {
+  updateProfile(
+    @CurrentUser('id') userId: string,
+    @Body() body: {
+      name?: string;
+      avatar?: string;
+      companyInstagram?: string;
+      website?: string;
+      companyRut?: string;
+      companyGiro?: string;
+      companyPhone?: string;
+      companyAddress?: string;
+      city?: string;
+      comuna?: string;
+      adminFirstName?: string;
+      adminLastName?: string;
+      adminRut?: string;
+      adminPhone?: string;
+    },
+  ) {
     return this.usersService.update(userId, body);
   }
 

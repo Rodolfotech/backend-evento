@@ -24,6 +24,18 @@ model User {
   instagramUsername String?
   instagramAvatar   String?
 
+  companyInstagram String?
+  website          String?
+  companyRut       String?
+  companyGiro      String?
+  companyPhone     String?
+  companyAddress   String?
+  city             String?
+  adminFirstName   String?
+  adminLastName    String?
+  adminRut         String?
+  adminPhone       String?
+
   ownedEvents     Event[]   @relation("EventOwner")
   registrations   Attendee[]
   instagramClicks InstagramClick[]

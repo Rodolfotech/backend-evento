@@ -12,7 +12,7 @@ export class UsersService {
   findById(id: string) {
     return this.prisma.user.findUnique({
       where: { id },
-      select: { id: true, email: true, name: true, avatar: true, role: true, facebookId: true, instagramId: true, instagramUsername: true, instagramAvatar: true, createdAt: true, updatedAt: true },
+      omit: { password: true, socialToken: true },
     });
   }
 
@@ -24,10 +24,26 @@ export class UsersService {
     return this.prisma.user.create({ data, omit: { password: true } });
   }
 
-  update(id: string, data: { name?: string; avatar?: string }) {
+  update(id: string, data: {
+    name?: string;
+    avatar?: string;
+    companyInstagram?: string;
+    website?: string;
+    companyRut?: string;
+    companyGiro?: string;
+    companyPhone?: string;
+    companyAddress?: string;
+    city?: string;
+    comuna?: string;
+    adminFirstName?: string;
+    adminLastName?: string;
+    adminRut?: string;
+    adminPhone?: string;
+  }) {
+    const { ...updateData } = data;
     return this.prisma.user.update({
       where: { id },
-      data,
+      data: updateData,
       omit: { password: true },
     });
   }
