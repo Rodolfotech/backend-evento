@@ -21,6 +21,8 @@ async function bootstrap() {
     const allowedOrigins = [
         'http://localhost:5173',
         'http://localhost:3000',
+        'https://www.hoysesale.cl',
+        'https://hoysesale.cl',
         ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
     ];
     app.enableCors({
