@@ -22,7 +22,7 @@ const dto_1 = require("../common/dto");
 const current_user_decorator_1 = require("../common/decorators/current-user.decorator");
 const COOKIE_OPTIONS = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: true,
     sameSite: 'lax',
     path: '/',
     maxAge: 7 * 24 * 60 * 60 * 1000,
