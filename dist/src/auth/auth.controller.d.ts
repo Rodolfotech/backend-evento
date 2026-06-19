@@ -1,9 +1,10 @@
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from '../common/dto';
 export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
-    login(body: LoginDto): Promise<{
+    login(body: LoginDto, res: Response): Promise<{
         access_token: string;
         user: {
             id: string;
@@ -33,7 +34,7 @@ export declare class AuthController {
             updatedAt: Date;
         } | null;
     }>;
-    register(body: RegisterDto): Promise<{
+    register(body: RegisterDto, res: Response): Promise<{
         access_token: string;
         user: {
             id: string;
@@ -67,7 +68,7 @@ export declare class AuthController {
     forgotPassword(email: string): Promise<{
         message: string;
     }>;
-    resetPasswordWithToken(token: string, password: string): Promise<{
+    resetPasswordWithToken(token: string, password: string, res: Response): Promise<{
         access_token: string;
         user: {
             id: string;
@@ -101,7 +102,7 @@ export declare class AuthController {
     checkEmail(email: string): Promise<{
         exists: boolean;
     }>;
-    resetPasswordDirect(body: LoginDto): Promise<{
+    resetPasswordDirect(body: LoginDto, res: Response): Promise<{
         access_token: string;
         user: {
             id: string;
@@ -134,7 +135,7 @@ export declare class AuthController {
     getInstagramAuthUrl(state?: string): {
         url: string;
     };
-    instagramLogin(code: string): Promise<{
+    instagramLogin(code: string, res: Response): Promise<{
         access_token: string;
         user: {
             id: string;
@@ -167,7 +168,7 @@ export declare class AuthController {
     getGoogleAuthUrl(state?: string): {
         url: string;
     };
-    googleLogin(code: string): Promise<{
+    googleLogin(code: string, res: Response): Promise<{
         access_token: string;
         user: {
             id: string;
@@ -197,4 +198,10 @@ export declare class AuthController {
             updatedAt: Date;
         } | null;
     }>;
+    me(user: any): {
+        user: any;
+    };
+    logout(res: Response): {
+        message: string;
+    };
 }

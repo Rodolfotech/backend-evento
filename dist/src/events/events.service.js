@@ -41,7 +41,7 @@ let EventsService = class EventsService {
                 include: { owner: { omit: { password: true } }, category: true },
                 skip,
                 take: limit,
-                orderBy: { date: 'asc' },
+                orderBy: { createdAt: 'desc' },
             }),
             this.prisma.event.count({ where }),
         ]);

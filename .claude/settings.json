@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pnpm run *)"
+      "Bash(pnpm run *)",
+      "Bash(ls /home/trimogesimo/Documentos/eventos/ 2>/dev/null)",
+      "Read(//home/trimogesimo/Documentos/eventos/**)"
     ]
   }
 }
