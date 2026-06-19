@@ -38,3 +38,38 @@ Usar prefijos semánticos:
 ## Deploy
 
 Solo se deploya desde `main` después del merge.
+
+---
+
+## Seguridad — Autenticación con Cookie httpOnly
+
+### Migración de localStorage a cookie httpOnly (junio 2026)
+
+Se eliminó el almacenamiento de JWT en `localStorage` del frontend por ser vulnerable a ataques XSS. Ahora el backend setea una cookie `httpOnly` que el browser envía automáticamente.
+
+### Implementación
+
+**Archivos modificados:**
+- `src/main.ts` — Middleware `cookie-parser` habilitado
+- `src/auth/jwt.strategy.ts` — Extrae JWT de cookie `access_token` con fallback a header Authorization
+- `src/auth/auth.controller.ts` — Todos los endpoints de auth setean cookie httpOnly. Nuevos: `GET /auth/me`, `POST /auth/logout`
+
+**Dependencias agregadas:**
+- `cookie-parser` (runtime)
+- `@types/cookie-parser` (dev)
+
+**Cookie `access_token`:**
+- `httpOnly: true` — JavaScript no puede leerla
+- `secure: true` en producción — solo se envía por HTTPS
+- `sameSite: lax` — protección contra CSRF
+- `maxAge: 7 días` — expiración automática
+- `path: /` — disponible en todas las rutas
+
+**Backward compatibility:** La `JwtStrategy` acepta JWT desde cookie O header Authorization. Esto permite que clientes legacy sigan funcionando durante la transición.
+
+### Reglas para nuevos endpoints de autenticación
+
+Todo endpoint que genere un JWT debe:
+1. Usar `@Res({ passthrough: true })` en el parámetro del método
+2. Llamar `res.cookie('access_token', token, COOKIE_OPTIONS)` antes de retornar
+3. Retornar `{ access_token, user }` en el body (el access_token en body es legacy)

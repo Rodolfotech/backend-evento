@@ -64,13 +64,44 @@ src/
 
 All DTOs live in a single file: `src/common/dto.ts`. When adding a new DTO, append it to that file under a domain comment block (e.g. `// --- Events ---`). Do not create separate DTO files per module — it would introduce import fragmentation across the codebase.
 
-### Request auth flow
+### Request auth flow — Cookie httpOnly
 
-1. `AuthGuard('jwt')` → `JwtStrategy.validate(payload)` → calls `UsersService.findById(payload.sub)` → populates `req.user`
-2. `@CurrentUser('id')` extracts a field from `req.user`
-3. `AdminGuard` checks `req.user.role === 'ADMIN'` — **always chain after** `AuthGuard('jwt')`, never standalone
+El JWT se almacena en una cookie `access_token` con flags de seguridad. La `JwtStrategy` acepta el token desde **cookie O header Authorization** (backward compatible).
 
-`UsersService.findById` uses an explicit `select` (id, email, name, avatar, role, instagram fields, timestamps). Do not change this to `include` with relations — it runs on every authenticated request.
+**Flujo:**
+
+1. Login/register → `AuthController` setea cookie `access_token` (httpOnly, secure en prod, sameSite: lax, 7 días)
+2. `AuthGuard('jwt')` → `JwtStrategy` extrae JWT de `req.cookies.access_token` o `Authorization: Bearer <token>`
+3. `JwtStrategy.validate(payload)` → `UsersService.findById(payload.sub)` → populates `req.user`
+4. `@CurrentUser('id')` extracts a field from `req.user`
+5. `AdminGuard` checks `req.user.role === 'ADMIN'` — **always chain after** `AuthGuard('jwt')`, never standalone
+
+**Endpoints de sesión:**
+
+| Endpoint | Método | Descripción |
+|---|---|---|
+| `/auth/me` | GET | Retorna `{ user }` si hay cookie válida, 401 si no |
+| `/auth/logout` | POST | Limpia la cookie `access_token` |
+
+**Cookie configuration** (`auth.controller.ts`):
+```ts
+const COOKIE_OPTIONS = {
+  httpOnly: true,                          // Invisible a JavaScript
+  secure: process.env.NODE_ENV === 'production',  // Solo HTTPS en prod
+  sameSite: 'lax',                         // Protección CSRF
+  path: '/',
+  maxAge: 7 * 24 * 60 * 60 * 1000,       // 7 días
+};
+```
+
+**Middleware:** `cookie-parser` habilitado en `main.ts` para parsear `req.cookies`.
+
+**Reglas estrictas:**
+- TODOS los endpoints que generan JWT (login, register, google, instagram, reset-password) **DEBEN** setear la cookie con `res.cookie('access_token', token, COOKIE_OPTIONS)`
+- Usar `@Res({ passthrough: true })` para acceder al response sin perder el retorno automático de NestJS
+- La cookie se limpia con `res.clearCookie('access_token', { path: '/' })`
+
+`UsersService.findById` uses `omit: { password: true, socialToken: true }`. It runs on every authenticated request via `/auth/me`.
 
 ### PrismaService
 
