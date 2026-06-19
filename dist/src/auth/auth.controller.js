@@ -23,7 +23,7 @@ const current_user_decorator_1 = require("../common/decorators/current-user.deco
 const COOKIE_OPTIONS = {
     httpOnly: true,
     secure: true,
-    sameSite: 'lax',
+    sameSite: 'none',
     path: '/',
     maxAge: 7 * 24 * 60 * 60 * 1000,
 };
