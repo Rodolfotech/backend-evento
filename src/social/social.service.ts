@@ -326,14 +326,14 @@ export class SocialService {
       throw new BadRequestException('Instagram no está conectado');
     }
 
-    // Auto-refresh if token expires within next hour
+    // Auto-refresh if token expires within next hour; fall back to current token if refresh fails
     let token = user.socialToken;
     if (user.tokenExpiresAt && new Date(user.tokenExpiresAt).getTime() - Date.now() < 3600000) {
       try {
         const refreshed = await this.refreshToken(userId);
         token = refreshed.socialToken || token;
-      } catch (e: any) {
-        throw new BadRequestException(`Token de Instagram expirado y no se pudo renovar: ${e.message}`);
+      } catch {
+        // Refresh failed — try with the existing token anyway
       }
     }
 
