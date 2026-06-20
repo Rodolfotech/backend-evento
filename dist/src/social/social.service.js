@@ -288,8 +288,7 @@ let SocialService = class SocialService {
                 const refreshed = await this.refreshToken(userId);
                 token = refreshed.socialToken || token;
             }
-            catch (e) {
-                throw new common_1.BadRequestException(`Token de Instagram expirado y no se pudo renovar: ${e.message}`);
+            catch {
             }
         }
         let response = await fetch(`https://graph.instagram.com/${user.instagramId}/media?fields=id,media_url,caption,permalink,timestamp,media_type,thumbnail_url&access_token=${token}&limit=50`);

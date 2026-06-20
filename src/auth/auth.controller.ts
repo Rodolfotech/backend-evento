@@ -1,8 +1,8 @@
-import { Controller, Post, Get, Body, Query, HttpCode, Res, Req, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Body, Query, HttpCode, Res, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { AuthGuard } from '@nestjs/passport';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from '../common/dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
@@ -10,7 +10,7 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: true,
-  sameSite: 'none' as const,
+  sameSite: 'lax' as const,
   path: '/',
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
