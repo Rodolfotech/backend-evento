@@ -1,0 +1,7 @@
+# pnpm 11+ ignora "pnpm.onlyBuiltDependencies" de package.json; los scripts de instalación permitidos van aquí
+allowBuilds:
+  '@nestjs/core': true
+  '@prisma/engines': true
+  '@scarf/scarf': true
+  prisma: true
+  unrs-resolver: true

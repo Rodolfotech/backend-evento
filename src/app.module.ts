@@ -13,6 +13,8 @@ import { SocialModule } from './social/social.module';
 import { MailModule } from './mail/mail.module';
 import { AdminModule } from './admin/admin.module';
 import { ADMIN_API_PREFIX } from './admin/admin.constants';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -38,7 +40,9 @@ import { ADMIN_API_PREFIX } from './admin/admin.constants';
     MailModule,
     AdminModule,
   ],
+  controllers: [AppController],
   providers: [
+    AppService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

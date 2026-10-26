@@ -12,7 +12,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         ? { rejectUnauthorized: false } 
         : undefined,
     });
-    const adapter = new PrismaPg(pool);
+    // El driver pg ignora ?schema=, así que el esquema se pasa explícitamente al adaptador
+    const schema = process.env.DATABASE_URL
+      ? new URL(process.env.DATABASE_URL).searchParams.get('schema') ?? undefined
+      : undefined;
+    const adapter = new PrismaPg(pool, { schema });
     super({ adapter });
   }
 

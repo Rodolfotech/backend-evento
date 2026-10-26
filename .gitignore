@@ -3,3 +3,6 @@ node_modules
 .env
 
 /src/generated
+
+# Salida de compilación
+dist/
