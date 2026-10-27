@@ -2,8 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { socialApi, usersApi } from '../api';
 import { InstagramLinkModal } from '../features/social/InstagramLinkModal';
+import { SocialPostCard } from '../features/social/SocialPostCard';
 import { Toast } from '../components/ui/Toast';
 import { ProfileField } from '../components/ui/ProfileField';
+import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import {
   Camera,
   SquarePen,
@@ -12,8 +14,11 @@ import {
   CheckCircle,
   Link,
   Unlink,
+  RefreshCw,
+  Search,
 } from 'lucide-react';
 import { COMUNAS } from '../constants/comunas';
+import type { SocialPost } from '../types';
 
 const CIUDADES = ['Villarrica', 'Pucón', 'Temuco', 'Loncoche', 'Freire', 'Cunco', 'Curarrehue', 'Lautaro', 'Pitrufquén', 'Gorbea'] as const;
 
@@ -26,6 +31,9 @@ export default function Profile() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [instagramPosts, setInstagramPosts] = useState<SocialPost[]>([]);
+  const [loadingPosts, setLoadingPosts] = useState(false);
+  const [postFilter, setPostFilter] = useState('');
 
   const [form, setForm] = useState({
     name: '',
@@ -91,6 +99,22 @@ export default function Profile() {
   useEffect(() => {
     socialApi.getStatus().then(updateInstagramStatus).catch(() => undefined);
   }, [updateInstagramStatus]);
+
+  const loadPosts = useCallback(() => {
+    setLoadingPosts(true);
+    socialApi.getUserMedia()
+      .then(({ data }) => setInstagramPosts(data))
+      .catch(() => setToast({ message: 'Error al cargar publicaciones de Instagram. Intenta de nuevo.', type: 'error' }))
+      .finally(() => setLoadingPosts(false));
+  }, []);
+
+  useEffect(() => {
+    if (instagramConnected) loadPosts();
+  }, [instagramConnected, loadPosts]);
+
+  const filteredPosts = instagramPosts.filter((post) =>
+    !postFilter || (post.caption || '').toLowerCase().includes(postFilter.toLowerCase()),
+  );
 
   const handleSave = async () => {
     setSaving(true);
@@ -299,6 +323,52 @@ export default function Profile() {
             )}
           </div>
         </div>
+
+        {/* ── Publicaciones de Instagram ── */}
+        {instagramConnected && (
+          <section className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <input
+                type="text"
+                value={postFilter}
+                onChange={(e) => setPostFilter(e.target.value)}
+                placeholder="Buscar en descripciones..."
+                aria-label="Buscar publicaciones"
+                className="flex-1 px-4 py-2.5 rounded-xl text-sm"
+                style={{ backgroundColor: '#F8FAFC', border: '1px solid #E4EBFA', color: '#1D1D1F' }}
+              />
+              <button
+                type="button"
+                onClick={() => { setToast(null); loadPosts(); }}
+                disabled={loadingPosts}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-opacity hover:opacity-80 disabled:opacity-50"
+                style={{ color: '#2563EB', border: '1px solid #2563EB', backgroundColor: '#FFFFFF' }}
+              >
+                <RefreshCw className={`w-4 h-4 ${loadingPosts ? 'animate-spin' : ''}`} />
+                Actualizar
+              </button>
+            </div>
+
+            {loadingPosts ? (
+              <div className="flex items-center justify-center py-16">
+                <LoadingSpinner color="cyan" />
+              </div>
+            ) : filteredPosts.length === 0 ? (
+              <div className="rounded-2xl p-10 text-center" style={{ backgroundColor: '#F8FAFC', border: '1px solid #E4EBFA' }}>
+                <Search className="w-8 h-8 mx-auto mb-3" style={{ color: '#1D1D1F66' }} />
+                <p className="text-sm" style={{ color: '#1D1D1F99' }}>
+                  {postFilter ? 'No hay publicaciones que coincidan con tu búsqueda' : 'Aún no hay publicaciones en Instagram'}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {filteredPosts.map((post) => (
+                  <SocialPostCard key={post.id} post={post} />
+                ))}
+              </div>
+            )}
+          </section>
+        )}
 
         {/* ── Guardar datos ── */}
         {editing && (
