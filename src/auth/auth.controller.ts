@@ -69,15 +69,6 @@ export class AuthController {
     return this.authService.checkEmail(email);
   }
 
-  @Post('reset-password-direct')
-  @HttpCode(200)
-  @ApiOperation({ summary: 'Restablecer contraseña directamente (solo desarrollo)' })
-  async resetPasswordDirect(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {
-    const result = await this.authService.resetPassword(body.email, body.password);
-    res.cookie('access_token', result.access_token, COOKIE_OPTIONS);
-    return result;
-  }
-
   @Get('instagram/url')
   @ApiOperation({ summary: 'Obtener URL de autorización de Instagram para login' })
   getInstagramAuthUrl(@Query('state') state?: string) {

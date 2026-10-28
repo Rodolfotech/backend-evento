@@ -6,7 +6,8 @@ import { getBusiness, SITE_URL } from '@/lib/backend';
 // /<slug>: si es un negocio, su micro-sitio indexable; si no, la página de categoría.
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const business = await getBusiness(slug);
+  // Si el backend falla, la página de error se encarga; aquí solo se usa el título por defecto.
+  const business = await getBusiness(slug).catch(() => null);
   if (!business) return { title: 'HoySeSale.cl' };
   const description =
     business.businessDescription?.slice(0, 155) ||

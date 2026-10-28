@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, BadRequestException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
-import { EventsService } from './events.service';
+import { EventsService, Requester } from './events.service';
 import { CreateEventDto, UpdateEventDto } from '../common/dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 
@@ -78,15 +78,15 @@ export class EventsController {
   @Put(':id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un evento' })
-  update(@Param('id') id: string, @Body() body: UpdateEventDto) {
-    return this.eventsService.update(id, body);
+  update(@Param('id') id: string, @Body() body: UpdateEventDto, @CurrentUser() user: Requester) {
+    return this.eventsService.update(id, body, user);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un evento' })
-  delete(@Param('id') id: string) {
-    return this.eventsService.delete(id);
+  delete(@Param('id') id: string, @CurrentUser() user: Requester) {
+    return this.eventsService.delete(id, user);
   }
 }
