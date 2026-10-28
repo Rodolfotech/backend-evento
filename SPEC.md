@@ -156,7 +156,7 @@ Verificado con el handler local: edición y borrado ajenos (403), sin sesión (4
 - Backend: `pnpm run lint` reporta ~576 avisos; la mayoría son formato de Prettier y unos 180 son de tipado (`any`). No son errores de ejecución.
 - Pruebas: falta cobertura automática de autorización (ownership), privacidad de datos y reset de contraseña.
 - Revisar el panel de administración (`src/admin/`) y los endpoints de social en profundidad, que no se revisaron a fondo.
-- Eliminar `frontend-vite-old/` cuando se confirme que la app Next funciona.
+- `frontend-vite-old/` eliminada (28 oct 2026): la app Next funciona y ninguna configuración la usaba.
 
 **Producto:**
 - Fase 4 frontend (insignias, filtros de eventos, creación con nuevos campos) y Fase 5 frontend (panel de métricas).

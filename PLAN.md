@@ -46,7 +46,7 @@ Leyenda: `[x]` hecho en código · `[ ]` pendiente · `[~]` requiere acción del
 - [~] Rotar la clave del admin actual (la vieja quedó en el código y en el historial de git)
 
 ## Fase 2 — Frontend en Next.js + registro y subida
-- [x] App Next.js (App Router, TypeScript, Tailwind v4) en `frontend/` (Vite anterior en `frontend-vite-old/`)
+- [x] App Next.js (App Router, TypeScript, Tailwind v4) en `frontend/` (la versión Vite anterior se eliminó tras confirmar la app Next)
 - [x] Componentes `components/ui`, `components/shared` y `features/*` portados (marcados como cliente)
 - [x] Páginas portadas a rutas del App Router (`src/app`, vistas en `src/views`)
 - [x] `AuthContext`, `AuthGuard`, `AdminGuard` como componentes cliente
