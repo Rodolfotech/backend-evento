@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import { Link } from '@/lib/router';
 import { Calendar, MapPin, Globe, Users, Camera } from 'lucide-react';
 import type { Event } from '../../types';
 import { format } from 'date-fns';

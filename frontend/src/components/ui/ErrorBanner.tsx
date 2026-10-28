@@ -1,3 +1,5 @@
+'use client';
+
 interface ErrorBannerProps {
   message: string;
   type?: 'error' | 'success' | 'warning';

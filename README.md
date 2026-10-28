@@ -190,3 +190,29 @@ La plataforma usa **Instagram API con Instagram Login** (NO la Basic Display API
 - **Manual**: botón "Sincronizar Instagram" en la vista de detalle del evento
 - **Webhook** (producción): cuando la app esté en Live, el endpoint `POST /social/instagram/webhook` recibe notificaciones de nuevo contenido
 
+
+## Cuentas de prueba (solo local)
+
+> **⚠️ TEMPORAL: NO COMMITEAR estas contraseñas.** Quitar esta sección antes de cada commit. Son cuentas de la base `eventos` de tu máquina; nunca usar estas claves en producción.
+
+| Correo | Rol | Contraseña (local) |
+|---|---|---|
+| `c1793126337@test.cl` | ORGANIZER | `clave12345` |
+| `rodolfo.parada.gonzalez@gmail.com` | ORGANIZER | `clave12345` |
+| `admin@eventos.cl` | ADMIN | Se define en `.env` como `ADMIN_PASSWORD` (no se escribe aquí) |
+
+El admin se crea al arrancar el backend **solo si no existe** y `ADMIN_PASSWORD` está definida en `.env`.
+
+
+#usuarios de prueba no borrar
+rodolfo.parada.gonzalez@gmail.com
+clave12345.
+admin@eventos.cl
+hola
+
+
+#levanta el backend
+pnpm run start:dev 
+
+#levanta el frontend
+pnpm run dev 

@@ -1,4 +1,13 @@
 export interface User {
+  // Micro-sitio del negocio
+  slug?: string | null;
+  category?: string | null;
+  businessDescription?: string | null;
+  amenities?: string[] | null;
+  whatsappReservations?: string | null;
+  mapUrl?: string | null;
+  logoUrl?: string | null;
+  coverUrl?: string | null;
   id: string;
   email: string;
   name: string;

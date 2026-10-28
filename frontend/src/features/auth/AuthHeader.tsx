@@ -1,3 +1,5 @@
+'use client';
+
 interface AuthHeaderProps {
   title: string;
   subtitle: string;

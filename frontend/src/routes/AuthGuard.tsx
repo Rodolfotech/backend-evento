@@ -1,8 +1,15 @@
-import { Navigate, Outlet } from 'react-router-dom';
+'use client';
+
+import type { ReactNode } from 'react';
+import { Navigate } from '@/lib/router';
 import { useAuth } from '../context/AuthContext';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 
-export default function AuthGuard() {
+interface AuthGuardProps {
+  children: ReactNode;
+}
+
+export default function AuthGuard({ children }: AuthGuardProps) {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
@@ -17,5 +24,5 @@ export default function AuthGuard() {
     return <Navigate to="/login" replace />;
   }
 
-  return <Outlet />;
+  return <>{children}</>;
 }

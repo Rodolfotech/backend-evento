@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Search, Calendar, ChevronDown } from 'lucide-react';
 import { COMUNAS } from '../../constants/comunas';

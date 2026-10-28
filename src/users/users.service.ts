@@ -1,9 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { MEDIA_STORAGE, MediaStorage } from '../media/storage/media-storage';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    @Inject(MEDIA_STORAGE) private storage: MediaStorage,
+  ) {}
 
   findAll() {
     return this.prisma.user.findMany({ omit: { password: true } });
@@ -20,7 +25,17 @@ export class UsersService {
     return this.prisma.user.findUnique({ where: { email } });
   }
 
-  create(data: { email: string; password: string; name: string }) {
+  create(data: {
+    email: string;
+    password: string;
+    name: string;
+    adminFirstName: string;
+    adminLastName: string;
+    adminPhone: string;
+    comuna: string;
+    role: 'ORGANIZER' | 'USER';
+  }) {
+    // La página del negocio no se crea al registrarse: la crea el cliente con su URL (POST /businesses/me).
     return this.prisma.user.create({ data, omit: { password: true } });
   }
 
@@ -65,5 +80,8 @@ export class UsersService {
     }
 
     await this.prisma.user.delete({ where: { id } });
+
+    // Imágenes de la cuenta (publicaciones, temporales, logo y portada): carpeta <userId>/
+    await this.storage.removePrefix(id);
   }
 }

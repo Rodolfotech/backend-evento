@@ -1,3 +1,5 @@
+'use client';
+
 export function AuthDivider() {
   return (
     <div className="relative mb-4">

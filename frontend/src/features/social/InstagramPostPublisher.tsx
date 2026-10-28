@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Calendar, Clock, Tag, Send, ExternalLink, MapPin, Ticket, Type, AlignLeft } from 'lucide-react';
 import { SocialPostMedia } from './SocialPostMedia';

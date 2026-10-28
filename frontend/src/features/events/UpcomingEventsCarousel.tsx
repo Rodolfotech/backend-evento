@@ -1,5 +1,7 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import { eventsApi } from '../../api';
 import { getCached, setCached } from '../../api/eventsCache';
 import { EventsCarouselGrid } from './EventsCarouselGrid';

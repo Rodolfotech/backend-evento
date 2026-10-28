@@ -1,5 +1,7 @@
+'use client';
+
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@/lib/router';
 import { eventsApi } from '../../api';
 import { COMUNAS } from '../../constants/comunas';
 import { Pagination } from '../../components/ui/Pagination';

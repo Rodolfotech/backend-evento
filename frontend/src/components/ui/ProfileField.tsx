@@ -1,3 +1,5 @@
+'use client';
+
 interface ProfileFieldProps {
   label: string;
   value: string;

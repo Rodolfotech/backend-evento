@@ -1,3 +1,5 @@
+'use client';
+
 import { CheckCircle, AlertTriangle, TrendingUp, Award } from 'lucide-react';
 
 interface InstagramBadgesProps {

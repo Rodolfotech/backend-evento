@@ -1,3 +1,5 @@
+'use client';
+
 import type { Event } from '../../types';
 import { Modal } from '../../components/ui/Modal';
 import { EventDetailContent } from './EventDetailContent';

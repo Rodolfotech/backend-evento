@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Calendar, Clock, MapPin } from 'lucide-react';
 import type { Event } from '../../types';

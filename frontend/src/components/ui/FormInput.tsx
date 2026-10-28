@@ -1,3 +1,5 @@
+'use client';
+
 import { useId, useRef, useEffect } from 'react';
 import type { LucideIcon } from 'lucide-react';
 

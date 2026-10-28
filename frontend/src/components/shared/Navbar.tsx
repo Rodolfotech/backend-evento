@@ -1,4 +1,6 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+'use client';
+
+import { Link, useLocation, useNavigate } from '@/lib/router';
 import { useAuth } from '../../context/AuthContext';
 import { ADMIN_ROUTE } from '../../constants/admin';
 import {
@@ -65,6 +67,17 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             {isAuthenticated ? (
               <>
+                {user?.slug && (
+                  <a
+                    href={`/${user.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90"
+                    style={{ color: '#2563EB', border: '1px solid #2563EB' }}
+                  >
+                    Ir a página
+                  </a>
+                )}
                 <Link
                   to="/create-event"
                   className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90"
@@ -152,6 +165,18 @@ export default function Navbar() {
             <hr className="border-gray-100 my-2" />
             {isAuthenticated ? (
               <>
+                {user?.slug && (
+                  <a
+                    href={`/${user.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium"
+                    style={{ color: '#2563EB', border: '1px solid #2563EB' }}
+                  >
+                    Ir a página
+                  </a>
+                )}
                 <Link
                   to="/create-event"
                   onClick={() => setMobileOpen(false)}

@@ -13,13 +13,18 @@ import { SocialModule } from './social/social.module';
 import { MailModule } from './mail/mail.module';
 import { AdminModule } from './admin/admin.module';
 import { ADMIN_API_PREFIX } from './admin/admin.constants';
+import { SupabaseModule } from './supabase/supabase.module';
+import { MediaModule } from './media/media.module';
+import { BusinessesModule } from './businesses/businesses.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     ThrottlerModule.forRoot([{
       ttl: 60000,
-      limit: 20,
+      limit: 300,
     }]),
     RouterModule.register([
       {
@@ -37,8 +42,13 @@ import { ADMIN_API_PREFIX } from './admin/admin.constants';
     SocialModule,
     MailModule,
     AdminModule,
+    SupabaseModule,
+    MediaModule,
+    BusinessesModule,
   ],
+  controllers: [AppController],
   providers: [
+    AppService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

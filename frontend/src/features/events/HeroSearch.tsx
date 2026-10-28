@@ -1,4 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+'use client';
+
+import { useNavigate } from '@/lib/router';
 import { EventSearchForm, type EventSearchParams } from '../../components/ui/EventSearchForm';
 
 export function HeroSearch() {

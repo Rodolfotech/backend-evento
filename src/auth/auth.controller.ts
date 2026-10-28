@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Query, HttpCode, Res, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Body, Query, HttpCode, Res, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { AuthGuard } from '@nestjs/passport';
@@ -33,7 +33,10 @@ export class AuthController {
   @Post('register')
   @ApiOperation({ summary: 'Registrar nuevo usuario' })
   @ApiBody({ type: RegisterDto })
-  async register(@Body() body: RegisterDto, @Res({ passthrough: true }) res: Response) {
+  async register(
+    @Body(new ValidationPipe({ whitelist: true, transform: true })) body: RegisterDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const result = await this.authService.register(body);
     res.cookie('access_token', result.access_token, COOKIE_OPTIONS);
     return result;

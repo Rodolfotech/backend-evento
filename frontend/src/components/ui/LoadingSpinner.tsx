@@ -1,3 +1,5 @@
+'use client';
+
 interface LoadingSpinnerProps {
   color?: 'cyan' | 'pink' | 'purple';
   size?: 'sm' | 'md' | 'lg';

@@ -1,3 +1,5 @@
+'use client';
+
 import { authApi } from '../../api';
 
 interface GoogleOAuthButtonProps {

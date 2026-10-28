@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { eventsApi, adminApi } from '../../api';
 import { useAuth } from '../../context/AuthContext';
