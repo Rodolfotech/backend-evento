@@ -48,15 +48,18 @@ src/
 ├── auth/           # JWT strategy, local + social login
 ├── categories/     # Event taxonomies
 ├── common/
+│   ├── constants/  # Comunas de La Araucanía (validación de registro)
 │   ├── decorators/ # @CurrentUser param decorator
 │   └── dto.ts      # All request/response DTOs — single file, domain-grouped by comments
 ├── events/         # Event CRUD + slug + publication window
 ├── generated/
 │   └── prisma/     # Prisma Client output (do not edit manually)
 ├── mail/           # Nodemailer transporter (SMTP / Ethereal fallback)
+├── media/          # Imágenes y enlaces de publicación por evento (tabla event_media)
 ├── prisma/         # PrismaService (global singleton)
-├── seed/           # SeedModule/SeedService
+├── seed/           # Crea el admin si no existe (ADMIN_PASSWORD), nunca sobrescribe
 ├── social/         # Meta Graph API: token lifecycle, feed sync, webhook
+├── supabase/       # Cliente de Supabase Storage (global, solo backend)
 └── users/          # User domain
 ```
 
@@ -227,4 +230,13 @@ SMTP_PORT=
 SMTP_SECURE=
 SMTP_USER=
 SMTP_PASS=
+
+# Supabase Storage (imágenes de eventos — solo backend, nunca al frontend)
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_BUCKET=SupabaseImage_Storage   # fallback del código si no se define
+
+# Admin inicial (seed): solo se usa si la cuenta aún no existe
+ADMIN_EMAIL=admin@eventos.cl
+ADMIN_PASSWORD=
 ```

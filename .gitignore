@@ -3,3 +3,9 @@ node_modules
 .env
 
 /src/generated
+
+# Build output (generado, no versionar)
+/dist
+
+# Imágenes subidas en desarrollo (STORAGE_DRIVER=local)
+/uploads

@@ -8,19 +8,19 @@ datasource db {
 }
 
 model User {
-  id              String    @id @default(uuid())
-  email           String    @unique
-  password        String?
-  name            String
-  avatar          String?
-  role            Role      @default(USER)
-  isActive        Boolean   @default(true)
-  comuna          String?
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String?
+  name     String
+  avatar   String?
+  role     Role    @default(USER)
+  isActive Boolean @default(true)
+  comuna   String?
 
-  facebookId      String?   @unique
-  instagramId     String?   @unique
-  socialToken     String?   @db.Text
-  tokenExpiresAt  DateTime?
+  facebookId        String?   @unique
+  instagramId       String?   @unique
+  socialToken       String?   @db.Text
+  tokenExpiresAt    DateTime?
   instagramUsername String?
   instagramAvatar   String?
 
@@ -36,13 +36,29 @@ model User {
   adminRut         String?
   adminPhone       String?
 
-  ownedEvents     Event[]   @relation("EventOwner")
-  registrations   Attendee[]
-  instagramClicks InstagramClick[]
-  adminAuditLogs  AdminAuditLog[]
+  // Micro-sitio del negocio (hoysesale.cl/<slug>). Todo opcional salvo el slug, que se asigna al registrarse.
+  slug                 String? @unique
+  category             String?
+  logoUrl              String?
+  coverUrl             String?
+  businessDescription  String? @db.Text
+  hours                Json?
+  amenities            Json?
+  whatsappReservations String?
+  mapUrl               String?
 
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  ownedEvents        Event[]             @relation("EventOwner")
+  registrations      Attendee[]
+  instagramClicks    InstagramClick[]
+  adminAuditLogs     AdminAuditLog[]
+  businessProducts   BusinessProduct[]   @relation("BusinessProducts")
+  businessServices   BusinessService[]   @relation("BusinessServices")
+  businessHighlights BusinessHighlight[] @relation("BusinessHighlights")
+  reviewsReceived    BusinessReview[]    @relation("ReviewsReceived")
+  reviewsWritten     BusinessReview[]    @relation("ReviewsWritten")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("users")
 }
@@ -70,40 +86,87 @@ model AdminAuditLog {
 }
 
 model Event {
-  id              String    @id @default(uuid())
-  title           String
-  slug            String    @unique
-  description     String    @db.Text
-  content         String?   @db.Text
+  id          String  @id @default(uuid())
+  title       String
+  slug        String  @unique
+  description String  @db.Text
+  content     String? @db.Text
 
-  date            DateTime
+  date                 DateTime
   publicationStartDate DateTime?
   publicationEndDate   DateTime?
-  locationName    String?
-  address         String?
-  city            String?
-  isOnline        Boolean   @default(false)
+  locationName         String?
+  address              String?
+  city                 String?
+  isOnline             Boolean   @default(false)
 
-  imageUrl           String?
-  instagramMediaId   String?
-  socialFeed         Json?     @db.JsonB
-  lastSync           DateTime?
+  // Insignias y filtros del evento (Fase 4)
+  entryType String?
+  audience  String?
+  indoor    Boolean?
+  amenities Json?
 
-  ownerId         String
-  owner           User      @relation("EventOwner", fields: [ownerId], references: [id])
-  categoryId      String?
-  category        Category? @relation(fields: [categoryId], references: [id])
-  attendees       Attendee[]
+  imageUrl         String?
+  instagramMediaId String?
+  socialFeed       Json?     @db.JsonB
+  lastSync         DateTime?
 
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  ownerId      String
+  owner        User               @relation("EventOwner", fields: [ownerId], references: [id])
+  categoryId   String?
+  category     Category?          @relation(fields: [categoryId], references: [id])
+  attendees    Attendee[]
+  media        EventMedia[]
+  interactions EventInteraction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("events")
 }
 
+// Medios asociados a un evento. Cada fila tiene un origen: subida manual,
+// enlace pegado por el organizador o publicación de Instagram (integración futura).
+model EventMedia {
+  id          String      @id @default(uuid())
+  eventId     String
+  source      MediaSource
+  imageUrl    String?
+  storagePath String?
+  caption     String?
+  permalink   String?
+  externalId  String?
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([eventId])
+  @@map("event_media")
+}
+
+enum MediaSource {
+  UPLOAD
+  INSTAGRAM
+  LINK
+}
+
+// Métricas del organizador (Fase 5): vistas, clics en "Cómo llegar" y enlaces externos.
+model EventInteraction {
+  id        String   @id @default(uuid())
+  eventId   String
+  type      String
+  createdAt DateTime @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, type])
+  @@map("event_interactions")
+}
+
 model Category {
-  id          String   @id @default(uuid())
-  name        String   @unique
+  id          String  @id @default(uuid())
+  name        String  @unique
   description String?
   events      Event[]
 
@@ -111,13 +174,13 @@ model Category {
 }
 
 model Attendee {
-  id        String   @id @default(uuid())
-  userId    String
-  eventId   String
-  status    String   @default("REGISTERED")
+  id      String @id @default(uuid())
+  userId  String
+  eventId String
+  status  String @default("REGISTERED")
 
-  user      User     @relation(fields: [userId], references: [id])
-  event     Event    @relation(fields: [eventId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
 
   createdAt DateTime @default(now())
 
@@ -129,4 +192,65 @@ enum Role {
   USER
   ADMIN
   ORGANIZER
+}
+
+// Contenido del micro-sitio del negocio (dueño = User).
+model BusinessProduct {
+  id          String   @id @default(uuid())
+  ownerId     String
+  name        String
+  description String?  @db.Text
+  price       Int?
+  imageUrl    String?
+  tag         String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  owner User @relation("BusinessProducts", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+  @@map("business_products")
+}
+
+model BusinessService {
+  id          String   @id @default(uuid())
+  ownerId     String
+  title       String
+  description String?  @db.Text
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  owner User @relation("BusinessServices", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+  @@map("business_services")
+}
+
+model BusinessHighlight {
+  id        String   @id @default(uuid())
+  ownerId   String
+  title     String
+  imageUrl  String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  owner User @relation("BusinessHighlights", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+  @@map("business_highlights")
+}
+
+model BusinessReview {
+  id        String   @id @default(uuid())
+  ownerId   String
+  authorId  String
+  rating    Int
+  comment   String?  @db.Text
+  createdAt DateTime @default(now())
+
+  owner  User @relation("ReviewsReceived", fields: [ownerId], references: [id], onDelete: Cascade)
+  author User @relation("ReviewsWritten", fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@unique([ownerId, authorId])
+  @@map("business_reviews")
 }

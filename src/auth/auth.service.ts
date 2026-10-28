@@ -47,13 +47,22 @@ export class AuthService {
     };
   }
 
-  async register(data: { email: string; password: string; name: string }) {
+  async register(data: {
+    email: string;
+    password: string;
+    name: string;
+    adminFirstName: string;
+    adminLastName: string;
+    adminPhone: string;
+    comuna: string;
+  }) {
     const existing = await this.usersService.findByEmail(data.email);
     if (existing) {
       throw new ConflictException('El email ya está registrado');
     }
     const hashed = await bcrypt.hash(data.password, 10);
-    const user = await this.usersService.create({ ...data, password: hashed });
+    // El registro público crea organizadores (supuesto del plan; confirmar antes de desplegar)
+    const user = await this.usersService.create({ ...data, password: hashed, role: 'ORGANIZER' });
     return {
       access_token: this.jwtService.sign({ sub: user.id, email: user.email }),
       user,
