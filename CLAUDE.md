@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-**HoySeSale.cl** — event marketplace REST API. NestJS 11 · Prisma 7 · PostgreSQL · Passport JWT · Meta Graph API.
+**HoySeSale.cl** — directorio de negocios y cartelera de eventos de La Araucanía. Backend: NestJS 11 · Prisma 7 · PostgreSQL (Supabase) · Passport JWT en cookie httpOnly. Frontend en `frontend/`: Next.js 16 (App Router) · Tailwind v4.
 
 ---
 
@@ -12,26 +12,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 # Development
-pnpm run start:dev                            # Hot-reload dev server
+pnpm run start:dev                            # Servidor con watch (puerto 3000)
 pnpm run build                                # prisma generate + nest build → dist/
-pnpm run start:prod                           # prisma migrate deploy + node dist/main
+pnpm run start:prod                           # prisma migrate deploy + node dist/main (Render, legacy)
 
 # Database
-pnpm dlx prisma migrate dev --name <name>    # Create + apply migration
-pnpm dlx prisma migrate deploy               # Apply pending migrations (CI/prod)
-pnpm dlx prisma generate                     # Regenerate Prisma client
-pnpm run seed                                # Run prisma/seed.ts
+pnpm dlx prisma migrate dev --name <name>    # Crear + aplicar migración (local)
+pnpm dlx prisma migrate deploy               # Aplicar migraciones pendientes (solo con confirmación en producción)
+pnpm dlx prisma generate                     # Regenerar cliente Prisma
+pnpm run seed                                # Ejecutar prisma/seed.ts
 
 # Quality
-pnpm run lint                                # ESLint with auto-fix
+pnpm run lint                                # ESLint con auto-fix (¡modifica archivos!)
 pnpm run format                              # Prettier
 
 # Tests
-pnpm run test                                # Unit tests (jest, rootDir: src/)
-pnpm run test:watch                          # Interactive watch mode
-pnpm run test:cov                            # Coverage report
-pnpm run test:e2e                            # E2E suite (test/jest-e2e.json)
+pnpm run test                                # Pruebas unitarias (jest, rootDir: src/)
+pnpm run test:e2e                            # E2E (test/jest-e2e.json)
 ```
+
+**Cuidado:** `nest build` borra `dist/` (`deleteOutDir`). Si `start:dev` está corriendo en modo watch, compilar mientras tanto deja el servidor caído. Reinicia `start:dev` después de cada `pnpm run build`.
+
+Frontend (`frontend/`): `pnpm dev` (puerto 5173), `pnpm build`, `pnpm lint`. `pnpm dev:webpack` es la alternativa si Turbopack falla con CSS.
 
 ---
 
@@ -43,25 +45,40 @@ Modules sit directly inside `src/` — there is no `src/modules/` subdirectory.
 
 ```
 src/
-├── admin/          # Obfuscated control panel (ADMIN role only)
-├── attendees/      # Event registration
-├── auth/           # JWT strategy, local + social login
-├── categories/     # Event taxonomies
+├── admin/          # Panel de control ofuscado (solo ADMIN); ruta en admin.constants.ts
+├── attendees/      # Registro de asistentes a eventos
+├── auth/           # JWT strategy, login local, Google, Instagram (login social), reset de clave
+├── businesses/     # Micro-sitios públicos hoysesale.cl/<slug>: página, productos, servicios, destacados, reseñas
+├── categories/     # Taxonomías de eventos
 ├── common/
-│   ├── constants/  # Comunas de La Araucanía (validación de registro)
+│   ├── constants/  # comunas.ts (La Araucanía), business.ts (categorías, comodidades)
 │   ├── decorators/ # @CurrentUser param decorator
-│   └── dto.ts      # All request/response DTOs — single file, domain-grouped by comments
-├── events/         # Event CRUD + slug + publication window
+│   ├── guards/     # CronSecretGuard (tareas programadas)
+│   ├── utils/      # slug.ts (slugify, RESERVED_SLUGS, slugProblem)
+│   └── dto.ts      # Todos los DTO — un solo archivo, agrupados por comentarios de dominio
+├── events/         # CRUD de eventos, ventana de publicación, insignias/filtros, métricas
 ├── generated/
-│   └── prisma/     # Prisma Client output (do not edit manually)
-├── mail/           # Nodemailer transporter (SMTP / Ethereal fallback)
-├── media/          # Imágenes y enlaces de publicación por evento (tabla event_media)
-├── prisma/         # PrismaService (global singleton)
+│   └── prisma/     # Cliente Prisma generado (no editar; ignorado en git, lo genera el build)
+├── mail/           # Nodemailer (SMTP; Ethereal solo fuera de producción)
+├── media/          # Imágenes y enlaces por evento (event_media) + subidas temporales; storage local o Supabase
+├── prisma/         # PrismaService (singleton global)
 ├── seed/           # Crea el admin si no existe (ADMIN_PASSWORD), nunca sobrescribe
-├── social/         # Meta Graph API: token lifecycle, feed sync, webhook
+├── social/         # Meta Graph API: tokens, sincronización de publicaciones, webhook, refresh-images (cron)
 ├── supabase/       # Cliente de Supabase Storage (global, solo backend)
-└── users/          # User domain
+├── users/          # Dominio de usuarios; public-user.ts define la vista pública
+├── app.setup.ts    # Configuración común: cookies, trust proxy, Swagger, CORS, uploads locales
+├── main.ts         # Arranque tradicional (desarrollo y Render)
+└── serverless.ts   # Handler para Vercel (reutiliza la app entre invocaciones)
+api/index.js        # Entrada de la función de Vercel → dist/serverless
 ```
+
+### Despliegue
+
+- **Backend en Vercel**: `vercel.json` define `installCommand` (`pnpm install --frozen-lockfile`), `buildCommand` (`pnpm run build`), `maxDuration: 60`, el Swagger incluido en la función, la reescritura de todo a `/api` y el cron diario `/social/refresh-images` (04:00 UTC). Vercel envía `CRON_SECRET` como Bearer.
+- **Backend en Render (legacy)**: `start:prod` ejecuta `node dist/main`. `STORAGE_DRIVER` no debe ser `local` en producción.
+- **Frontend en Vercel**: Root Directory = `frontend`. `BACKEND_URL` se fija al compilar (los `rewrites` lo leen en build).
+- `pnpm-workspace.yaml` declara `allowBuilds` explícito. pnpm 12 falla la instalación congelada si hay scripts sin decidir.
+- En serverless: `PrismaService` usa `max: 1` conexión por instancia (`VERCEL` definido). Las subidas están limitadas a 4 MB por el límite de 4,5 MB del cuerpo en Vercel.
 
 ### DTOs
 
@@ -76,7 +93,7 @@ El JWT se almacena en una cookie `access_token` con flags de seguridad. La `JwtS
 1. Login/register → `AuthController` setea cookie `access_token` (httpOnly, secure en prod, sameSite: lax, 7 días)
 2. `AuthGuard('jwt')` → `JwtStrategy` extrae JWT de `req.cookies.access_token` o `Authorization: Bearer <token>`
 3. `JwtStrategy.validate(payload)` → `UsersService.findById(payload.sub)` → populates `req.user`
-4. `@CurrentUser('id')` extracts a field from `req.user`
+4. `@CurrentUser('id')` extracts a field from `req.user` (`@CurrentUser()` sin argumento devuelve el usuario completo, con `role`)
 5. `AdminGuard` checks `req.user.role === 'ADMIN'` — **always chain after** `AuthGuard('jwt')`, never standalone
 
 **Endpoints de sesión:**
@@ -97,14 +114,22 @@ const COOKIE_OPTIONS = {
 };
 ```
 
-**Middleware:** `cookie-parser` habilitado en `main.ts` para parsear `req.cookies`.
+**Middleware:** `cookie-parser` habilitado en `app.setup.ts` para parsear `req.cookies`.
 
 **Reglas estrictas:**
 - TODOS los endpoints que generan JWT (login, register, google, instagram, reset-password) **DEBEN** setear la cookie con `res.cookie('access_token', token, COOKIE_OPTIONS)`
 - Usar `@Res({ passthrough: true })` para acceder al response sin perder el retorno automático de NestJS
 - La cookie se limpia con `res.clearCookie('access_token', { path: '/' })`
+- `JWT_SECRET` es obligatorio: `jwtSecret()` (`src/auth/jwt-secret.ts`) lanza error si falta. **Nunca** poner un valor por defecto.
 
 `UsersService.findById` uses `omit: { password: true, socialToken: true }`. It runs on every authenticated request via `/auth/me`.
+
+### Privacidad de datos de usuarios
+
+- Nunca devolver a terceros un usuario con `omit: { password: true }` solamente: eso expone correo, `socialToken` de Instagram y datos fiscales.
+- Para dueños de eventos, asistentes y cualquier respuesta pública usar `PUBLIC_USER_SELECT` (`src/users/public-user.ts`).
+- `GET /users` (lista completa) es solo ADMIN. `GET /users/:id` devuelve la vista completa solo para uno mismo o ADMIN; a los demás, la vista pública.
+- Los endpoints de tareas programadas (`/social/refresh-images`) exigen `Authorization: Bearer <CRON_SECRET>` con `CronSecretGuard`. Sin `CRON_SECRET` quedan cerrados.
 
 ### PrismaService
 
@@ -150,6 +175,10 @@ All admin endpoints log an audit record (`AdminAuditLog`) with the admin's ID, a
 
 ### Events — key business logic
 
+**Autorización:** `update` y `delete` de eventos exigen ser el dueño o ADMIN (`EventsService.assertCanManage`). Un evento ajeno devuelve 403; uno inexistente, 404.
+
+**Paginación:** `findAll` acota `limit` a 50 (`MAX_PAGE_SIZE`) y `page` a un entero ≥ 1.
+
 **Slug generation** (`EventsService.generateSlug`): lowercased title, non-alphanumeric chars replaced with `-`, truncated to 80 chars, then a `Date.now().toString(36)` suffix appended. The suffix prevents collisions — do not remove it.
 
 **Category resolution** (`EventsService.resolveCategory`): accepts either `categoryId` (UUID) or `categoryName` (string). If a name is provided and no matching category exists, one is created automatically. This is intentional.
@@ -163,6 +192,18 @@ where = {
 };
 ```
 Both fields are nullable — `null` means no restriction on that side. This is a business invariant: do not omit it when adding new event-listing endpoints. Admin queries that need to see all events regardless of publication status must bypass this explicitly and be documented as such.
+
+**Insignias y filtros** (`src/events/event-filters.ts`): `entryType` (GRATIS, CONSUMO_MINIMO, COVER), `audience` (PAREJA, FAMILIA, GENERAL), `indoor`, `amenities`. La franja horaria (`matchesTimeSlot`, hora de Chile) se filtra en memoria sobre la página obtenida.
+
+**Métricas** (`event_interactions`): `POST /events/:id/interactions` registra VIEW, DIRECTIONS o EXTERNAL_LINK. `GET /events/my/stats` resume por evento (solo el dueño).
+
+### Businesses — micro-sitios
+
+- Slug único en `User.slug` (minúsculas, sin acentos, `[a-z0-9-]`). Lista de slugs reservados en `src/common/utils/slug.ts`.
+- `GET /businesses/:slug` es público: `PUBLIC_BUSINESS_SELECT` oculta campos internos; los eventos aplican la ventana de publicación; devuelve `stats` (valoración, número de reseñas, años).
+- Productos, servicios y destacados los administra el dueño (`/businesses/me/...`). Cada escritura verifica que el elemento sea del usuario.
+- Reseñas: una por usuario y negocio (`upsert`); no se puede reseñar el propio negocio.
+- `GET /businesses` lista slugs para el sitemap (tope 5 000).
 
 ### Instagram — two distinct workflows
 
@@ -184,21 +225,34 @@ After successful linking, `syncAllUserEvents` fires synchronously and writes the
 
 **Webhook** (`POST /social/instagram/webhook`): verified by `INSTAGRAM_WEBHOOK_TOKEN`. On `media` change events, triggers `syncAllUserEvents` for the matched user.
 
+**Refresh de imágenes** (`GET /social/refresh-images`): tarea programada (Vercel Cron, diaria). Requiere `CRON_SECRET`.
+
 ### Mail
 
-`MailService` initializes on module start:
-- If `SMTP_HOST` is set → uses configured SMTP credentials
-- Otherwise → creates an Ethereal test account and logs login URL + credentials to stdout
+`MailService` inicializa al arrancar:
+- Si `SMTP_HOST` está definido → usa esas credenciales SMTP.
+- Si no, y **no** es producción → crea una cuenta Ethereal y registra en consola el acceso (solo desarrollo).
+- Si no, y es producción (`NODE_ENV=production` o `VERCEL`) → no crea cuenta de prueba; registra un error. No se envían correos.
 
-In development without SMTP vars, check the server console for Ethereal credentials after startup.
+`MAIL_FROM` define el remitente. Con Resend, el remitente debe ser de un dominio verificado; `onboarding@resend.dev` solo entrega al correo del dueño de la cuenta.
+
+`sendPasswordReset` nunca lanza: si el correo no sale, queda en el log y la respuesta de `forgot-password` no cambia (no revela si el correo existe).
 
 ### Rate limiting
 
-`ThrottlerGuard` is applied globally via `APP_GUARD`: **20 requests / 60 seconds per IP**. Swagger and webhook endpoints are subject to this limit.
+`ThrottlerGuard` global (`APP_GUARD`): **300 peticiones / 60 s por IP**. `POST /auth/login` tiene `@Throttle` de **5 / 60 s**.
+
+La IP se toma de `X-Forwarded-For` porque el backend está detrás de un proxy (`trust proxy`, configurable con `TRUST_PROXY`, por defecto 1). Sin esto, todos los usuarios compartían un contador. El límite vive en memoria de cada instancia: en serverless no es global.
+
+### Storage de imágenes
+
+`MEDIA_STORAGE` (`src/media/media.module.ts`): `STORAGE_DRIVER=local` usa `uploads/` (servida en `/uploads`, solo desarrollo); cualquier otro valor usa Supabase Storage. En Vercel el sistema de archivos es de solo lectura: no usar `local`.
+
+Límite de imagen: `MAX_IMAGE_BYTES` = 4 MB; tipos jpeg, png, webp.
 
 ### Swagger
 
-Available at `http://localhost:3000/api/docs` when the server is running. All endpoints are documented via `@ApiTags`, `@ApiOperation`, and `@ApiBearerAuth` decorators.
+Available at `http://localhost:3000/api/docs` when the server is running (en Vercel: `/api/docs` del dominio del backend). All endpoints are documented via `@ApiTags`, `@ApiOperation`, and `@ApiBearerAuth` decorators.
 
 ---
 
@@ -207,11 +261,18 @@ Available at `http://localhost:3000/api/docs` when the server is running. All en
 ```env
 # Required
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/eventos?schema=public
-JWT_SECRET=
+JWT_SECRET=                           # Obligatorio; sin valor por defecto (el arranque falla si falta)
 
 # CORS / redirect targets
 FRONTEND_URL=http://localhost:5173    # prod: https://www.hoysesale.cl
 PORT=3000
+TRUST_PROXY=1                         # Saltos de proxy confiables para req.ip (Vercel/Render)
+
+# Scheduled tasks
+CRON_SECRET=                          # Bearer de /social/refresh-images (genera con: openssl rand -hex 32)
+
+# Storage
+STORAGE_DRIVER=local                  # Solo desarrollo; en producción no definir (usa Supabase)
 
 # Meta / Instagram (instagram_business_basic scope)
 INSTAGRAM_CLIENT_ID=
@@ -222,14 +283,15 @@ INSTAGRAM_WEBHOOK_TOKEN=
 # Google OAuth (optional)
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
-GOOGLE_REDIRECT_URI=
+GOOGLE_REDIRECT_URI=                  # Local: http://localhost:5173/auth/google/callback (debe estar en Google Cloud Console)
 
-# SMTP (optional — Ethereal is used if absent)
+# SMTP (obligatorio en producción para recuperar contraseña)
 SMTP_HOST=
 SMTP_PORT=
 SMTP_SECURE=
 SMTP_USER=
 SMTP_PASS=
+MAIL_FROM=                            # Remitente de un dominio verificado, p. ej. "HoySeSale" <no-reply@hoysesale.cl>
 
 # Supabase Storage (imágenes de eventos — solo backend, nunca al frontend)
 SUPABASE_URL=
@@ -240,3 +302,5 @@ SUPABASE_BUCKET=SupabaseImage_Storage   # fallback del código si no se define
 ADMIN_EMAIL=admin@eventos.cl
 ADMIN_PASSWORD=
 ```
+
+Frontend (`frontend/`): `BACKEND_URL` (URL pública del backend; obligatoria en Vercel, se fija al compilar), `NEXT_PUBLIC_SITE_URL` (por defecto `https://www.hoysesale.cl`).

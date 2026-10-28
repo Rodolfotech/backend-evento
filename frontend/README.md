@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend HoySeSale.cl
 
-## Getting Started
+Next.js 16 (App Router) con Tailwind v4. Consume la API NestJS del repositorio raíz a través de `/api/*`.
 
-First, run the development server:
+## Desarrollo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+BACKEND_URL=http://localhost:3000 pnpm dev   # http://localhost:5173
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`BACKEND_URL` por defecto es `http://localhost:3000`. Las peticiones a `/api/*` se reenvían al backend (`next.config.ts`), así que la cookie de sesión queda en el mismo dominio del frontend.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Variables de entorno
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Obligatoria | Uso |
+|---|---|---|
+| `BACKEND_URL` | Sí en producción | URL pública del backend (Render). Se lee en build y en SSR. |
+| `NEXT_PUBLIC_SITE_URL` | No | URL pública del sitio. Por defecto `https://www.hoysesale.cl`. |
 
-## Learn More
+**Importante:** los `rewrites` de `next.config.ts` se fijan al compilar. Si cambias `BACKEND_URL` en Vercel, hay que volver a desplegar.
 
-To learn more about Next.js, take a look at the following resources:
+## Despliegue en Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Importar el repositorio en Vercel.
+2. **Root Directory:** `frontend`. Framework: Next.js (detectado).
+3. En *Environment Variables* agregar `BACKEND_URL` (URL del backend en Render) y, si aplica, `NEXT_PUBLIC_SITE_URL`.
+4. Desplegar. El build usa `pnpm-lock.yaml` (`pnpm@12.10.1`, definido en `packageManager`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+El backend en Render debe tener `FRONTEND_URL` y las URL de redirección de Google e Instagram apuntando al dominio del frontend.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `pnpm dev`: servidor de desarrollo (Turbopack).
+- `pnpm dev:webpack`: alternativa con webpack si Turbopack muestra errores de CSS.
+- `pnpm build` / `pnpm start`: build y servidor de producción.
+- `pnpm lint`: ESLint.

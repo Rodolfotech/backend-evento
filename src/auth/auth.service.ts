@@ -89,6 +89,9 @@ export class AuthService {
   }
 
   async resetPasswordWithToken(token: string, newPassword: string) {
+    if (!newPassword || newPassword.length < 8) {
+      throw new BadRequestException('La contraseña debe tener al menos 8 caracteres');
+    }
     let payload: { sub: string; type: string };
     try {
       payload = this.jwtService.verify(token);

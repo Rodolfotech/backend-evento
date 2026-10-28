@@ -4,6 +4,7 @@ import { ApiTags, ApiOperation, ApiBearerAuth, ApiExcludeEndpoint } from '@nestj
 import { SocialService } from './social.service';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { ConnectSocialDto } from '../common/dto';
+import { CronSecretGuard } from '../common/guards/cron-secret.guard';
 
 @ApiTags('Social')
 @Controller('social')
@@ -108,7 +109,8 @@ export class SocialController {
   }
 
   @Get('refresh-images')
-  @ApiOperation({ summary: 'Refrescar imageUrl de eventos desde Instagram (cron job)' })
+  @UseGuards(CronSecretGuard)
+  @ApiOperation({ summary: 'Refrescar imageUrl de eventos desde Instagram (cron job, requiere CRON_SECRET)' })
   refreshEventImages() {
     return this.socialService.refreshEventImages();
   }

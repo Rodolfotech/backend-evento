@@ -13,7 +13,8 @@ import { LinkEventMediaDto } from '../common/dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { MEDIA_STORAGE, MediaStorage } from './storage/media-storage';
 
-export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+// Vercel limita el cuerpo de una petición a 4,5 MB; 4 MB deja margen para el encabezado multipart.
+export const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 
 export const ALLOWED_IMAGE_TYPES: Record<string, string> = {
   'image/jpeg': 'jpg',

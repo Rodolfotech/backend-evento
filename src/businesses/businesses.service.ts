@@ -51,6 +51,8 @@ export class BusinessesService {
       where: { slug: { not: null } },
       select: { slug: true, updatedAt: true },
       orderBy: { updatedAt: 'desc' },
+      // Mismo tope que el sitemap de Google (50.000 URL por archivo).
+      take: 5000,
     });
   }
 

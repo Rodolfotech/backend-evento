@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
+  id       String  @id @default(uuid()) @db.Uuid
   email    String  @unique
   password String?
   name     String
@@ -65,7 +65,7 @@ model User {
 
 model InstagramClick {
   id        String   @id @default(uuid())
-  userId    String
+  userId    String @db.Uuid
   user      User     @relation(fields: [userId], references: [id])
   eventId   String?
   createdAt DateTime @default(now())
@@ -75,7 +75,7 @@ model InstagramClick {
 
 model AdminAuditLog {
   id        String   @id @default(uuid())
-  adminId   String
+  adminId   String @db.Uuid
   admin     User     @relation(fields: [adminId], references: [id])
   action    String
   detail    String?
@@ -111,7 +111,7 @@ model Event {
   socialFeed       Json?     @db.JsonB
   lastSync         DateTime?
 
-  ownerId      String
+  ownerId      String @db.Uuid
   owner        User               @relation("EventOwner", fields: [ownerId], references: [id])
   categoryId   String?
   category     Category?          @relation(fields: [categoryId], references: [id])
@@ -175,7 +175,7 @@ model Category {
 
 model Attendee {
   id      String @id @default(uuid())
-  userId  String
+  userId  String @db.Uuid
   eventId String
   status  String @default("REGISTERED")
 
@@ -197,7 +197,7 @@ enum Role {
 // Contenido del micro-sitio del negocio (dueño = User).
 model BusinessProduct {
   id          String   @id @default(uuid())
-  ownerId     String
+  ownerId     String @db.Uuid
   name        String
   description String?  @db.Text
   price       Int?
@@ -214,7 +214,7 @@ model BusinessProduct {
 
 model BusinessService {
   id          String   @id @default(uuid())
-  ownerId     String
+  ownerId     String @db.Uuid
   title       String
   description String?  @db.Text
   sortOrder   Int      @default(0)
@@ -228,7 +228,7 @@ model BusinessService {
 
 model BusinessHighlight {
   id        String   @id @default(uuid())
-  ownerId   String
+  ownerId   String @db.Uuid
   title     String
   imageUrl  String
   sortOrder Int      @default(0)
@@ -242,8 +242,8 @@ model BusinessHighlight {
 
 model BusinessReview {
   id        String   @id @default(uuid())
-  ownerId   String
-  authorId  String
+  ownerId   String @db.Uuid
+  authorId  String @db.Uuid
   rating    Int
   comment   String?  @db.Text
   createdAt DateTime @default(now())

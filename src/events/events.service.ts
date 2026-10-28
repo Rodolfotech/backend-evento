@@ -1,6 +1,12 @@
 import { AUDIENCES, ENTRY_TYPES, EventFilters, InteractionType, matchesTimeSlot } from './event-filters';
-import { Injectable, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PUBLIC_USER_SELECT } from '../users/public-user';
+
+// Usuario autenticado que hace la petición (viene de JwtStrategy).
+export type Requester = { id: string; role?: string };
+
+const MAX_PAGE_SIZE = 50;
 
 @Injectable()
 export class EventsService {
@@ -8,7 +14,10 @@ export class EventsService {
 
   async findAll(city?: string, page = 1, limit = 12, filters: EventFilters = {}) {
     const now = new Date();
-    const skip = (page - 1) * limit;
+    // Página y tamaño acotados: un cliente no puede pedir todo el catálogo de una vez.
+    const safePage = Number.isFinite(page) && page >= 1 ? Math.floor(page) : 1;
+    const safeLimit = Number.isFinite(limit) && limit >= 1 ? Math.min(Math.floor(limit), MAX_PAGE_SIZE) : 12;
+    const skip = (safePage - 1) * safeLimit;
 
     const where: any = {
       OR: [
@@ -34,16 +43,16 @@ export class EventsService {
     const [rows, total] = await Promise.all([
       this.prisma.event.findMany({
         where,
-        include: { owner: { omit: { password: true } }, category: true },
+        include: { owner: { select: PUBLIC_USER_SELECT }, category: true },
         skip,
-        take: limit,
+        take: safeLimit,
         orderBy: { createdAt: 'desc' },
       }),
       this.prisma.event.count({ where }),
     ]);
 
     const data = filters.timeSlot ? rows.filter((e) => matchesTimeSlot(e.date, filters.timeSlot!)) : rows;
-    return { data, total, page, limit };
+    return { data, total, page: safePage, limit: safeLimit };
   }
 
   // Registra una vista, un clic en "Cómo llegar" o un clic en un enlace externo (público).
@@ -81,7 +90,7 @@ export class EventsService {
     return this.prisma.event.findUnique({
       where: { slug },
       include: {
-        owner: { omit: { password: true } },
+        owner: { select: PUBLIC_USER_SELECT },
         category: true,
         attendees: true,
         media: { orderBy: { createdAt: 'desc' } },
@@ -92,7 +101,7 @@ export class EventsService {
   findByOwner(ownerId: string) {
     return this.prisma.event.findMany({
       where: { ownerId },
-      include: { owner: { omit: { password: true } }, category: true },
+      include: { owner: { select: PUBLIC_USER_SELECT }, category: true },
     });
   }
 
@@ -174,7 +183,7 @@ export class EventsService {
           indoor: data.indoor,
           amenities: data.amenities,
         },
-        include: { owner: { omit: { password: true } }, category: true },
+        include: { owner: { select: PUBLIC_USER_SELECT }, category: true },
       });
     } catch (e: any) {
       console.error('[events.create] Error:', JSON.stringify({ code: e?.code, message: e?.message, meta: e?.meta }));
@@ -200,7 +209,8 @@ export class EventsService {
     audience: string;
     indoor: boolean;
     amenities: string[];
-  }>) {
+  }>, requester: Requester) {
+    await this.assertCanManage(id, requester);
     const updateData: any = { ...data };
     if (data.date) updateData.date = new Date(data.date);
     if (data.lastSync) updateData.lastSync = new Date(data.lastSync);
@@ -213,7 +223,17 @@ export class EventsService {
     return this.prisma.event.update({ where: { id }, data: updateData });
   }
 
-  delete(id: string) {
+  async delete(id: string, requester: Requester) {
+    await this.assertCanManage(id, requester);
     return this.prisma.event.delete({ where: { id } });
+  }
+
+  // Solo el dueño del evento o un ADMIN puede modificarlo o borrarlo.
+  private async assertCanManage(id: string, requester: Requester) {
+    const event = await this.prisma.event.findUnique({ where: { id }, select: { ownerId: true } });
+    if (!event) throw new NotFoundException('Evento no encontrado');
+    if (event.ownerId !== requester.id && requester.role !== 'ADMIN') {
+      throw new ForbiddenException('No puedes modificar este evento');
+    }
   }
 }

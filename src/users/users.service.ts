@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { MEDIA_STORAGE, MediaStorage } from '../media/storage/media-storage';
+import { PUBLIC_USER_SELECT } from './public-user';
 
 @Injectable()
 export class UsersService {
@@ -11,7 +12,12 @@ export class UsersService {
   ) {}
 
   findAll() {
-    return this.prisma.user.findMany({ omit: { password: true } });
+    return this.prisma.user.findMany({ omit: { password: true, socialToken: true } });
+  }
+
+  // Vista de un usuario para terceros: sin correo, teléfono, tokens ni datos fiscales.
+  findPublicById(id: string) {
+    return this.prisma.user.findUnique({ where: { id }, select: PUBLIC_USER_SELECT });
   }
 
   findById(id: string) {

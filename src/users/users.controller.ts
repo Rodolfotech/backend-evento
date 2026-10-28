@@ -3,16 +3,17 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { AdminGuard } from '../admin/admin.guard';
 
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), AdminGuard)
   @Get()
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Listar todos los usuarios' })
+  @ApiOperation({ summary: 'Listar todos los usuarios (solo ADMIN)' })
   findAll() {
     return this.usersService.findAll();
   }
@@ -63,8 +64,9 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Obtener usuario por ID' })
-  findOne(@Param('id') id: string) {
-    return this.usersService.findById(id);
+  @ApiOperation({ summary: 'Obtener usuario por ID (datos completos solo para sí mismo o ADMIN)' })
+  findOne(@Param('id') id: string, @CurrentUser() me: { id: string; role: string }) {
+    if (me.id === id || me.role === 'ADMIN') return this.usersService.findById(id);
+    return this.usersService.findPublicById(id);
   }
 }

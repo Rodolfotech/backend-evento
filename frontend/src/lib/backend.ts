@@ -70,12 +70,26 @@ export interface Business {
   events: BusinessEvent[];
 }
 
+// El backend no respondió (red caída, error 5xx). Se distingue de "no existe" para no mostrar una categoría por error.
+export class BackendUnavailableError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'BackendUnavailableError';
+  }
+}
+
 // Devuelve el negocio o null si el slug no es un negocio (entonces la ruta muestra una categoría).
+// Lanza BackendUnavailableError si el backend no responde o falla.
 export async function getBusiness(slug: string): Promise<Business | null> {
-  // Sin caché: los cambios del dueño deben verse de inmediato.
-  const res = await fetch(`${BACKEND_URL}/businesses/${encodeURIComponent(slug)}`, { cache: 'no-store' });
+  let res: Response;
+  try {
+    // Sin caché: los cambios del dueño deben verse de inmediato.
+    res = await fetch(`${BACKEND_URL}/businesses/${encodeURIComponent(slug)}`, { cache: 'no-store' });
+  } catch {
+    throw new BackendUnavailableError('No se pudo conectar con el servidor');
+  }
   if (res.status === 404) return null;
-  if (!res.ok) return null;
+  if (!res.ok) throw new BackendUnavailableError(`El servidor respondió ${res.status}`);
   return res.json();
 }
 

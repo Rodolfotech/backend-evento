@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PUBLIC_USER_SELECT } from '../users/public-user';
 
 @Injectable()
 export class AttendeesService {
@@ -9,7 +10,7 @@ export class AttendeesService {
     try {
       return await this.prisma.attendee.create({
         data: { userId, eventId },
-        include: { user: { omit: { password: true } }, event: true },
+        include: { user: { select: PUBLIC_USER_SELECT }, event: true },
       });
     } catch (e: any) {
       if (e?.code === 'P2002') throw new ConflictException('Ya estás registrado en este evento');
@@ -20,7 +21,7 @@ export class AttendeesService {
   findByEvent(eventId: string) {
     return this.prisma.attendee.findMany({
       where: { eventId },
-      include: { user: { omit: { password: true } } },
+      include: { user: { select: PUBLIC_USER_SELECT } },
     });
   }
 

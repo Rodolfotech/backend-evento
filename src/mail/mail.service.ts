@@ -25,6 +25,9 @@ export class MailService implements OnModuleInit {
           pass: this.config.get('SMTP_PASS'),
         },
       });
+    } else if (this.isProduction()) {
+      // Sin SMTP en producción no se crea una cuenta de prueba en cada arranque en frío.
+      this.logger.error('SMTP_HOST no está definido: no se enviarán correos (recuperación de contraseña).');
     } else {
       const testAccount = await nodemailer.createTestAccount();
       this.transporter = nodemailer.createTransport({
@@ -45,9 +48,28 @@ export class MailService implements OnModuleInit {
     }
   }
 
+  private isProduction(): boolean {
+    return this.config.get('NODE_ENV') === 'production' || !!this.config.get('VERCEL');
+  }
+
+  // Nunca lanza: si el correo no sale, queda en el log y la respuesta al usuario no cambia (no revela si el email existe).
   async sendPasswordReset(email: string, resetUrl: string) {
+    if (!this.transporter) {
+      this.logger.error(`No se envió el correo de recuperación a ${email}: falta configurar SMTP.`);
+      return null;
+    }
+    try {
+      return await this.deliverPasswordReset(email, resetUrl);
+    } catch (e) {
+      this.logger.error(`No se pudo enviar el correo de recuperación a ${email}: ${(e as Error).message}`);
+      return null;
+    }
+  }
+
+  private async deliverPasswordReset(email: string, resetUrl: string) {
     const info = await this.transporter.sendMail({
-      from: '"Eventos App" <onboarding@resend.dev>',
+      // MAIL_FROM debe ser una dirección de un dominio verificado en el proveedor SMTP.
+      from: this.config.get<string>('MAIL_FROM') ?? '"Eventos App" <onboarding@resend.dev>',
       to: email,
       subject: 'Recuperación de Contraseña',
       html: `
